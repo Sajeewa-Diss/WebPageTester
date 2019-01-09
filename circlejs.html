@@ -1,0 +1,557 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Modulo Multiplication Circle JS</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <style>
+        * {
+            box-sizing:border-box;
+        }
+
+        body {
+            margin: 0;
+            background-color: #666666;
+            background-image: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: 2% 2%;
+            background-size: auto auto;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+            color: #aaaaaa;
+            width:100%;
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+            color: #aaaaaa;
+            width:100%;
+        }
+
+        /* column styles */
+        .column {
+            float: left;
+        }
+            /* Left and right column */
+            .column.side {
+                width: 9%;
+            }
+
+            /* Middle columns */
+            .column.middleleft {
+                width: 48%;
+                padding: 10px;
+                max-width:800px;
+                min-width:800px;
+            }
+            .column.middleright {
+                width: 34%;
+                padding: 10px;
+                max-width: 550px;
+            }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - makes the columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 1600px) {
+            .column.side, .column.middleleft, .column.middleright {
+                width: 100%;
+            }
+        }
+
+        /*remove background for small screens */
+        @media screen and (max-width: 600px) {
+            body{
+                    background-image: url('');
+            }
+        }
+
+        #controlgrid {
+            display: grid;
+            grid-template-columns: 5fr 1fr 15fr;
+            grid-auto-rows: 80px;
+            max-width: 800px;
+        }
+
+            #controlgrid > div { /*style for direct child div elements */
+                background: #666666;
+                padding: 1em;
+            }
+
+                #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
+                    background: #616161;
+                    padding: 1em;
+                }
+
+        #toggleBut {
+            height: 40px;
+            width: 150px;
+            border-style: none;
+            border-radius: 8px;
+            background-color: #4488DD;
+            color: white;
+            font-size: large;
+        }
+
+            #toggleBut:hover {
+                background-color: #5599FF;
+            }
+
+            #toggleBut:active {
+                background-color: #77BBFF;
+            }
+
+        .slidecontainer, .radiogroupcontainer {
+            width: 550;
+            max-width: 525;
+            justify-content: flex-start;
+        }
+
+        .buttoncontainer, .radiocontainer {
+            padding: 10px;
+            padding-bottom: 10px;
+            justify-content: flex-start;
+        }
+
+        .spanOutput {
+            font-size: larger;
+            color: yellow;
+        }
+
+        input[type=range] {
+            height: 25px;
+            -webkit-appearance: none;
+            margin: 10px 0;
+            width: 100%;
+        }
+
+            input[type=range]:focus {
+                outline: none;
+            }
+
+            input[type=range]::-webkit-slider-runnable-track {
+                width: 100%;
+                height: 5px;
+                cursor: pointer;
+                box-shadow: 0px 0px 0px #000000;
+                background: #2497E3;
+                border-radius: 1px;
+                border: 0px solid #000000;
+            }
+
+            input[type=range]::-webkit-slider-thumb {
+                box-shadow: 0px 0px 0px #000000;
+                border: 1px solid #2497E3;
+                height: 18px;
+                width: 18px;
+                border-radius: 25px;
+                background: #A1D0FF;
+                cursor: pointer;
+                -webkit-appearance: none;
+                margin-top: -7px;
+            }
+
+            input[type=range]:focus::-webkit-slider-runnable-track {
+                background: #2497E3;
+            }
+
+            input[type=range]::-ms-track {
+                width: 100%;
+                height: 5px;
+                cursor: pointer;
+                background: transparent;
+                border-color: transparent;
+                color: transparent;
+            }
+
+            input[type=range]::-ms-fill-lower {
+                background: #2497E3;
+                border: 0px solid #000000;
+                border-radius: 2px;
+                box-shadow: 0px 0px 0px #000000;
+            }
+
+            input[type=range]::-ms-fill-upper {
+                background: #2497E3;
+                border: 0px solid #000000;
+                border-radius: 2px;
+                box-shadow: 0px 0px 0px #000000;
+            }
+
+            input[type=range]::-ms-thumb {
+                margin-top: 1px;
+                box-shadow: 0px 0px 0px #000000;
+                border: 1px solid #2497E3;
+                height: 18px;
+                width: 18px;
+                border-radius: 25px;
+                background: #A1D0FF;
+                cursor: pointer;
+            }
+
+            input[type=range]:focus::-ms-fill-lower {
+                background: #2497E3;
+            }
+
+            input[type=range]:focus::-ms-fill-upper {
+                background: #2497E3;
+            }
+
+        .slider {
+            background-color:inherit;
+        }
+
+        /* The radio button container */
+        .radiocontainer {
+            display: inline-block;
+            position: relative;
+            padding-left: 30px;
+            padding-right: 30px;
+            /*margin-bottom: 12px;*/
+            cursor: pointer;
+            font-size: 14px;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+            /* Hide the browser's default radio button */
+            .radiocontainer input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+
+        /* Create a custom radio button */
+        .checkmark {
+            position: absolute;
+            top: 10px;
+            left: 0;
+            height: 25px;
+            width: 25px;
+            background-color: #585858;
+            border-radius: 50%;
+        }
+
+        /* On mouse-over, add a grey background color */
+        .radiocontainer:hover input ~ .checkmark {
+            background-color: #666666;
+        }
+
+        /* When the radio button is checked, add a blue background */
+        .radiocontainer input:checked ~ .checkmark {
+            background-color: #4488DD;
+        }
+
+        /* Create the indicator (the dot/circle - hidden when not checked) */
+        .checkmark:after {
+            content: "";
+            position: absolute;
+            display: none;
+        }
+
+        /* Show the indicator (dot/circle) when checked */
+        .radiocontainer input:checked ~ .checkmark:after {
+            display: block;
+        }
+
+        /* Style the indicator (dot/circle) */
+        .radiocontainer .checkmark:after {
+            top: 9px;
+            left: 9px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: yellow;
+        }
+
+        a {
+            color: #66AAFF;
+        }
+
+            a:hover {
+                color: #dddddd;
+            }
+
+        .middleright p {
+            float:right;
+        }
+
+        #statusmsg, #msg {
+            float: right;
+            /*padding-right: 20px;*/
+        }
+
+        .subheading{
+            font-size:larger;
+            font-weight:bold;
+        }
+
+    </style>
+</head>
+<body>
+    <form action="#" method="post">
+        <div>
+            <header class="header">
+                <h1>Modulo Multiplication Circle Using JavaScript</h1>
+                <p>Geometric patterns formed by multiplication in modulo n, expressed by joining points along the circumference of a circle.</p>
+            </header>
+
+            <div class="row">
+                <div class="column side">
+                    <p></p>
+                </div>
+
+                <div class="column middleleft">
+
+                    <section id="textcontent">
+                        <p>
+                            When enumerating the multiplication times tables and showing the results as lines joining along the circumference of a circle, strange and beautiful patterns are formed.
+                            For this exercise, we divide a circle's diameter into equi-distant points with the 9 o'clock position representing zero (by convention), and each point clockwise being a unit increment.
+                            For any multiplication table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
+                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube video linked below.
+                        </p>
+                        <p>
+                            This page is created in HTML using <strong>inline CSS and JavaScript only</strong> (no external CDNs, libraries or resources are used).
+                            The patterns are drawn on a canvas element, and the page includes simple grid displays.
+                        </p>
+                        <p>
+                            <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-js" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
+                            <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-json/index.html">Azure</a> the same functionality found here, but the script calls Azure Functions and Azure Cloud Services.</span><br />
+                            <span><a href="https://www.youtube.com/watch?v=qhbuKbxJsk8" target="_blank">YouTube Mathologer</a> the linked YouTube video was the inspiration for this webpage.</span><br />
+                        </p>
+                        <div>
+                            <span class="subheading">Settings:</span>
+                        </div>
+                    </section>
+                    <div class="buttoncontainer">
+                        <input type="button" id="toggleBut" value="Autoplay" />
+                    </div>
+                    <div id="controlgrid">
+                        <div>
+                            <p>Multiply by (1 to 100):</p>
+                        </div>
+                        <div>
+                            <p><output id="multiplierOut" class="spanOutput"></output></p>
+                        </div>
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
+                        </div>
+                        <div>
+                            <p>Modulo n (1 to 200):</p>
+                        </div>
+                        <div>
+                            <p><output id="moduloOut" class="spanOutput"></output></p>
+                        </div>
+                        <div class="slidecontainer">
+                            <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
+                        </div>
+                        <div>
+                            <p>Radius (100 to 250):</p>
+                        </div>
+                        <div>
+                            <p><output id="radiusOut" class="spanOutput"></output></p>
+                        </div>
+                        <div class="slidecontainer">
+                            <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="column middleright">
+                    <div>
+                        <canvas id="canvas" width="550" height="550">Your browser doesn't support the canvas element</canvas>
+                    </div>
+                </div>
+
+                <div class="column side">
+                    <p></p>
+                </div>
+            </div>
+            <footer class="footer">
+                <p>&#169;<small> Copyright 2019 Sajeewa Dissanayake</small></p>
+            </footer>
+        </div>
+
+        <script>
+            //set DOM references for HTML elements
+            var statusmsg = document.getElementById("statusmsg");
+            var msg = document.getElementById("msg");
+            var ctx = document.getElementById("canvas").getContext("2d");
+            var slider1 = document.getElementById("myRange1");
+            var slider2 = document.getElementById("myRange2");
+            var slider3 = document.getElementById("myRange3");
+            var output1 = document.getElementById("multiplierOut");
+            var output2 = document.getElementById("moduloOut");
+            var output3 = document.getElementById("radiusOut");
+
+            //define circle centre, radius and other initial values
+            var centreX = 300;
+            var centreY = 300;
+            var coords = [];
+            var matrix = [];
+            var multiple = 1;
+            var cumulativeCoordsRPC = 0
+            var cumulativeMatrixRPC = 0
+            var prevModulo = 0;
+            var prevRadius = 0;
+            var prevMultiplier = 0;
+
+            output1.innerText = slider1.value;
+            output2.innerText = slider2.value;
+            output3.innerText = slider3.value;
+            var initialRadius = slider3.value;
+
+            var toggleBut = document.getElementById("toggleBut");
+            var intervalId;
+            toggleBut.addEventListener("click", Start);
+
+            slider1.oninput = function () {
+                output1.innerText = this.value;
+                drawResults(this.value);
+            }
+
+            slider2.oninput = function () {
+                output2.innerText = this.value;
+                drawResults(this.value);
+            }
+
+            slider3.oninput = function () {
+                output3.innerText = this.value;
+                drawResults(this.value);
+            }
+
+            //draw circle with initial values
+            drawCircle(centreX, centreY, initialRadius);
+
+            function drawCircle(x0, y0, radius) {
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = "lightgrey";
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.beginPath();
+                ctx.arc(x0, y0, radius, 0, Math.PI * 2, true); // 2 Pi radians is a complete circle (note drawing arc starts from 3 o'clock position but this isn't an issue)
+                ctx.stroke();
+                ctx.closePath();
+            }
+
+            function drawResults() {
+                var multiplierVal = slider1.value;
+                var moduloVal = slider2.value;
+                var radiusVal = slider3.value;
+
+                //check which methods don't have to be called.
+                var mustCallCreateCoords = true;
+                var mustCallCreateMatrix = true;
+
+                if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
+                    mustCallCreateCoords = false;
+                }
+                if (multiplierVal == prevMultiplier && moduloVal == prevModulo) {  // if these values are unchanged, the multiplication matrix is unchanged.
+                    mustCallCreateMatrix = false;
+                }
+
+                //Call any required methods to prepare for drawing of patterns
+                if (mustCallCreateCoords) {
+                    createCoords(centreX, centreY, radiusVal, moduloVal);
+                }
+
+                if (mustCallCreateMatrix) {
+                    createMatrix(multiplierVal, moduloVal);
+                }
+
+                //do drawing on canvas
+                drawCircle(centreX, centreY, radiusVal);
+                drawPattern();
+
+                //store current slider values as previous values ready for next time.
+                prevRadius = radiusVal;
+                prevModulo = moduloVal;
+                prevMultiplier = multiplierVal;
+            }
+
+            function createCoords(x0, y0, radius, modulo) {
+                // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
+                coords = [];                        // reset array to hold circular coordinates;
+                for (var i = 0; i < modulo; i++) {
+                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));
+                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));
+                    coords.push([x, y]);
+                }
+            }
+
+            function createMatrix(multiplier, modulo) {
+                matrix = [];                         // reset array to hold multiplication matrix matrix;
+                for (var i = 0; i < modulo; i++) {
+                    var result = (i * multiplier) % modulo;
+                    matrix.push([i, result])
+                }
+            }
+
+            function drawPattern() {
+                ctx.lineWidth = "1";
+                ctx.strokeStyle = "aquamarine";
+
+                ctx.beginPath();
+                for (var i = 0; i < matrix.length; i++) {
+                    var startX = coords[matrix[i][0]][0];
+                    var startY = coords[matrix[i][0]][1];
+                    var endX = coords[matrix[i][1]][0];
+                    var endY = coords[matrix[i][1]][1];
+
+                    addLineSubPath(ctx, startX, startY, endX, endY);
+
+                    function addLineSubPath(ctx, sX, sY, eX, eY) {
+                        ctx.moveTo(sX, sY);
+                        ctx.lineTo(eX, eY);
+                        ctx.stroke();
+                    }
+                }
+                ctx.closePath();
+            }
+
+            function playMultiplierSlider() {
+                multiple += 1;
+
+                if (multiple > 100) {  /*we have reached the end of autoplay.*/
+                    Stop();
+                }
+                slider1.value = multiple;
+                drawResults();
+                output1.innerText = multiple;
+            }
+
+            function Start() {
+                //TODO:continue canvas animation from current multiple
+                intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
+
+                toggleBut.removeEventListener("click", Start);
+                toggleBut.addEventListener("click", Stop);
+                toggleBut.value = "Stop";
+            }
+
+            function Stop() {
+                multiple = 1; // reset slider;
+                clearInterval(intervalId);
+                toggleBut.removeEventListener("click", Stop);
+                toggleBut.addEventListener("click", Start);
+                toggleBut.value = "Autoplay";
+            }
+
+        </script>
+    </form>
+</body>
+</html>

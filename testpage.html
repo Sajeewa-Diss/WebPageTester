@@ -1,0 +1,99 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sample HTML Projects</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: 2% 2%;
+            background-size: auto auto;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Create three unequal columns that floats next to each other */
+        .column {
+            float: right;
+            padding: 10px;
+        }
+
+            /* Left and right column */
+            .column.side { /* applies to an element with both these classes */
+                width: 20%;
+            }
+
+            /* Middle column */
+            .column.middle {
+                width: 60%;
+            }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 1200px) {
+            .column.side, .column.middle {
+                width: 100%;
+            }
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /*a.list-group-item:visited {
+            background: #F0FFFF;
+        }*/
+
+        a.list-group-item:hover {
+            background: #DDFFFF;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="container" style="width: 100%;">
+        <div id="box 1" style="float: left; width: 48%; border: 1px solid #000; min-width: 300px; margin-right: 10px; margin-bottom: 10px;">
+
+            <div id="box 1 header" style="background-color: #1167dc; color: #fff; text-align: center;">New Stuff</div>
+            <div id="box 1 content" style="padding: 10px;">
+                <p><a class=" inline_disabled" href="https://youtu.be/KYOUgDOTYzw">Merge/Cross List Canvas Courses</a></p>
+                <p><a class=" inline_disabled" href="https://youtu.be/4gykINck4wo">Add Box Images to Canvas Dashboard</a></p>
+            </div>
+        </div>
+        <div id="box 2" style="float: left; width: 48%; border: 1px solid #000; min-width: 300px; margin-right: 10px; margin-bottom: 10px;">
+            <div id="box 2 header" style="background-color: #a52d57; color: #fff; text-align: center;">Learning Communities</div>
+            <div id="box 2 content" style="padding: 10px;">
+                <p><a href="https://csi.instructure.com/groups/2217">Best Practices Community</a></p>
+                <p><a href="https://csi.instructure.com/groups/2216">Problem Solving Community</a></p>
+            </div>
+        </div>
+        <div style="clear: both;"></div>
+    </div>
+
+
+</body>
+</html>
