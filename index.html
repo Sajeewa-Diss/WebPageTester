@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Sample HTML Projects</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: 2% 2%;
+            background-size: auto auto;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        /* Create three unequal columns that floats next to each other */
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+            /* Left and right column */
+            .column.side { /* applies to an element with both these classes */
+                width: 20%;
+            }
+
+            /* Middle column */
+            .column.middle {
+                width: 60%;
+            }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 1200px) {
+            .column.side, .column.middle {
+                width: 100%;
+            }
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        /*a.list-group-item:visited {
+            background: #F0FFFF;
+        }*/
+
+        a.list-group-item:hover {
+            background: #DDFFFF;
+        }
+
+        .summary{
+          font-weight: bold;
+          color:blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <header class="header">
+            <h1>Sample HTML Projects</h1>
+            <p>Playing around with the Internet and Web technologies. <br>
+              All source code is available in GitHub and linked within each project.</p>
+        </header>
+
+        <div class="row">
+            <div class="column side">
+            </div>
+
+            <div class="column middle">
+                <h3>JavaScript Examples</h3>
+                <div class="list-group">
+                    <a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html" target="_blank" class="list-group-item"><p><span class="summary">Modulo Multiplication Tables in JavaScript.</span>
+                        Drawing geometric patterns on a canvas using client-side JavaScript utilising event-emitters and listeners.</p></a>
+                    <a href="#" class="list-group-item disabled">
+                        <p>
+                            <b>The Royal Game of Ur.</b> Coding a board game user-interface and a PVE computer AI using client-side JavaScript (Under Construction).
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </p>
+                    </a>
+                </div>
+                <br />
+                <h3>Asp.Net Examples</h3>
+                <div class="list-group">
+                    <a href="#" class="list-group-item"><p><span class="summary">MVC Supermarket Sweep.</span>
+                        A simple online store with a depreciating stock count on the server updated in real-time on the client.</p></a>
+                    <a href="#" class="list-group-item disabled">
+                        <p>
+                            <b>To Be Completed</b> To be completed (Under Construction).
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </p>
+                    </a>
+                </div>
+                <br />
+
+                <h3>Azure Cloud Examples</h3>
+                <div class="list-group">
+                    <a href="https://sajeewa-dissa.github.io/multiplication-tables-json/index.html" target="_blank"  class="list-group-item"><p><span class="summary">Modulo Multiplication Tables in JSON.</span>
+                        Drawing geometric patterns using JSON objects, Azure [serverless] functions and Azure Cloud Services.</p></a>
+                    <a href="#" class="list-group-item disabled">
+                        <p>
+                            <b>Node.Js Web Server.</b> To be completed (Under Construction).
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </p>
+                    </a>
+                </div>
+            </div>
+            <div class="column side">
+            </div>
+        </div>
+        <footer class="footer">
+            <p>
+                &#169;<small> Copyright 2019 Sajeewa Dissanayake</small>
+            </p>
+        </footer>
+    </div>
+</body>
+</html>
