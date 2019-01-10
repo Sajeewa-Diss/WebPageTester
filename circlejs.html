@@ -426,8 +426,6 @@
             var prevRadius = 0;
             var prevMultiplier = 0;
 
-            statusmsg.innerText = "";
-
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
             output3.innerText = slider3.value;
@@ -470,7 +468,7 @@
 
             //reset slider and circle on page refresh
             function setOnRefresh() {
-                resetControlsToStart();
+                resetMultiplierSliderToStart();
             }
 
             function drawResults() {
@@ -589,14 +587,19 @@
                 }
             }
 
-            function resetControlsToStart() {
+            function resetMultiplierSliderToStart() {
+                var radius = output3.innerText;
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
+<<<<<<< HEAD
                 output2.innerText = slider2.value;
                 output3.innerText = slider3.value;
                 var radius = output3.innerText;
                 drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead (or display 100 for a while)!!
+=======
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
+>>>>>>> parent of d9d92f5... Working Save
                 //fadeOut();
             }
 
@@ -608,8 +611,8 @@
             }
 
             function Stop() {
-                if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
-                    resetControlsToStart(); 
+                if (multiple > 99) {                         //if end of range has been reached, reset slider;
+                    resetMultiplierSliderToStart(); 
                 }
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
