@@ -102,7 +102,6 @@
             border-radius: 8px;
             background-color: #4488DD;
             color: white;
-            font-size: large;
         }
 
             .blueButton:hover {
@@ -115,6 +114,12 @@
 
         #toggleBut {
             font-size: large;
+        }
+
+        #testBut {
+            height: 30px;
+            width: 120px;
+            margin: 10px;
         }
 
         .slidecontainer, .radiogroupcontainer {
@@ -591,7 +596,7 @@
                 output2.innerText = slider2.value;
                 output3.innerText = slider3.value;
                 var radius = output3.innerText;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead (or display 100 for a while)!!
                 //fadeOut();
             }
 
