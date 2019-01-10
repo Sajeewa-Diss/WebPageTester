@@ -73,6 +73,7 @@
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
     <Content Include="HtmlPage1.html" />
+    <Content Include="HtmlPage2.html" />
     <Content Include="index.html" />
     <Content Include="logo.png" />
     <Content Include="testpage.html" />
