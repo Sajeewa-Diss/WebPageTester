@@ -95,7 +95,7 @@
                     padding: 1em;
                 }
 
-        .blueButton {
+        #toggleBut {
             height: 40px;
             width: 150px;
             border-style: none;
@@ -105,17 +105,13 @@
             font-size: large;
         }
 
-            .blueButton:hover {
+            #toggleBut:hover {
                 background-color: #5599FF;
             }
 
-            .blueButton:active {
+            #toggleBut:active {
                 background-color: #77BBFF;
             }
-
-        #toggleBut {
-            font-size: large;
-        }
 
         .slidecontainer, .radiogroupcontainer {
             width: 550;
@@ -250,9 +246,9 @@
             border-radius: 50%;
         }
 
-        /* On mouse-over, add a lighter grey background color */
+        /* On mouse-over, add a grey background color */
         .radiocontainer:hover input ~ .checkmark {
-            background-color: #707070;
+            background-color: #666666;
         }
 
         /* When the radio button is checked, add a blue background */
@@ -322,10 +318,10 @@
                 <div class="column middleleft">
                     <section id="textcontent">
                         <p>
-                            When enumerating the multiplication times tables as lines in a circle, strange and beautiful patterns are formed.
+                            When enumerating the multiplication times tables and showing the results as lines joining along the circumference of a circle, strange and beautiful patterns are formed.
                             For this exercise, we divide a circle's diameter into equi-distant points with the 9 o'clock position representing zero (by convention), and each point clockwise being a unit increment.
-                            For any times table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
-                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube link below.
+                            For any multiplication table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
+                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube video linked below.
                         </p>
                         <p>
                             This page is created in HTML using inline CSS and JavaScript with calls to <strong>Azure Functions and Cloud Services.</strong> The patterns are drawn on a canvas element, and the page includes
@@ -340,61 +336,58 @@
                             <span class="subheading">Settings:</span>
                         </div>
                     </section>
-                    <div class="buttoncontainer">
-                        <input type="button" id="toggleBut" class ="blueButton" value="Autoplay" />
-                    </div>
                     <div id="controlgrid">
-                        <div>
-                            <p>Multiply by (1 to 100):</p>
-                        </div>
-                        <div>
-                            <p><output id="multiplierOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
-                        </div>
-                        <div>
-                            <p>Modulo n (1 to 200):</p>
-                        </div>
-                        <div>
-                            <p><output id="moduloOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
-                        </div>
-                        <div>
-                            <p>Radius (100 to 250):</p>
-                        </div>
-                        <div>
-                            <p><output id="radiusOut" class="spanOutput"></output></p>
-                        </div>
-                        <div class="slidecontainer">
-                            <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
-                        </div>
-                        <div class="buttoncontainer">
-                            <input type="button" id="testBut" class ="blueButton" value="Test Azure" />
-                        </div>
-                        <div>
-                        </div>
-                        <div class="radiogroupcontainer">
-                            <label class="radiocontainer">
-                                Azure JS Fn.
-                                <input type="radio" checked="checked" name="radio">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="radiocontainer">
-                                Azure C# Fn.
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                            </label>
-                            <label class="radiocontainer">
-                                Azure Cloud Svc.
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
+                            <div class="buttoncontainer">
+                                <input type="button" id="toggleBut" value="Autoplay" />
+                            </div>
+                            <div>
+                            </div>
+                            <div class="radiogroupcontainer">
+                                <label class="radiocontainer">
+                                    Azure JS Fn.
+                                    <input type="radio" checked="checked" name="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radiocontainer">
+                                    Azure C# Fn.
+                                    <input type="radio" name="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                                <label class="radiocontainer">
+                                    Azure Cloud Svc.
+                                    <input type="radio" name="radio">
+                                    <span class="checkmark"></span>
+                                </label>
+                            </div>
 
-                    </div>
+                            <div>
+                                <p>Multiply by (1 to 100):</p>
+                            </div>
+                            <div>
+                                <p><output id="multiplierOut" class="spanOutput"></output></p>
+                            </div>
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
+                            </div>
+                            <div>
+                                <p>Modulo n (1 to 200):</p>
+                            </div>
+                            <div>
+                                <p><output id="moduloOut" class="spanOutput"></output></p>
+                            </div>
+                            <div class="slidecontainer">
+                                <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
+                            </div>
+                            <div>
+                                <p>Radius (100 to 250):</p>
+                            </div>
+                            <div>
+                                <p><output id="radiusOut" class="spanOutput"></output></p>
+                            </div>
+                            <div class="slidecontainer">
+                                <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
+                            </div>
+                        </div>
                 </div>
 
                 <div class="column middleright">

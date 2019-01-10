@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="circlejson0.html" />
     <Content Include="empty_grid_tmpl.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />

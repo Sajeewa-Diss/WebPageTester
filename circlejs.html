@@ -95,7 +95,7 @@
                     padding: 1em;
                 }
 
-        #toggleBut {
+        .blueButton {
             height: 40px;
             width: 150px;
             border-style: none;
@@ -105,13 +105,17 @@
             font-size: large;
         }
 
-            #toggleBut:hover {
+            .blueButton:hover {
                 background-color: #5599FF;
             }
 
-            #toggleBut:active {
+            .blueButton:active {
                 background-color: #77BBFF;
             }
+
+        #toggleBut {
+            font-size: large;
+        }
 
         .slidecontainer, .radiogroupcontainer {
             width: 550;
@@ -319,14 +323,14 @@
 
                     <section id="textcontent">
                         <p>
-                            When enumerating the multiplication times tables and showing the results as lines joining along the circumference of a circle, strange and beautiful patterns are formed.
+                            When enumerating the multiplication times tables as lines in a circle, strange and beautiful patterns are formed.
                             For this exercise, we divide a circle's diameter into equi-distant points with the 9 o'clock position representing zero (by convention), and each point clockwise being a unit increment.
-                            For any multiplication table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
-                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube video linked below.
+                            For any times table, the result is expressed as a series of lines joining each factor to its product. When we come full circle, we can continue the multiplication
+                            by re-using the points via modulo division. A full explanation of this idea is cited in the YouTube link below.
                         </p>
                         <p>
                             This page is created in HTML using <strong>inline CSS and JavaScript only</strong> (no external CDNs, libraries or resources are used).
-                            The patterns are drawn on a canvas element, and the page includes simple grid displays.
+                            The patterns are drawn on a canvas element, and the page includes a simple grid display.
                         </p>
                         <p>
                             <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-js" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
@@ -338,7 +342,7 @@
                         </div>
                     </section>
                     <div class="buttoncontainer">
-                        <input type="button" id="toggleBut" value="Autoplay" />
+                        <input type="button" id="toggleBut" class ="blueButton" value="Autoplay" />
                     </div>
                     <div id="controlgrid">
                         <div>
