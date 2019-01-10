@@ -118,8 +118,10 @@
         }
 
         .slidecontainer, .radiogroupcontainer {
-            width: 550;
-            max-width: 525;
+            /*width: 550px;
+            min-width: 500px;*/
+            width: 550px;
+            max-width: 525px;
             justify-content: flex-start;
         }
 
@@ -342,7 +344,7 @@
                         </div>
                     </section>
                     <div class="buttoncontainer">
-                        <input type="button" id="toggleBut" class ="blueButton" value="Autoplay" />
+                        <input type="button" id="toggleBut" class="blueButton" value="Autoplay" />
                     </div>
                     <div id="controlgrid">
                         <div>
@@ -373,6 +375,7 @@
                             <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
                         </div>
                     </div>
+
                 </div>
 
                 <div class="column middleright">
@@ -385,6 +388,9 @@
                     <p></p>
                 </div>
             </div>
+
+
+
             <footer class="footer">
                 <p>&#169;<small> Copyright 2019 Sajeewa Dissanayake</small></p>
             </footer>
@@ -424,18 +430,20 @@
             toggleBut.addEventListener("click", Start);
 
             slider1.oninput = function () {
+                
+                multiple = Number(this.value);       // change this global variable for autoplay purposes.
                 output1.innerText = this.value;
-                drawResults(this.value);
+                drawResults();
             }
 
             slider2.oninput = function () {
                 output2.innerText = this.value;
-                drawResults(this.value);
+                drawResults();
             }
 
             slider3.oninput = function () {
                 output3.innerText = this.value;
-                drawResults(this.value);
+                drawResults();
             }
 
             //draw circle with initial values
@@ -491,8 +499,8 @@
                 // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
                 coords = [];                        // reset array to hold circular coordinates;
                 for (var i = 0; i < modulo; i++) {
-                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));
-                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));
+                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2)); //returns string x coord
+                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2)); //returns string y coord
                     coords.push([x, y]);
                 }
             }
@@ -528,18 +536,32 @@
             }
 
             function playMultiplierSlider() {
-                multiple += 1;
-
-                if (multiple > 100) {  /*we have reached the end of autoplay.*/
+                //if at end of autoplay range, reset slider and stop.
+                if (multiple >= 100) {
+                    multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method.
                     Stop();
                 }
+
+                multiple += 1;
+
                 slider1.value = multiple;
-                drawResults();
                 output1.innerText = multiple;
+                drawResults();
+
+                if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
+                    Stop();
+                }
+            }
+
+            function resetMultiplierSliderToStart() {
+                var radius = output3.innerText;
+                multiple = 1;
+                slider1.value = multiple;
+                output1.innerText = multiple;
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out previous drawing for multiple 100!!
             }
 
             function Start() {
-                //TODO:continue canvas animation from current multiple
                 intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
 
                 toggleBut.removeEventListener("click", Start);
@@ -548,7 +570,10 @@
             }
 
             function Stop() {
-                multiple = 1; // reset slider;
+                if (multiple > 99) {                         //if end of range has been reached, reset slider;
+                    resetMultiplierSliderToStart(); 
+                }
+
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
