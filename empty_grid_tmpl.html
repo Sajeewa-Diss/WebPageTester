@@ -1,0 +1,90 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Azure Test Stub</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+    <style>
+        body {
+            margin: 0;
+            background: url('logo.png');
+            background-repeat: no-repeat;
+            background-position: 2% 2%;
+            background-size: auto auto;
+        }
+
+        .header {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            padding: 10px;
+            text-align: center;
+        }
+
+        .topsection {
+            grid-area: top;
+        }
+
+        .leftsection {
+            grid-area: left;
+            min-width:50px;
+        }
+
+        .mainsection {
+            grid-area: main;
+            min-width: 400px;
+        }
+
+        .rightsection {
+            grid-area: right;
+            min-width: 50px;
+        }
+
+        .bottomsection {
+            grid-area: bottom;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-areas: 'top top top top top top top top' 
+                'left main main main main main main right'
+                'bottom bottom bottom bottom bottom bottom bottom bottom';
+            grid-gap: 10px;
+            padding: 10px;
+            grid-auto-rows: minmax(100px);
+            max-width: 1600px;}
+
+            .grid-container > div {
+                border:dotted;
+            }
+
+        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        @media screen and (max-width: 1200px) {
+            .item2 {
+                width: 0;
+            }
+        }
+
+
+    </style>
+</head>
+<body>
+    <header class="header">
+        <h1>Azure Cloud Test Stub</h1>
+        <p>Testing the Azure functions and services for connection and response.</p>
+    </header>
+
+    <div class="grid-container">
+        <div class="topsection">sjhdashjkhkj</div>
+        <div class="leftsection"></div>
+        <div class="mainsection">hgkjhgkjhgkjg</div>
+        <div class="rightsection"></div>
+        <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
+    </div>
+
+</body>
+</html>
