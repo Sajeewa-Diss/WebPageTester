@@ -306,7 +306,7 @@
 
     </style>
 </head>
-<body>
+<body onLoad="JavaScript:setOnRefresh();">
     <form action="#" method="post">
         <div>
             <header class="header">
@@ -373,7 +373,9 @@
                             <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
                         </div>
                     </div>
-
+                    <!--<p>
+                        <span id="msg"></span>
+                    </p>-->
                 </div>
 
                 <div class="column middleright">
@@ -396,10 +398,10 @@
 
         <script>
             //set DOM references for HTML elements
-            var statusmsg = document.getElementById("statusmsg");
-            var msg = document.getElementById("msg");
+            //var counter = 0;
+            //var statusmsg = document.getElementById("msg");
             var ctx = document.getElementById("canvas").getContext("2d");
-            var alpha = 1.0;                                              //transparency variable for canvas
+            //var alpha = 1.0;                                              //transparency variable for canvas
             var slider1 = document.getElementById("myRange1");
             var slider2 = document.getElementById("myRange2");
             var slider3 = document.getElementById("myRange3");
@@ -422,6 +424,7 @@
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
             output3.innerText = slider3.value;
+
             var initialRadius = slider3.value;
 
             var toggleBut = document.getElementById("toggleBut");
@@ -429,8 +432,7 @@
             toggleBut.addEventListener("click", Start);
 
             slider1.oninput = function () {
-                
-                multiple = Number(this.value);       // change this global variable for autoplay purposes.
+                multiple = Number(this.value);       // save this global variable for autoplay restart.
                 output1.innerText = this.value;
                 drawResults();
             }
@@ -447,6 +449,11 @@
 
             //draw circle with initial values
             drawCircle(centreX, centreY, initialRadius);
+
+            //reset slider and circle on page refresh
+            function setOnRefresh() {
+                resetMultiplierSliderToStart();
+            }
 
             function drawCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
@@ -485,8 +492,6 @@
                 }
 
                 //do drawing on canvas
-                //drawCircle(centreX, centreY, radiusVal);
-                //drawPattern();
                 doDrawOnCanvas(radiusVal);
 
                 //store current slider values as previous values ready for next time.
@@ -540,10 +545,29 @@
                 ctx.closePath();
             }
 
+            //TODO allow a fadeout animation effect where the pattern is removed
+            //function fadeOut() {
+
+            //    //make sure alpha is to 2 dp.
+            //    //alpha = parseFloat(Math.round(alpha * 100) / 100).toFixed(2);
+            //    counter += 1;
+            //    statusmsg.innerHTML = counter.toString() + " " + alpha.toString();
+
+            //    if (alpha <= 0) {
+            //        statusmsg.innerHTML += "returned";
+            //        return;
+            //    }
+
+            //    requestAnimationFrame(fadeOut);   //call this function recursively to animate the fadeout!!
+            //    ctx.globalAlpha = alpha;
+            //    doDrawOnCanvas(250);
+            //    alpha += -0.01;
+            //}
+
             function playMultiplierSlider() {
                 //if at end of autoplay range, reset slider and stop.
                 if (multiple >= 100) {
-                    multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method.
+                    multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
                     Stop();
                 }
 
@@ -563,12 +587,12 @@
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out previous drawing for multiple 100!!
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
+                //fadeOut();
             }
 
             function Start() {
                 intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
-
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
                 toggleBut.value = "Stop";
@@ -578,7 +602,6 @@
                 if (multiple > 99) {                         //if end of range has been reached, reset slider;
                     resetMultiplierSliderToStart(); 
                 }
-
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);

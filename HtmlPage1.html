@@ -51,9 +51,17 @@
         function fadeOut() {
 
             counter += 1;
-            statusmsg.innerHTML = counter;
+
+            //alpha = parseFloat(Math.round(alpha * 100) / 100).toFixed(2);
+
+            //alpha = 
+
+            statusmsg.innerHTML = counter.toString() + " " + alpha.toString();
+
+            //statusmsg.innerHTML = counter;
 
             if (alpha <= 0) {
+                statusmsg2.innerHTML += "returning";
                 return;
             }
 
