@@ -489,7 +489,7 @@
 
             //reset slider and circle on page refresh
             function setOnRefresh() {
-                resetMultiplierSliderToStart();
+                resetControlsToStart();
             }
 
             function drawResults() {
@@ -605,12 +605,15 @@
                 }
             }
 
-            function resetMultiplierSliderToStart() {
-                var radius = output3.innerText;
+            function resetControlsToStart() {
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.
+                output2.innerText = slider2.value;
+                output3.innerText = slider3.value;
+                var radius = output3.innerText;
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
+                //fadeOut();
             }
 
             function Start() {
@@ -621,8 +624,8 @@
             }
 
             function Stop() {
-                if (multiple > 99) {                         //if end of range has been reached, reset slider;
-                    resetMultiplierSliderToStart();
+                if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
+                    resetControlsToStart();
                 }
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
