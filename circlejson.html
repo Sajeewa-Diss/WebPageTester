@@ -118,8 +118,8 @@
         }
 
         .slidecontainer, .radiogroupcontainer {
-            width: 550;
-            max-width: 525;
+            width: 550px;
+            max-width: 525px;
             justify-content: flex-start;
         }
 
@@ -306,7 +306,7 @@
 
     </style>
 </head>
-<body>
+<body onLoad="JavaScript:setOnRefresh();">
     <form action="#" method="post">
         <div>
             <header class="header">
@@ -453,6 +453,7 @@
             toggleBut.addEventListener("click", Start);
 
             slider1.oninput = function () {
+                multiple = Number(this.value);       // save this global variable for autoplay restart.
                 output1.innerText = this.value;
                 drawResults(this.value);
             }
@@ -479,6 +480,11 @@
                 ctx.arc(x0, y0, radius, 0, Math.PI * 2, true); // 2 Pi radians is a complete circle (note drawing arc starts from 3 o'clock position but this isn't an issue)
                 ctx.stroke();
                 ctx.closePath();
+            }
+
+            //reset slider and circle on page refresh
+            function setOnRefresh() {
+                resetMultiplierSliderToStart();
             }
 
             function drawResults() {
@@ -509,8 +515,7 @@
                 }
 
                 //do drawing on canvas
-                drawCircle(centreX, centreY, radiusVal);
-                drawPattern();
+                doDrawOnCanvas(radiusVal);
 
                 //store current slider values as previous values ready for next time.
                 prevRadius = radiusVal;
@@ -522,12 +527,17 @@
                 showStatusInfo(duration, returnStatus);
             }
 
+            function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
+                drawCircle(centreX, centreY, radius);
+                drawPattern();
+            }
+
             function createCoords(x0, y0, radius, modulo) {
                 // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
                 var myCoords = [];                        // array to hold circular coordinates;
                 for (var i = 0; i < modulo; i++) {
-                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));
-                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));
+                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
+                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
                     myCoords.push([x, y]);
                 }
                 cumulativeCoordsRPC += 1;
@@ -573,17 +583,32 @@
             }
 
             function playMultiplierSlider() {
-                multiple += 1;
-                if (multiple > 100) {               /*we have reached the end of autoplay.*/
+                //if at end of autoplay range, reset slider and stop.
+                if (multiple >= 100) {
+                    multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
                     Stop();
                 }
+
+                multiple += 1;
+
                 slider1.value = multiple;
-                drawResults();
                 output1.innerText = multiple;
+                drawResults();
+
+                if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
+                    Stop();
+                }
+            }
+
+            function resetMultiplierSliderToStart() {
+                var radius = output3.innerText;
+                multiple = 1;
+                slider1.value = multiple;
+                output1.innerText = multiple;
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.
             }
 
             function Start() {
-                //TODO:continue canvas animation from current multiple
                 intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
@@ -591,7 +616,9 @@
             }
 
             function Stop() {
-                multiple = 1; // reset slider;
+                if (multiple > 99) {                         //if end of range has been reached, reset slider;
+                    resetMultiplierSliderToStart();
+                }
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);

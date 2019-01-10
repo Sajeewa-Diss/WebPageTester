@@ -250,9 +250,9 @@
             border-radius: 50%;
         }
 
-        /* On mouse-over, add a grey background color */
+        /* On mouse-over, add a lighter grey background color */
         .radiocontainer:hover input ~ .checkmark {
-            background-color: #666666;
+            background-color: #707070;
         }
 
         /* When the radio button is checked, add a blue background */
@@ -410,8 +410,8 @@
             var output3 = document.getElementById("radiusOut");
 
             //define circle centre, radius and other initial values
-            var centreX = 300;
-            var centreY = 300;
+            var centreX = 275;
+            var centreY = 275;
             var coords = [];
             var matrix = [];
             var multiple = 1;
@@ -450,11 +450,6 @@
             //draw circle with initial values
             drawCircle(centreX, centreY, initialRadius);
 
-            //reset slider and circle on page refresh
-            function setOnRefresh() {
-                resetMultiplierSliderToStart();
-            }
-
             function drawCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
@@ -464,6 +459,11 @@
                 ctx.arc(x0, y0, radius, 0, Math.PI * 2, true); // 2 Pi radians is a complete circle (note drawing arc starts from 3 o'clock position but this isn't an issue)
                 ctx.stroke();
                 ctx.closePath();
+            }
+
+            //reset slider and circle on page refresh
+            function setOnRefresh() {
+                resetMultiplierSliderToStart();
             }
 
             function drawResults() {
