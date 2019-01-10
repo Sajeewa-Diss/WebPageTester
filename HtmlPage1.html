@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>HTML5 canvas fade out demo</title>
+
+
+</head>
+
+<body onload="init();">
+    <canvas id="myCanvas" width="350" height="250"></canvas>
+    <div>
+        <button onclick="Start()">start</button>
+    </div>
+    <p>
+        <span id="statusmsg"></span>
+        <span id="statusmsg2"></span>
+    </p>
+    <script>
+        var alpha = 1.0;
+        var ctx;
+        var canvas;
+        var img;
+        var counter = 0;
+        var counter2 = 0;
+
+        var statusmsg = document.getElementById("statusmsg");
+        var statusmsg2 = document.getElementById("statusmsg2");
+        //var strstatusmsg = "Methods not yet called.";
+
+
+        //function Start() { statusmsg.innerHTML = strstatusmsg; }
+
+        function Start() {
+            canvas = document.getElementById('myCanvas');
+            ctx = canvas.getContext('2d');
+
+            img = new Image();
+            img.src = 'logo.png';
+
+            img.onload = function () {
+
+                counter2 += 1;
+                statusmsg2.innerHTML = counter2;
+
+                ctx.drawImage(img, 10, 10);
+            };
+
+            fadeOut();
+        }
+
+        function fadeOut() {
+
+            counter += 1;
+            statusmsg.innerHTML = counter;
+
+            if (alpha <= 0) {
+                return;
+            }
+
+            requestAnimationFrame(fadeOut);
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.globalAlpha = alpha;
+
+            ctx.drawImage(img, 10, 10);
+
+            alpha += -0.01;
+        }
+    </script>
+</body>
+</html> 

@@ -118,8 +118,6 @@
         }
 
         .slidecontainer, .radiogroupcontainer {
-            /*width: 550px;
-            min-width: 500px;*/
             width: 550px;
             max-width: 525px;
             justify-content: flex-start;
@@ -401,6 +399,7 @@
             var statusmsg = document.getElementById("statusmsg");
             var msg = document.getElementById("msg");
             var ctx = document.getElementById("canvas").getContext("2d");
+            var alpha = 1.0;                                              //transparency variable for canvas
             var slider1 = document.getElementById("myRange1");
             var slider2 = document.getElementById("myRange2");
             var slider3 = document.getElementById("myRange3");
@@ -486,13 +485,19 @@
                 }
 
                 //do drawing on canvas
-                drawCircle(centreX, centreY, radiusVal);
-                drawPattern();
+                //drawCircle(centreX, centreY, radiusVal);
+                //drawPattern();
+                doDrawOnCanvas(radiusVal);
 
                 //store current slider values as previous values ready for next time.
                 prevRadius = radiusVal;
                 prevModulo = moduloVal;
                 prevMultiplier = multiplierVal;
+            }
+
+            function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
+                drawCircle(centreX, centreY, radius);
+                drawPattern();
             }
 
             function createCoords(x0, y0, radius, modulo) {
