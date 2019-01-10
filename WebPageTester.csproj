@@ -67,14 +67,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="circlejs.html" />
+    <Content Include="circlejson.html" />
     <Content Include="circlejson0.html" />
     <Content Include="empty_grid_tmpl.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
     <Content Include="HtmlPage1.html" />
     <Content Include="index.html" />
-    <Content Include="circlejs.html" />
-    <Content Include="circlejson.html" />
+    <Content Include="circlejsworking.html" />
     <Content Include="logo.png" />
     <Content Include="testpage.html" />
     <Content Include="Web.config" />
