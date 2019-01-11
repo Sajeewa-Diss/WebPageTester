@@ -70,17 +70,18 @@
             grid-template-columns: 4fr 1fr 2fr 2fr 2fr;
             grid-auto-rows: 50px;
             max-width: 1200px;
-            min-width: 800px;
+            min-width: 600px;
+            padding:10px
         }
 
             #controlgrid > div { /*style for direct child div elements */
                 background: #FEFEFE;
-                padding: 1em;
+                /*padding: 1em;*/
             }
 
                 #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
                     background: #EFEFEF;
-                    padding: 1em;
+                    /*padding: 1em;*/
                 }
 
         .blueButton {
@@ -114,8 +115,8 @@
         .radiocontainer {
             display: inline-block;
             position: relative;
-            padding-left: 10px;
-            padding-right: 10px;
+            padding-left: 30px;
+            padding-right: 30px;
             /*margin-bottom: 12px;*/
             cursor: pointer;
             font-size: 14px;
@@ -123,8 +124,10 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
-            /*padding: 10px;
-            padding-bottom: 10px;*/
+            top: 10px;
+            left: 10px;
+            /*padding: 10px;*/
+            /*padding: 10px;*/
             justify-content: flex-start;
         }
 
@@ -138,7 +141,7 @@
         /* Create a custom radio button */
         .checkmark {
             position: absolute;
-            top: 10px;
+            top: 0;
             left: 0;
             height: 25px;
             width: 25px;
@@ -243,65 +246,39 @@
                     <div></div>
                     <div></div>
                     <div class="radiogroupcontainer">
-                        <div class="radiocontainer">
-                            MethodName1.
-                            <input type="radio" checked="checked" name="radiomethod1">
-                            <span class="checkmark"></span>
-                        </div>
-                        <div class="radiocontainer">
-                            MethodName2.
-                            <input type="radio" name="radiomethod1">
-                            <span class="checkmark"></span>
-                        </div>
-                    </div>
-                    <div></div>
-                    <div>
-                        <p>Method Call:</p>
-                    </div>
-                    <div></div>
-                    <div class="radiocontainer">
-                        MethodName1.
-                        <input type="radio" checked="checked" name="radiomethod">
-                        <span class="checkmark"></span>
-                    </div>
-                    <div class="radiocontainer">
-                        MethodName2.
-                        <input type="radio" name="radiomethod">
-                        <span class="checkmark"></span>
-                    </div>
-                    <div></div>
-
-                    <div>
-                        <p>Method Call:</p>
-                    </div>
-                    <div></div>
-                    <div class="radiocontainer">
-                        <div class="radiogroupcontainer">
-                            <label class="radiocontainer">
-                                sdfff.
-                                <input type="radio" name="radio">
-                                <span class="checkmark"></span>
-                            </label>
-                        </div>
-                    </div>
-                    <div class="buttoncontainer">
-                        <input type="button" id="testBut" class="blueButton" value="Test Connection" />
-                    </div>
-                    <div class="buttoncontainer">
-                        <input type="button" id="closeBut" class="blueButton" value="Close" />
-                    </div>
-                    <div class="radiogroupcontainer">
                         <label class="radiocontainer">
-                            dsfsdf.
+                            Azure JS Fn.
                             <input type="radio" checked="checked" name="radio">
                             <span class="checkmark"></span>
                         </label>
+                    </div>
+                    <div class="radiogroupcontainer">
                         <label class="radiocontainer">
-                            sdfff.
+                            dsfdsf Fn.
                             <input type="radio" name="radio">
                             <span class="checkmark"></span>
                         </label>
                     </div>
+                    <div>
+                        <p>Method Call:</p>
+                    </div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+
+                    <div class="buttoncontainer">
+                        <input type="button" id="testBut" class="blueButton" value="Test Connection" />
+                    </div>
+                    <div></div>
+                    <div></div>
+                    <div class="buttoncontainer">
+                        <input type="button" id="resetBut" class="blueButton" value="Clear" />
+                    </div>
+                    <div class="buttoncontainer">
+                        <input type="button" id="closeBut" class="blueButton" value="Close" />
+                    </div>
+                    <div></div>
                 </div>
 
 
