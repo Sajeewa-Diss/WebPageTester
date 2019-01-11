@@ -1,0 +1,59 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>title here</title>
+    <style>
+    .item1 {grid-area: header1;}
+    .item2 {grid-area: r1c2;}
+    .item3 {grid-area: r1c3;}
+    .item4 {grid-area: r1c4;}
+    .item5 {grid-area: header2;}
+    .item6 {grid-area: r2c2;}
+    .item7 {grid-area: r2c3;}
+    .item8 {grid-area: r2c4;}
+    .item9 {grid-area: header3;}
+    .item10 {grid-area: r3c2;}
+    .item11 {grid-area: r3c3;}
+    .item12 {grid-area: r3c4;}
+    .item13 {grid-area: header4;}
+    .item14 {grid-area: r4c2;}
+    .item15 {grid-area: r4c3;}
+    .item16 {grid-area: r4c4;}
+    .grid-container { display:grid; grid-template-areas: 'header1 header1 r1c2 r1c3 r1c4' 
+                                                         'header2 header2 r2c2 r2c3 r2c4' 
+                                                         'header3 header3 r3c2 r3c3 r3c4' 
+                                                         'header4 header4 r4c2 r4c3 r4c4';
+                      grid-gap: 10px; background-color: #2196F3; padding: 10px;
+                      width:1000px;
+    }
+            .grid-container > div {
+                background-color: rgba(255, 255, 255, 0.8);
+                text-align: center;
+                padding: 20px 0;
+                font-size: 30px;} 
+    </style>
+</head>
+<body>
+    <h1>Grid Layout</h1>
+    <p>This grid layout contains six columns and three rows containing the five div elements below:</p>
+    <div class="grid-container">
+        <div class="item1">Header</div>
+        <div class="item2">Left</div>
+        <div class="item3">Main</div>
+        <div class="item4">Right</div>
+        <div class="item5">Footer</div>
+        <div class="item6">Header</div>
+        <div class="item7">Left</div>
+        <div class="item8">Main</div>
+        <div class="item9">Right</div>
+        <div class="item10">Footer</div>
+        <div class="item11">Right</div>
+        <div class="item12">Footer</div>
+        <div class="item13">Main</div>
+        <div class="item14">Right</div>
+        <div class="item15">Footer</div>
+        <div class="item16">Header</div>
+    </div>
+</body>
+</html>
