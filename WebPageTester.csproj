@@ -71,7 +71,6 @@
     <Content Include="circlejs.html" />
     <Content Include="circlejson.html" />
     <Content Include="dummybuttonpage.html" />
-    <Content Include="empty_grid_tmpl.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
     <Content Include="grid_table.html" />

@@ -55,33 +55,37 @@
                 border:dotted;
             }
 
-        /* Responsive layout - makes the three columns stack on top of each other instead of next to each other */
+        /* Responsive layout collapse left/right section for narrow screen */
         @media screen and (max-width: 1200px) {
             .leftsection {
-                width: 0;
+                 display:none;
+            }
+            .rightsection {
+                display: none;
             }
         }
 
         #controlgrid {
             display: grid;
-            grid-template-columns: 5fr 1fr 15fr;
-            grid-auto-rows: 80px;
-            max-width: 800px;
+            grid-template-columns: 4fr 1fr 2fr 2fr 2fr;
+            grid-auto-rows: 50px;
+            max-width: 1200px;
+            min-width: 800px;
         }
 
             #controlgrid > div { /*style for direct child div elements */
-                background: #666666;
+                background: #FEFEFE;
                 padding: 1em;
             }
 
                 #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
-                    background: #616161;
+                    background: #EFEFEF;
                     padding: 1em;
                 }
 
         .blueButton {
-            height: 40px;
-            width: 150px;
+            height: 30px;
+            width: 120px;
             border-style: none;
             border-radius: 8px;
             background-color: #4488DD;
@@ -96,122 +100,22 @@
                 background-color: #77BBFF;
             }
 
-        #toggleBut {
-            font-size: large;
-        }
-
-        #testBut {
-            height: 30px;
-            width: 120px;
-            margin: 10px;
-        }
-
-        .slidecontainer, .radiogroupcontainer {
-            width: 550px;
-            max-width: 525px;
-            justify-content: flex-start;
-        }
-
-        .buttoncontainer, .radiocontainer {
+        .buttoncontainer {
             padding: 10px;
             padding-bottom: 10px;
             justify-content: flex-start;
         }
 
-        .spanOutput {
-            font-size: larger;
-            color: yellow;
-        }
-
-        input[type=range] {
-            height: 25px;
-            -webkit-appearance: none;
-            margin: 10px 0;
-            width: 100%;
-        }
-
-            input[type=range]:focus {
-                outline: none;
-            }
-
-            input[type=range]::-webkit-slider-runnable-track {
-                width: 100%;
-                height: 5px;
-                cursor: pointer;
-                box-shadow: 0px 0px 0px #000000;
-                background: #2497E3;
-                border-radius: 1px;
-                border: 0px solid #000000;
-            }
-
-            input[type=range]::-webkit-slider-thumb {
-                box-shadow: 0px 0px 0px #000000;
-                border: 1px solid #2497E3;
-                height: 18px;
-                width: 18px;
-                border-radius: 25px;
-                background: #A1D0FF;
-                cursor: pointer;
-                -webkit-appearance: none;
-                margin-top: -7px;
-            }
-
-            input[type=range]:focus::-webkit-slider-runnable-track {
-                background: #2497E3;
-            }
-
-            input[type=range]::-ms-track {
-                width: 100%;
-                height: 5px;
-                cursor: pointer;
-                background: transparent;
-                border-color: transparent;
-                color: transparent;
-            }
-
-            input[type=range]::-ms-fill-lower {
-                background: #2497E3;
-                border: 0px solid #000000;
-                border-radius: 2px;
-                box-shadow: 0px 0px 0px #000000;
-            }
-
-            input[type=range]::-ms-fill-upper {
-                background: #2497E3;
-                border: 0px solid #000000;
-                border-radius: 2px;
-                box-shadow: 0px 0px 0px #000000;
-            }
-
-            input[type=range]::-ms-thumb {
-                margin-top: 1px;
-                box-shadow: 0px 0px 0px #000000;
-                border: 1px solid #2497E3;
-                height: 18px;
-                width: 18px;
-                border-radius: 25px;
-                background: #A1D0FF;
-                cursor: pointer;
-            }
-
-            input[type=range]:focus::-ms-fill-lower {
-                background: #2497E3;
-            }
-
-            input[type=range]:focus::-ms-fill-upper {
-                background: #2497E3;
-            }
-
-        .slider {
-            background-color: inherit;
+        .radiogroupcontainer {
+            justify-content: flex-start;
         }
 
         /* The radio button container */
         .radiocontainer {
             display: inline-block;
             position: relative;
-            padding-left: 30px;
-            padding-right: 30px;
+            padding-left: 10px;
+            padding-right: 10px;
             /*margin-bottom: 12px;*/
             cursor: pointer;
             font-size: 14px;
@@ -219,6 +123,9 @@
             -moz-user-select: none;
             -ms-user-select: none;
             user-select: none;
+            /*padding: 10px;
+            padding-bottom: 10px;*/
+            justify-content: flex-start;
         }
 
             /* Hide the browser's default radio button */
@@ -235,13 +142,13 @@
             left: 0;
             height: 25px;
             width: 25px;
-            background-color: #585858;
+            background-color: #999999;
             border-radius: 50%;
         }
 
         /* On mouse-over, add a lighter grey background color */
         .radiocontainer:hover input ~ .checkmark {
-            background-color: #707070;
+            background-color: #AAAAAA;
         }
 
         /* When the radio button is checked, add a blue background */
@@ -279,10 +186,6 @@
                 color: #dddddd;
             }
 
-        .middleright p {
-            float: right;
-        }
-
         #statusmsg, #msg {
             float: right;
             /*padding-right: 20px;*/
@@ -302,8 +205,6 @@
 </head>
 <body>
     <header class="header">
-        <div class="logocontainer"></div>
-
         <h1>Azure Cloud Test Stub</h1>
         <p>Testing the Azure functions and services for connection and response.</p>
     </header>
@@ -311,11 +212,6 @@
     <div class="grid-container">
         <div class="leftsection"></div>
         <div class="mainsection">
-
-
-
-
-
 
             <div>
                 <section id="textcontent">
@@ -331,75 +227,85 @@
                         <span class="subheading">Settings:</span>
                     </div>
                 </section>
-                <div class="buttoncontainer">
-                    <input type="button" id="closeBut" class="blueButton" value="Close" />
-                </div>
+
+
                 <div id="controlgrid">
                     <div>
                         <p>Range Input Settings:</p>
                     </div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
+                    <div></div>
                     <div>
-                        <p><output id="multiplierOut" class="spanOutput"></output></p>
+                        <p>Range Input Settings:</p>
                     </div>
-                    <div class="slidecontainer">
-                        <input type="range" min="1" max="100" value="1" class="slider" id="myRange1"> <!--initial value 1-->
+                    <div></div>
+                    <div></div>
+                    <div class="radiogroupcontainer">
+                        <div class="radiocontainer">
+                            MethodName1.
+                            <input type="radio" checked="checked" name="radiomethod1">
+                            <span class="checkmark"></span>
+                        </div>
+                        <div class="radiocontainer">
+                            MethodName2.
+                            <input type="radio" name="radiomethod1">
+                            <span class="checkmark"></span>
+                        </div>
                     </div>
+                    <div></div>
                     <div>
                         <p>Method Call:</p>
                     </div>
-                    <div>
-                        <p><output id="moduloOut" class="spanOutput"></output></p>
+                    <div></div>
+                    <div class="radiocontainer">
+                        MethodName1.
+                        <input type="radio" checked="checked" name="radiomethod">
+                        <span class="checkmark"></span>
                     </div>
-                    <div class="radiogroupcontainer">
-                        <label class="radiocontainer">
-                            MethodName1.
-                            <input type="radio" checked="checked" name="radio">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="radiocontainer">
-                            MethodName2.
-                            <input type="radio" name="radio">
-                            <span class="checkmark"></span>
-                        </label>
+                    <div class="radiocontainer">
+                        MethodName2.
+                        <input type="radio" name="radiomethod">
+                        <span class="checkmark"></span>
+                    </div>
+                    <div></div>
+
+                    <div>
+                        <p>Method Call:</p>
+                    </div>
+                    <div></div>
+                    <div class="radiocontainer">
+                        <div class="radiogroupcontainer">
+                            <label class="radiocontainer">
+                                sdfff.
+                                <input type="radio" name="radio">
+                                <span class="checkmark"></span>
+                            </label>
+                        </div>
                     </div>
                     <div class="buttoncontainer">
                         <input type="button" id="testBut" class="blueButton" value="Test Connection" />
                     </div>
-                    <div>
-                        <label class="radiocontainer">
-                            MethodName1.
-                            <input type="radio" checked="checked" name="radio">
-                            <span class="checkmark"></span>
-                        </label>
+                    <div class="buttoncontainer">
+                        <input type="button" id="closeBut" class="blueButton" value="Close" />
                     </div>
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
-                            Azure JS Fn.
+                            dsfsdf.
                             <input type="radio" checked="checked" name="radio">
                             <span class="checkmark"></span>
                         </label>
                         <label class="radiocontainer">
-                            Azure C# Fn.
-                            <input type="radio" name="radio">
-                            <span class="checkmark"></span>
-                        </label>
-                        <label class="radiocontainer">
-                            Azure Cloud Svc.
+                            sdfff.
                             <input type="radio" name="radio">
                             <span class="checkmark"></span>
                         </label>
                     </div>
-
                 </div>
+
+
             </div>
-
-
-
-
-
-
-
-
         </div>
         <div class="rightsection"></div>
         <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
