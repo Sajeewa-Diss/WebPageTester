@@ -236,12 +236,10 @@
                         fdgdfgfdgfdg.
                     </p>
                     <p><span id="errormsg"></span></p>
-
                     <div>
                         <span class="subheading">Settings:</span>
                     </div>
                 </section>
-
 
                 <div id="controlgrid">
                     <div>
@@ -304,7 +302,6 @@
                             <a href="#"> testing appearance</a>
                         </div>
 
-
                     </div>
                     <div> todo 200</div>
                     <div class="buttoncontainer">
@@ -315,15 +312,11 @@
                     </div>
                 </div>
 
-
-
             </div>
         </div>
         <div class="rightsection"></div>
         <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
     </div>
-
-
 
     <script>
         //set DOM references for HTML elements
@@ -340,47 +333,29 @@
         var radiocs = document.getElementById("cs");
         var radiows = document.getElementById("ws");
         var radioDefMeth = document.getElementById("defaultMeth") 
-
         var anchor = document.getElementById("linkClose");
-       
 
         //define global variables and initial values
         var querystringObj; //a JSON object to hold query string data
-
- 
-
-
-        //var params = getQuery.split('&') 
-
-
 
         //call functions to populate dropdowns
         populateMultiple();
         populateModulus();
         populateRadius();
 
-        //obtain data from querystring
-        //var urlParams = window.location.search;
-        //var strGetQuery = urlParams.split('?')[1];
-        querystringObj = parseQueryString();
-
-
-
-        //errormsg.innerText = JSON.stringify(querystringObj);//params.toString();
-
-        //populate controls using query string params 
-        var loadingErrorMsg = populateControls(querystringObj);
-
-        //if we have an error message returned, simply populate control with default values.
-        if (loadingErrorMsg != "") {
-            errormsg.innerText += loadingErrorMsg;
-            resetControlsToStart();
-        }
-
         //reset controls on page refresh
         function setOnRefresh() {
-          
-            //resetControlsToStart();
+            //obtain data from querystring
+            querystringObj = parseQueryString();
+
+            //populate controls using query string params 
+            var loadingErrorMsg = populateControls(querystringObj);
+
+            //if we have an error message returned, simply populate control with default values.
+            if (loadingErrorMsg != "") {
+                errormsg.innerText = loadingErrorMsg;
+                resetControlsToStart();
+            }
         }
 
         function populateMultiple() {
@@ -465,7 +440,7 @@
                         break;
                     default:
                         radiojs.checked = true;
-                        errorstring += "RPC method not valid.";
+                        errorstring += "RPC method is not valid.";
                 }
 
                 //populate controls
@@ -474,9 +449,12 @@
                 radiusDDL.value = queryObj.radius;
             }
             catch (err) {
-                errormsg.innerText = "error thrown";
+                errormsg.innerText = "error thrown.";
             }
             finally {
+                if (errorstring != "" ) {
+                    errorstring = "Errors detected in query string. Using defaults to populate screen instead. " + errorstring;
+                }
                 return errorstring;
             }
         }
@@ -487,7 +465,7 @@
             radiusDDL.value = 250;
             radiojs.checked = true;
             radioDefMeth.checked = true;
-            errormsg.innerText = "";
+            //errormsg.innerText = "";
         }
 
     </script>
