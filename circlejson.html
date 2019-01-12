@@ -399,17 +399,17 @@
                         <div class="radiogroupcontainer">
                             <label class="radiocontainer">
                                 Azure JS Fn.
-                                <input type="radio" id="JS" checked="checked" name="radio">
+                                <input type="radio" id="js" checked="checked" name="rpctype">
                                 <span class="checkmark"></span>
                             </label>
                             <label class="radiocontainer">
                                 Azure C# Fn.
-                                <input type="radio" id="CS" name="radio">
+                                <input type="radio" id="cs" name="rpctype">
                                 <span class="checkmark"></span>
                             </label>
                             <label class="radiocontainer">
                                 Azure Cloud Svc.
-                                <input type="radio" id="WS" name="radio">
+                                <input type="radio" id="ws" name="rpctype">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -446,6 +446,11 @@
             var output1 = document.getElementById("multiplierOut");
             var output2 = document.getElementById("moduloOut");
             var output3 = document.getElementById("radiusOut");
+
+            var radiojs = document.getElementById("js");
+            var radiocs = document.getElementById("cs");
+            var radiows = document.getElementById("ws");
+
             var anchor = document.getElementById("linktester");
 
             //define circle centre, radius and other initial values
@@ -640,6 +645,8 @@
                 var radius = output3.innerText;
                 drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
                 //fadeOut();
+
+                radiojs.checked = true; //set this by default.
             }
 
             function Start() {
@@ -666,8 +673,7 @@
                 qstring += "multiple=" + output1.value.toString() + amp;
                 qstring += "modulus=" + output2.value.toString() + amp;
                 qstring += "radius=" + output3.value + amp;
-                qstring += "rpc=" + document.querySelector('input[name="radio"]:checked').id;
-                
+                qstring += "rpc=" + document.querySelector('input[name="rpctype"]:checked').id;
                 return qstring;
             }
 

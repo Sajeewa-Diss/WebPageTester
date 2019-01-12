@@ -251,21 +251,21 @@
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
                             Azure JS Fn.
-                            <input type="radio" checked="checked" name="rpctype">
+                            <input type="radio" id="js" checked="checked" name="rpctype">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
                             Azure C# Fn.
-                            <input type="radio" name="rpctype">
+                            <input type="radio" id="cs" name="rpctype">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
                             WCF Svc.
-                            <input type="radio" name="rpctype">
+                            <input type="radio" id="ws" name="rpctype">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -331,6 +331,18 @@
         var multipleDDL = document.getElementById("ddlMultiple");
         var modulusDDL = document.getElementById("ddlModulus");
         var radiusDDL = document.getElementById("ddlRadius");
+
+        var output1 = document.getElementById("multiplierOut");
+        var output2 = document.getElementById("moduloOut");
+        var output3 = document.getElementById("radiusOut");
+
+        var radiojs = document.getElementById("js");
+        var radiocs = document.getElementById("cs");
+        var radiows = document.getElementById("ws");
+
+        var anchor = document.getElementById("linkClose");
+       
+
         //define global variables and initial values
 
 
