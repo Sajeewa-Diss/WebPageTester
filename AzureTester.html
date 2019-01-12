@@ -235,37 +235,55 @@
 
                 <div id="controlgrid">
                     <div>
-                        <p>Range Input Settings:</p>
+                        <p>RPC Method:</p>
                     </div>
-                    <div></div>
-                    <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
-                    <div class="selectcontainer">Modulo: <select class="select" required id="ddlModulo"></select></div>
-                    <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
-                    <div>
-                        <p>Range Input Settings:</p>
-                    </div>
-                    <div></div>
                     <div></div>
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
                             Azure JS Fn.
-                            <input type="radio" checked="checked" name="radio">
+                            <input type="radio" checked="checked" name="rpctype">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
-                            dsfdsf Fn.
-                            <input type="radio" name="radio">
+                            Azure C# Fn.
+                            <input type="radio" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            WCF Svc.
+                            <input type="radio" name="rpctype">
                             <span class="checkmark"></span>
                         </label>
                     </div>
                     <div>
-                        <p>Method Call:</p>
+                        <p>Function Params:</p>
                     </div>
                     <div></div>
+                    <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
+                    <div class="selectcontainer">Modulus: <select class="select" required id="ddlModulus"></select></div>
+                    <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
+                    <div>
+                        <p>Function Name:</p>
+                    </div>
                     <div></div>
-                    <div></div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            createCoords.
+                            <input type="radio" checked="checked" name="methodname">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            createMatrix.
+                            <input type="radio" name="methodname">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
                     <div></div>
 
                     <div class="buttoncontainer">
@@ -281,29 +299,54 @@
                     </div>
                 </div>
 
+                <p><span id="msg"></span></p>
+
             </div>
         </div>
         <div class="rightsection"></div>
         <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
     </div>
 
+
+
     <script>
         //set DOM references for HTML elements
-        //var statusmsg = document.getElementById("statusmsg");
+        var statusmsg = document.getElementById("msg");
         var multipleDDL = document.getElementById("ddlMultiple");
-
+        var modulusDDL = document.getElementById("ddlModulus");
+        var radiusDDL = document.getElementById("ddlRadius");
         //define global variables and initial values
 
 
+        statusmsg.innerText = "hi";
 
-
-        //call functions
+        //call functions to populate dropdowns
         populateMultiple();
-
+        populateModulus();
+        populateRadius();
+        
         function populateMultiple() {
             for (var i = 1; i <= 100; i++) {
                 var option = document.createElement("OPTION");
                 multipleDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+
+        function populateModulus() {
+            for (var i = 1; i <= 200; i++) {
+                var option = document.createElement("OPTION");
+                modulusDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+
+        function populateRadius() {
+            for (var i = 1; i <= 250; i++) {
+                var option = document.createElement("OPTION");
+                radiusDDL.options.add(option);
                 option.text = i;
                 option.value = i;
             }
