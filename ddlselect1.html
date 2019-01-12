@@ -1,0 +1,97 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+
+<style>
+
+    /* Reset Select */
+    /*select {
+        -webkit-appearance: none;
+        -moz-appearance: none;
+        -ms-appearance: none;
+        appearance: none;
+        outline: 0;
+        box-shadow: none;
+        border: 0 !important;
+        background: white;
+        background-image: none;
+    }*/
+    /* Custom Select */
+    /*.select {
+        position: relative;
+        display: block;
+        width: 3em;
+        height: 2em;
+        line-height: 2;
+        background: white; /*#2c3e50; ;*/
+        overflow: hidden;
+    }*/
+
+    /*select {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0 0 0 3px;
+        color: #444444;
+        cursor: pointer;
+    }*/
+
+        /*select::-ms-expand {
+            display: none;
+        }*/
+    /* Arrow */
+    /*.select::after {
+        content: '\25BC';
+        position: absolute;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        padding: 0 3px;
+        background: #4488DD;
+        pointer-events: none;
+    }*/
+
+</style>
+
+</head>
+<body>
+
+    <!--<div class="select">
+        <select name="slct" id="slct">
+             normal options 
+            <option value="1">1</option>
+
+            <option value="5">5</option>
+            <option value="1">1</option>
+        </select>
+    </div>-->
+
+    <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
+
+    <script>
+        //set DOM references for HTML elements
+        //var statusmsg = document.getElementById("statusmsg");
+        var multipleDDL = document.getElementById("ddlMultiple");
+
+        //define global variables and initial values
+
+
+
+
+        //call functions
+        populateMultiple();
+
+        function populateMultiple() {
+            for (var i = 1; i <= 100; i++) {
+                var option = document.createElement("OPTION");
+                multipleDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+    </script>
+
+</body>
+</html>

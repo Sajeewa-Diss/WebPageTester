@@ -80,7 +80,7 @@
             }
 
                 #controlgrid > div:nth-child(odd) { /*every odd div will be darker */
-                    background: #EFEFEF;
+                    background: #F3F3F3;
                     /*padding: 1em;*/
                 }
 
@@ -101,7 +101,7 @@
                 background-color: #77BBFF;
             }
 
-        .buttoncontainer {
+        .buttoncontainer, .selectcontainer {
             padding: 10px;
             padding-bottom: 10px;
             justify-content: flex-start;
@@ -171,6 +171,7 @@
             display: block;
         }
 
+
         /* Style the indicator (dot/circle) */
         .radiocontainer .checkmark:after {
             top: 9px;
@@ -237,9 +238,9 @@
                         <p>Range Input Settings:</p>
                     </div>
                     <div></div>
-                    <div></div>
-                    <div></div>
-                    <div></div>
+                    <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
+                    <div class="selectcontainer">Modulo: <select class="select" required id="ddlModulo"></select></div>
+                    <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
                     <div>
                         <p>Range Input Settings:</p>
                     </div>
@@ -278,14 +279,36 @@
                     <div class="buttoncontainer">
                         <input type="button" id="closeBut" class="blueButton" value="Close" />
                     </div>
-                    <div></div>
                 </div>
-
 
             </div>
         </div>
         <div class="rightsection"></div>
         <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
     </div>
+
+    <script>
+        //set DOM references for HTML elements
+        //var statusmsg = document.getElementById("statusmsg");
+        var multipleDDL = document.getElementById("ddlMultiple");
+
+        //define global variables and initial values
+
+
+
+
+        //call functions
+        populateMultiple();
+
+        function populateMultiple() {
+            for (var i = 1; i <= 100; i++) {
+                var option = document.createElement("OPTION");
+                multipleDDL.options.add(option);
+                option.text = i;
+                option.value = i;
+            }
+        }
+    </script>
+
 </body>
 </html>
