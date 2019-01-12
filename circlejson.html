@@ -112,18 +112,35 @@
                 background-color: #77BBFF;
             }
 
-         .blueButtonSimulator a {
-                /*border-bottom: 1px solid #777777;
-            border-left: 1px solid #000000;
-            border-right: 1px solid #333333;
-            border-top: 1px solid #000000;*/
+            .blueButtonSimulator a {
+                border-style: none;
+                border-radius: 8px;
+                background-color: #4488DD;
                 color: white;
+                height: 20px;
+                width: 100px;
+                max-width: 100px;
                 display: block;
-                /*padding: 0 1em;*/
-                height: 30px;
-                width: 120px;
                 text-decoration: none;
+                text-align: center;
+                padding: 5px 0px 5px 0px;
             }
+
+                .blueButtonSimulator a:hover {
+                    background-color: #5599FF;
+                }
+
+                .blueButtonSimulator a:active {
+                    background-color: #77BBFF;
+                }
+
+        .buttonsimcontainer {
+            /*padding: 10px 5px 0 0;*/
+            padding: 10px;
+            padding-bottom: 10px;
+            /*padding-bottom: 10px;*/
+            justify-content: flex-start;
+        }
 
         #toggleBut {
             font-size: large;
@@ -388,10 +405,15 @@
                         <div class="slidecontainer">
                             <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
                         </div>
-                        <div class="buttoncontainer">
+                        <!--<div class="buttoncontainer">-->
                             <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />-->
-                            <div class="blueButtonSimulator">
+                            <!--<div class="blueButtonSimulator">
                                 <a id="linktester" href="http://localhost:55083/AzureTester.html">Test Azure</a>
+                            </div>-->
+                        <!--</div>-->
+                        <div class="buttonsimcontainer">
+                            <div class="blueButtonSimulator">
+                                <a href="http://localhost:55083/AzureTester.html">Close</a>
                             </div>
                         </div>
                         <div>
