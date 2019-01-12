@@ -348,10 +348,14 @@
 
         //obtain data from querystring
         var urlParams = window.location.search
-        var getQuery = urlParams.split('?')[1]
-        var params = getQuery.split('&') 
+        var strGetQuery = urlParams.split('?')[1]
 
-        statusmsg.innerText = params.toString();
+        var obj1 = parseQueryString(strGetQuery);
+
+
+        //var params = getQuery.split('&') 
+
+        statusmsg.innerText = JSON.stringify(obj1);//params.toString();
 
         //call functions to populate dropdowns
         populateMultiple();
@@ -384,6 +388,36 @@
                 option.value = i;
             }
         }
+
+        //var parseQueryString = function (queryString) {
+        //    var params = {}, queries, temp, i, l;
+        //    // Split into key/value pairs
+        //    queries = queryString.split("&");
+        //    // Convert the array of strings into an object
+        //    for (i = 0, l = queries.length; i < l; i++) {
+        //        temp = queries[i].split('=');
+        //        params[temp[0]] = temp[1];
+        //    }
+        //    return params;
+        //};
+
+        function parseQueryString(queryString) {
+            var params = {}, queries, temp, i, l;
+            // Split into key/value pairs
+            queries = queryString.split("&amp;");
+            // Convert the array of strings into an object
+            for (i = 0, l = queries.length; i < l; i++) {
+                temp = queries[i].split('=');
+                params[temp[0]] = temp[1];
+            }
+            return params;
+        }
+
+
+
+
+
+
     </script>
 
 </body>
