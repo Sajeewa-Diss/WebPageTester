@@ -216,7 +216,7 @@
 
     </style>
 </head>
-<body>
+<body onLoad="JavaScript:setOnRefresh();">
     <header class="header">
         <h1>Azure Cloud Test Stub</h1>
         <p>Testing the Azure functions and services for connection and response.</p>
@@ -283,7 +283,7 @@
                     <div class="radiogroupcontainer">
                         <label class="radiocontainer">
                             createCoords.
-                            <input type="radio" checked="checked" name="methodname">
+                            <input type="radio" id="defaultMeth" checked="checked" name="methodname">
                             <span class="checkmark"></span>
                         </label>
                     </div>
@@ -339,17 +339,15 @@
         var radiojs = document.getElementById("js");
         var radiocs = document.getElementById("cs");
         var radiows = document.getElementById("ws");
+        var radioDefMeth = document.getElementById("defaultMeth") 
 
         var anchor = document.getElementById("linkClose");
        
 
         //define global variables and initial values
+        var querystringObj; //a JSON object to hold query string data
 
-
-        //obtain data from querystring
-        var urlParams = window.location.search
-        var strGetQuery = urlParams.split('?')[1]
-        var querystringObj = parseQueryString(strGetQuery);
+ 
 
 
         //var params = getQuery.split('&') 
@@ -361,21 +359,28 @@
         populateModulus();
         populateRadius();
 
-        //
         //obtain data from querystring
-        var urlParams = window.location.search
-        var strGetQuery = urlParams.split('?')[1]
-        var querystringObj = parseQueryString(strGetQuery);
-        errormsg.innerText = JSON.stringify(querystringObj);//params.toString();
+        //var urlParams = window.location.search;
+        //var strGetQuery = urlParams.split('?')[1];
+        querystringObj = parseQueryString();
+
+
+
+        //errormsg.innerText = JSON.stringify(querystringObj);//params.toString();
 
         //populate controls using query string params 
-        var finalErrorMsg = populateControls(querystringObj);
+        var loadingErrorMsg = populateControls(querystringObj);
 
         //if we have an error message returned, simply populate control with default values.
-        if (finalErrorMsg != "") {
+        if (loadingErrorMsg != "") {
+            errormsg.innerText += loadingErrorMsg;
+            resetControlsToStart();
+        }
 
-            errormsg.innerText += finalErrorMsg;//params.toString();
-            //populateAllDefaults();
+        //reset controls on page refresh
+        function setOnRefresh() {
+          
+            //resetControlsToStart();
         }
 
         function populateMultiple() {
@@ -405,10 +410,15 @@
             }
         }
 
-        function parseQueryString(queryString) {
+        function parseQueryString() {
+
+            //obtain data from querystring
+            var urlParams = window.location.search
+            var strGetQuery = urlParams.split('?')[1]
+            
             var params = {}, queries, temp, i, l;
             // Split into key/value pairs
-            queries = queryString.split("&");
+            queries = strGetQuery.split("&");
             // Convert the array of strings into an object
             for (i = 0, l = queries.length; i < l; i++) {
                 temp = queries[i].split('=');
@@ -421,15 +431,25 @@
             var errorstring = "";
 
             try {
-                //validate query string params
+                //basic validation of query string params
                 if (Number(queryObj.multiple) < 1 || Number(queryObj.multiple) > 100) {
-                    throw "multiple out of range";
+                    errorstring += "multiple out of range.";
                 }
-                if (Number(queryObj.modulus) < 1 || Number(queryObj.multiple) > 200) {
-                    throw "modulus out of range";
+                if (Number(queryObj.modulus) < 1 || Number(queryObj.modulus) > 200) {
+                    errorstring += "modulus out of range.";
                 }
                 if (Number(queryObj.radius) < 100 || Number(queryObj.radius) > 250) {
-                    throw "radius out of range";
+                    errorstring += "radius out of range.";
+                }
+
+                if (isNaN(queryObj.multiple)) {
+                    errorstring += "multiple is not a number.";
+                }
+                if (isNaN(queryObj.modulus)) {
+                    errorstring += "modulus is not a number.";
+                }
+                if (isNaN(queryObj.radius)) {
+                    errorstring += "radius is not a number.";
                 }
 
                 //populate the RPC radio buttons
@@ -445,7 +465,7 @@
                         break;
                     default:
                         radiojs.checked = true;
-                        errorstring = "RPC method not valid";
+                        errorstring += "RPC method not valid.";
                 }
 
                 //populate controls
@@ -459,13 +479,16 @@
             finally {
                 return errorstring;
             }
-
         }
 
-
-
-
-
+        function resetControlsToStart() {
+            multipleDDL.value = 1;
+            modulusDDL.value = 200;
+            radiusDDL.value = 250;
+            radiojs.checked = true;
+            radioDefMeth.checked = true;
+            errormsg.innerText = "";
+        }
 
     </script>
 
