@@ -95,7 +95,7 @@
                     padding: 1em;
                 }
 
-        .blueButton {
+        .blueButton, .blueButtonSimulator {
             height: 30px;
             width: 120px;
             border-style: none;
@@ -110,6 +110,19 @@
 
             .blueButton:active {
                 background-color: #77BBFF;
+            }
+
+         .blueButtonSimulator a {
+                /*border-bottom: 1px solid #777777;
+            border-left: 1px solid #000000;
+            border-right: 1px solid #333333;
+            border-top: 1px solid #000000;*/
+                color: white;
+                display: block;
+                /*padding: 0 1em;*/
+                height: 30px;
+                width: 120px;
+                text-decoration: none;
             }
 
         #toggleBut {
@@ -376,27 +389,27 @@
                             <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
                         </div>
                         <div class="buttoncontainer">
-                            <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />
-                            <div class="my_content_container">-->
-                                <a href="http://localhost:55083/AzureTester.html?test1">Test</a>
-                            <!--</div>-->
+                            <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />-->
+                            <div class="blueButtonSimulator">
+                                <a id="linktester" href="http://localhost:55083/AzureTester.html">Test Azure</a>
+                            </div>
                         </div>
                         <div>
                         </div>
                         <div class="radiogroupcontainer">
                             <label class="radiocontainer">
                                 Azure JS Fn.
-                                <input type="radio" checked="checked" name="radio">
+                                <input type="radio" id="JS" checked="checked" name="radio">
                                 <span class="checkmark"></span>
                             </label>
                             <label class="radiocontainer">
                                 Azure C# Fn.
-                                <input type="radio" name="radio">
+                                <input type="radio" id="CS" name="radio">
                                 <span class="checkmark"></span>
                             </label>
                             <label class="radiocontainer">
                                 Azure Cloud Svc.
-                                <input type="radio" name="radio">
+                                <input type="radio" id="WS" name="radio">
                                 <span class="checkmark"></span>
                             </label>
                         </div>
@@ -433,6 +446,7 @@
             var output1 = document.getElementById("multiplierOut");
             var output2 = document.getElementById("moduloOut");
             var output3 = document.getElementById("radiusOut");
+            var anchor = document.getElementById("linktester");
 
             //define circle centre, radius and other initial values
             var centreX = 275;
@@ -458,6 +472,16 @@
             var toggleBut = document.getElementById("toggleBut");
             var intervalId;
             toggleBut.addEventListener("click", Start);
+
+            anchor.addEventListener('click', function (event) {
+                // Stop the link from redirecting
+                event.preventDefault();
+
+                var queryString = modifyQueryString(); //construct the params for the get request
+
+                // Redirect instead with JavaScript
+                window.location.href = anchor.href + queryString;
+            }, false);
 
             slider1.oninput = function () {
                 multiple = Number(this.value);       // save this global variable for autoplay restart.
@@ -633,6 +657,18 @@
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
+            }
+
+            function modifyQueryString() {
+                // get all querys tring params
+                const amp = "&amp;";
+                var qstring = "?";
+                qstring += "multiple=" + output1.value.toString() + amp;
+                qstring += "modulus=" + output2.value.toString() + amp;
+                qstring += "radius=" + output3.value + amp;
+                qstring += "rpc=" + document.querySelector('input[name="radio"]:checked').id;
+                
+                return qstring;
             }
 
         </script>
