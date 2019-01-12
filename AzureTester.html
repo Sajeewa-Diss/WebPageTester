@@ -418,8 +418,9 @@
         }
 
         function populateControls(queryObj) {
-            try {
+            var errorstring = "";
 
+            try {
                 //validate query string params
                 if (Number(queryObj.multiple) < 1 || Number(queryObj.multiple) > 100) {
                     throw "multiple out of range";
@@ -431,8 +432,24 @@
                     throw "radius out of range";
                 }
 
+                //populate the RPC radio buttons
+                switch (queryObj.rpc) {
+                    case "js":
+                        radiojs.checked=true;
+                        break;
+                    case "cs":
+                        radiocs.checked = true;
+                        break;
+                    case "ws":
+                        radiows.checked = true;
+                        break;
+                    default:
+                        radiojs.checked = true;
+                        errorstring = "RPC method not valid";
+                }
+
                 //populate controls
-                multipleDDL.value = queryObj.multiple;
+                multipleDDL.value = Number(queryObj.multiple);
                 modulusDDL.value = queryObj.modulus;
                 radiusDDL.value = queryObj.radius;
             }
@@ -440,7 +457,7 @@
                 errormsg.innerText = "error thrown";
             }
             finally {
-                return "something went wrong";
+                return errorstring;
             }
 
         }
