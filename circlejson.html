@@ -9,7 +9,7 @@
 
     <style>
         * {
-            box-sizing:border-box;
+            box-sizing: border-box;
         }
 
         body {
@@ -25,16 +25,15 @@
             padding: 20px;
             text-align: center;
             color: #aaaaaa;
-            width:100%;
+            width: 100%;
         }
 
         .footer {
             padding: 10px;
             text-align: center;
             color: #aaaaaa;
-            width:100%;
+            width: 100%;
         }
-
         /* column styles */
         .column {
             float: left;
@@ -43,34 +42,31 @@
             .column.side {
                 width: 9%;
             }
-
             /* Middle columns */
             .column.middleleft {
                 width: 48%;
                 padding: 10px;
-                max-width:800px;
-                min-width:800px;
+                max-width: 800px;
+                min-width: 800px;
             }
+
             .column.middleright {
                 width: 34%;
                 padding: 10px;
                 max-width: 550px;
             }
-
         /* Clear floats after the columns */
         .row:after {
             content: "";
             display: table;
             clear: both;
         }
-
         /* Responsive layout - makes the columns stack on top of each other instead of next to each other */
         @media screen and (max-width: 1600px) {
             .column.side, .column.middleleft, .column.middleright {
                 width: 100%;
             }
         }
-
         /*update background for small screens*/
         @media screen and (max-width: 800px) {
             body {
@@ -113,34 +109,29 @@
             }
 
             .blueButtonSimulator a {
-                border-style: none;
-                border-radius: 8px;
-                background-color: #4488DD;
                 color: white;
-                height: 20px;
-                width: 100px;
-                max-width: 100px;
                 display: block;
+                /*padding: 0 1em;*/
+                height: 30px;
+                width: 120px;
                 text-decoration: none;
                 text-align: center;
-                padding: 5px 0px 5px 0px;
+                padding: 5px 10px 10px 10px;
             }
 
-                .blueButtonSimulator a:hover {
-                    background-color: #5599FF;
-                }
+        /*border-style: none;
+        border-radius: 8px;
+        background-color: #4488DD;
+        color: white;
+        height: 20px;
+        width: 120px;
+        display: block;
+        text-decoration: none;
+        text-align: center;
+        padding: 5px 0px 5px 0px;*/
 
-                .blueButtonSimulator a:active {
-                    background-color: #77BBFF;
-                }
 
-        .buttonsimcontainer {
-            /*padding: 10px 5px 0 0;*/
-            padding: 10px;
-            padding-bottom: 10px;
-            /*padding-bottom: 10px;*/
-            justify-content: flex-start;
-        }
+
 
         #toggleBut {
             font-size: large;
@@ -248,9 +239,8 @@
             }
 
         .slider {
-            background-color:inherit;
+            background-color: inherit;
         }
-
         /* The radio button container */
         .radiocontainer {
             display: inline-block;
@@ -265,14 +255,12 @@
             -ms-user-select: none;
             user-select: none;
         }
-
             /* Hide the browser's default radio button */
             .radiocontainer input {
                 position: absolute;
                 opacity: 0;
                 cursor: pointer;
             }
-
         /* Create a custom radio button */
         .checkmark {
             position: absolute;
@@ -283,29 +271,24 @@
             background-color: #585858;
             border-radius: 50%;
         }
-
         /* On mouse-over, add a lighter grey background color */
         .radiocontainer:hover input ~ .checkmark {
             background-color: #707070;
         }
-
         /* When the radio button is checked, add a blue background */
         .radiocontainer input:checked ~ .checkmark {
             background-color: #4488DD;
         }
-
         /* Create the indicator (the dot/circle - hidden when not checked) */
         .checkmark:after {
             content: "";
             position: absolute;
             display: none;
         }
-
         /* Show the indicator (dot/circle) when checked */
         .radiocontainer input:checked ~ .checkmark:after {
             display: block;
         }
-
         /* Style the indicator (dot/circle) */
         .radiocontainer .checkmark:after {
             top: 9px;
@@ -325,7 +308,7 @@
             }
 
         .middleright p {
-            float:right;
+            float: right;
         }
 
         #statusmsg, #msg {
@@ -333,11 +316,10 @@
             /*padding-right: 20px;*/
         }
 
-        .subheading{
-            font-size:larger;
-            font-weight:bold;
+        .subheading {
+            font-size: larger;
+            font-weight: bold;
         }
-
     </style>
 </head>
 <body onLoad="JavaScript:setOnRefresh();">
@@ -375,7 +357,7 @@
                         </div>
                     </section>
                     <div class="buttoncontainer">
-                        <input type="button" id="toggleBut" class ="blueButtonLarge blueButton" value="Autoplay" />
+                        <input type="button" id="toggleBut" class="blueButtonLarge blueButton" value="Autoplay" />
                     </div>
                     <div id="controlgrid">
                         <div>
@@ -405,15 +387,10 @@
                         <div class="slidecontainer">
                             <input type="range" min="100" max="250" value="250" class="slider" id="myRange3"> <!--initial value 250-->
                         </div>
-                        <!--<div class="buttoncontainer">-->
+                        <div class="buttoncontainer">
                             <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />-->
-                            <!--<div class="blueButtonSimulator">
-                                <a id="linktester" href="http://localhost:55083/AzureTester.html">Test Azure</a>
-                            </div>-->
-                        <!--</div>-->
-                        <div class="buttonsimcontainer">
                             <div class="blueButtonSimulator">
-                                <a href="http://localhost:55083/AzureTester.html">Close</a>
+                                <a id="linktester" href="http://localhost:55083/AzureTester.html">Test Azure</a>
                             </div>
                         </div>
                         <div>
@@ -468,13 +445,10 @@
             var output1 = document.getElementById("multiplierOut");
             var output2 = document.getElementById("moduloOut");
             var output3 = document.getElementById("radiusOut");
-
             var radiojs = document.getElementById("js");
             var radiocs = document.getElementById("cs");
             var radiows = document.getElementById("ws");
-
             var anchor = document.getElementById("linktester");
-
             //define circle centre, radius and other initial values
             var centreX = 275;
             var centreY = 275;
@@ -486,110 +460,87 @@
             var prevModulo = 0;
             var prevRadius = 0;
             var prevMultiplier = 0;
-
             var strstatusmsg = "Methods not yet called.";
             statusmsg.innerHTML = strstatusmsg;
             var returnStatus = 0;
-
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
             output3.innerText = slider3.value;
             var initialRadius = slider3.value;
-
             var toggleBut = document.getElementById("toggleBut");
             var intervalId;
             toggleBut.addEventListener("click", Start);
-
             anchor.addEventListener('click', function (event) {
                 // Stop the link from redirecting
                 event.preventDefault();
-
                 var queryString = modifyQueryString(); //construct the params for the get request
-
                 // Redirect instead with JavaScript
                 window.location.href = anchor.href + queryString;
             }, false);
-
             slider1.oninput = function () {
                 multiple = Number(this.value);       // save this global variable for autoplay restart.
                 output1.innerText = this.value;
                 drawResults(this.value);
             }
-
             slider2.oninput = function () {
                 output2.innerText = this.value;
                 drawResults(this.value);
             }
-
             slider3.oninput = function () {
                 output3.innerText = this.value;
                 drawResults(this.value);
             }
-
             //draw circle (outline only) using initial values above.
             drawCircle(centreX, centreY, initialRadius);
-
             function drawCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
-
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
                 ctx.beginPath();
                 ctx.arc(x0, y0, radius, 0, Math.PI * 2, true); // 2 Pi radians is a complete circle (note drawing arc starts from 3 o'clock position but this isn't an issue)
                 ctx.stroke();
                 ctx.closePath();
             }
-
             //reset slider and circle on page refresh
             function setOnRefresh() {
                 resetControlsToStart();
             }
-
             function drawResults() {
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
                 var radiusVal = slider3.value;
                 var d = new Date();
                 var startTime = d.getTime();
-
                 //check which methods don't have to be called.
                 var mustCallCreateCoords = true;
                 var mustCallCreateMatrix = true;
-
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
                     mustCallCreateCoords = false;
                 }
                 if (multiplierVal == prevMultiplier && moduloVal == prevModulo) {  // if these values are unchanged, the multiplication matrix is unchanged.
                     mustCallCreateMatrix = false;
                 }
-
                 //Call any required methods to prepare for drawing of patterns
                 if (mustCallCreateCoords) {
                     coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
                 }
-
                 if (mustCallCreateMatrix) {
                     matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
                 }
-
                 //do drawing on canvas
                 doDrawOnCanvas(radiusVal);
-
                 //store current slider values as previous values ready for next time.
                 prevRadius = radiusVal;
                 prevModulo = moduloVal;
                 prevMultiplier = multiplierVal;
-
                 //Update communication info on screen
                 var duration = d.getTime() - startTime;
                 showStatusInfo(duration, returnStatus);
             }
-
             function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
                 drawCircle(centreX, centreY, radius);
                 drawPattern();
             }
-
             function createCoords(x0, y0, radius, modulo) {
                 // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
                 var myCoords = [];                        // array to hold circular coordinates;
@@ -601,7 +552,6 @@
                 cumulativeCoordsRPC += 1;
                 return JSON.stringify(myCoords);            // return as a JSON object string
             }
-
             function createMatrix(multiplier, modulo) {
                 var myMatrix = [];                         // array to hold multiplication results matrix;
                 for (var i = 0; i < modulo; i++) {
@@ -611,20 +561,16 @@
                 cumulativeMatrixRPC += 1;
                 return JSON.stringify(myMatrix);           // return as a JSON object string
             }
-
             function drawPattern() {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "wheat";
-
                 ctx.beginPath();
                 for (var i = 0; i < matrix.length; i++) {
                     var startX = coords[matrix[i][0]][0];
                     var startY = coords[matrix[i][0]][1];
                     var endX = coords[matrix[i][1]][0];
                     var endY = coords[matrix[i][1]][1];
-
                     addLineSubPath(ctx, startX, startY, endX, endY);
-
                     function addLineSubPath(ctx, sX, sY, eX, eY) {
                         ctx.moveTo(sX, sY);
                         ctx.lineTo(eX, eY);
@@ -633,31 +579,25 @@
                 }
                 ctx.closePath();
             }
-
             function showStatusInfo(duration, status) {
                 strstatusmsg = "Methods returned in " + duration + " ms. Status " + status;
                 strstatusmsg += ". Total RPCs:" + (cumulativeCoordsRPC + cumulativeMatrixRPC).toString();
                 statusmsg.innerHTML = strstatusmsg;
             }
-
             function playMultiplierSlider() {
                 //if at end of autoplay range, reset slider and stop.
                 if (multiple >= 100) {
                     multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
                     Stop();
                 }
-
                 multiple += 1;
-
                 slider1.value = multiple;
                 output1.innerText = multiple;
                 drawResults();
-
                 if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
                     Stop();
                 }
             }
-
             function resetControlsToStart() {
                 multiple = 1;
                 slider1.value = multiple;
@@ -667,17 +607,14 @@
                 var radius = output3.innerText;
                 drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
                 //fadeOut();
-
                 radiojs.checked = true; //set this by default.
             }
-
             function Start() {
                 intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
                 toggleBut.value = "Stop";
             }
-
             function Stop() {
                 if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
                     resetControlsToStart();
@@ -687,7 +624,6 @@
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
             }
-
             function modifyQueryString() {
                 // get all querys tring params
                 const amp = "&"; //"&amp;"
@@ -698,7 +634,6 @@
                 qstring += "rpc=" + document.querySelector('input[name="rpctype"]:checked').id;
                 return qstring;
             }
-
         </script>
 
     </form>
