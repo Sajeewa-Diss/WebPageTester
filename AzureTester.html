@@ -323,7 +323,12 @@
         //define global variables and initial values
 
 
-        statusmsg.innerText = "hi";
+        //obtain data from querystring
+        var urlParams = window.location.search
+        var getQuery = urlParams.split('?')[1]
+        var params = getQuery.split('&') 
+
+        statusmsg.innerText = params.toString();
 
         //call functions to populate dropdowns
         populateMultiple();
