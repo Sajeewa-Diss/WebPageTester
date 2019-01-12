@@ -200,11 +200,6 @@
     color: #dddddd;
     }
 
-    #statusmsg, #msg {
-    float: right;
-    /*padding-right: 20px;*/
-    }
-
     .subheading {
     font-size: larger;
     font-weight: bold;
@@ -214,6 +209,10 @@
     font-size: larger;
     color: purple;
     }
+
+    #errormsg{
+         color:red;
+     }
 
     </style>
 </head>
@@ -236,6 +235,7 @@
                     <p>
                         fdgdfgfdgfdg.
                     </p>
+                    <p><span id="errormsg"></span></p>
 
                     <div>
                         <span class="subheading">Settings:</span>
@@ -315,7 +315,7 @@
                     </div>
                 </div>
 
-                <p><span id="msg"></span></p>
+
 
             </div>
         </div>
@@ -327,7 +327,7 @@
 
     <script>
         //set DOM references for HTML elements
-        var statusmsg = document.getElementById("msg");
+        var errormsg = document.getElementById("errormsg");
         var multipleDDL = document.getElementById("ddlMultiple");
         var modulusDDL = document.getElementById("ddlModulus");
         var radiusDDL = document.getElementById("ddlRadius");
@@ -349,19 +349,35 @@
         //obtain data from querystring
         var urlParams = window.location.search
         var strGetQuery = urlParams.split('?')[1]
-
-        var obj1 = parseQueryString(strGetQuery);
+        var querystringObj = parseQueryString(strGetQuery);
 
 
         //var params = getQuery.split('&') 
 
-        statusmsg.innerText = JSON.stringify(obj1);//params.toString();
+
 
         //call functions to populate dropdowns
         populateMultiple();
         populateModulus();
         populateRadius();
-        
+
+        //
+        //obtain data from querystring
+        var urlParams = window.location.search
+        var strGetQuery = urlParams.split('?')[1]
+        var querystringObj = parseQueryString(strGetQuery);
+        errormsg.innerText = JSON.stringify(querystringObj);//params.toString();
+
+        //populate controls using query string params 
+        var finalErrorMsg = populateControls(querystringObj);
+
+        //if we have an error message returned, simply populate control with default values.
+        if (finalErrorMsg != "") {
+
+            errormsg.innerText += finalErrorMsg;//params.toString();
+            //populateAllDefaults();
+        }
+
         function populateMultiple() {
             for (var i = 1; i <= 100; i++) {
                 var option = document.createElement("OPTION");
@@ -389,28 +405,44 @@
             }
         }
 
-        //var parseQueryString = function (queryString) {
-        //    var params = {}, queries, temp, i, l;
-        //    // Split into key/value pairs
-        //    queries = queryString.split("&");
-        //    // Convert the array of strings into an object
-        //    for (i = 0, l = queries.length; i < l; i++) {
-        //        temp = queries[i].split('=');
-        //        params[temp[0]] = temp[1];
-        //    }
-        //    return params;
-        //};
-
         function parseQueryString(queryString) {
             var params = {}, queries, temp, i, l;
             // Split into key/value pairs
-            queries = queryString.split("&amp;");
+            queries = queryString.split("&");
             // Convert the array of strings into an object
             for (i = 0, l = queries.length; i < l; i++) {
                 temp = queries[i].split('=');
                 params[temp[0]] = temp[1];
             }
             return params;
+        }
+
+        function populateControls(queryObj) {
+            try {
+
+                //validate query string params
+                if (Number(queryObj.multiple) < 1 || Number(queryObj.multiple) > 100) {
+                    throw "multiple out of range";
+                }
+                if (Number(queryObj.modulus) < 1 || Number(queryObj.multiple) > 200) {
+                    throw "modulus out of range";
+                }
+                if (Number(queryObj.radius) < 100 || Number(queryObj.radius) > 250) {
+                    throw "radius out of range";
+                }
+
+                //populate controls
+                multipleDDL.value = queryObj.multiple;
+                modulusDDL.value = queryObj.modulus;
+                radiusDDL.value = queryObj.radius;
+            }
+            catch (err) {
+                errormsg.innerText = "error thrown";
+            }
+            finally {
+                return "something went wrong";
+            }
+
         }
 
 
