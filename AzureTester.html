@@ -103,19 +103,45 @@
             }
 
         .blueButtonSimulator a {
-            border-bottom: 1px solid #777777;
+            /*border-bottom: 1px solid #777777;
             border-left: 1px solid #000000;
             border-right: 1px solid #333333;
-            border-top: 1px solid #000000;
-            color: #000000;
+            border-top: 1px solid #000000;*/
+            border-style: none;
+            border-radius: 8px;
+            background-color: #4488DD;
+            color: white;
+            /*color: #000000;*/
+            height: 20px;
+            width: 100px;
+            max-width: 100px;
             display: block;
-            height: 2.5em;
-            padding: 0 1em;
-            width: 5em;
+            /*padding: 0 1em;*/
             text-decoration: none;
+            /*top: 15px;*/
+            text-align: center;
+            padding: 5px 0px 5px 0px;
         }
 
-    .buttoncontainer, .selectcontainer { padding: 10px; padding-bottom: 10px; justify-content: flex-start; }
+        .blueButtonSimulator a:hover {
+            background-color: #5599FF;
+        }
+
+        .blueButtonSimulator a:active {
+            background-color: #77BBFF;
+        }
+
+        .buttonsimcontainer {
+            padding: 10px 5px 0 0;
+            /*padding-bottom: 10px;*/
+            justify-content: flex-start;
+        }
+
+        .buttoncontainer, .selectcontainer {
+            padding: 10px;
+            padding-bottom: 10px;
+            justify-content: flex-start;
+        }
 
     .radiogroupcontainer {
     justify-content: flex-start;
@@ -297,9 +323,9 @@
                     <div class="buttoncontainer">
                         <input type="button" id="testBut" class="blueButton" value="Test Connection" />
                     </div>
-                    <div>
+                    <div class="buttonsimcontainer">
                         <div class="blueButtonSimulator">
-                            <a href="#"> testing appearance</a>
+                            <a href="#"> test123</a>
                         </div>
 
                     </div>
