@@ -69,8 +69,9 @@
   <ItemGroup>
     <Content Include="AzureTester0.html" />
     <Content Include="circlejs.html" />
+    <Content Include="circlejson0.html" />
     <Content Include="circlejson.html" />
-    <Content Include="ddlselect1.html" />
+    <Content Include="dummybuttonpage0.html" />
     <Content Include="dummybuttonpage.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
@@ -79,10 +80,13 @@
     <Content Include="index.html" />
     <Content Include="logo.png" />
     <Content Include="logotransp.png" />
+    <Content Include="serviceTester0.html" />
+    <Content Include="serviceTester.html" />
     <Content Include="testpage.html" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="calc.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

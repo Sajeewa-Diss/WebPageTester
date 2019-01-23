@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+    <h2>The XMLHttpRequest Object</h2>
+    <button type="button" onclick="loadDoc1()">CS func</button>
+    <button type="button" onclick="loadDoc2()">JS func</button>
+    <button type="button" onclick="loadDoc3()">Service</button>
+    <p id="demo"></p>
+
+    <script>
+        function loadDoc1() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallCs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send("{value:1}");
+        }
+
+        function loadDoc2() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function () {
+                if (this.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallJs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
+            xhttp.setRequestHeader("Content-type", "application/json");
+            xhttp.send("{value:2}");
+        }
+
+        function loadDoc3() {
+            // Create HTTP request
+            var xmlHttp;
+            try {
+                xmlHttp = new XMLHttpRequest();
+            } catch (e) {
+                alert("This sample only works in browsers with AJAX support");
+                return false;
+            }
+
+            // Create result handler
+            xmlHttp.onreadystatechange = function () {
+                if (xmlHttp.readyState == 4 && this.status == 200) {
+                    document.getElementById("demo").value = xmlHttp.responseText;
+                }
+            }
+
+            // Build the operation URL
+            var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
+            
+            // Build the body of the JSON message
+            var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><simpleCall xmlns="http://tempuri.org/"><value>';
+            body = body + '3</value></simpleCall></Body></Envelope>';
+
+            // Send the HTTP request
+            xmlHttp.open("POST", url, true);
+
+            xmlHttp.setRequestHeader("Content-type", "text/xml");
+            xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/simpleCall");
+            xmlHttp.send(body);
+        }
+
+
+    </script>
+
+</body>
+</html>

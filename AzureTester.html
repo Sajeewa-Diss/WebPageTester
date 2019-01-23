@@ -244,7 +244,7 @@
         <div class="leftsection"></div>
         <div class="mainsection">
 
-            <div>
+            <!--<div>-->
                 <section id="textcontent">
                     <p>
                         Intro to use of Azure functions and services.<br />
@@ -313,7 +313,7 @@
                     <div></div>
 
                     <div class="buttoncontainer">
-                        <input type="button" id="testBut" class="blueButton" value="Test Connection" />
+                        <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod1()"/>
                     </div>
                     <div>
                     </div>
@@ -326,7 +326,13 @@
                     </div>
                 </div>
 
-            </div>
+            <!--</div>-->
+
+            <div><label>Request Body:</label></div>
+            <div><label>Response:</label><p id="responsep"></p>
+                </div>
+
+
         </div>
         <div class="rightsection"></div>
         <div class="bottomsection"><footer class="footer">footer copyright</footer></div>
@@ -348,6 +354,8 @@
         var radiows = document.getElementById("ws");
         var radioDefMeth = document.getElementById("defaultMeth") 
         var anchor = document.getElementById("linkClose");
+
+        var pResponse = document.getElementById("responsep");
 
         //define global variables and initial values
         var querystringObj; //a JSON object to hold query string data
@@ -480,6 +488,32 @@
             radiojs.checked = true;
             radioDefMeth.checked = true;
             //errormsg.innerText = "";
+        }
+
+        function testMethod1() {
+            //construct HTTP request body and get JSON data from serverless function calls. 
+            pResponse.innerText = createCoords(275, 275, 150, 200);
+        }
+
+        function createCoords(x0, y0, radius, modulo) {
+            // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
+            var myCoords = [];                        // array to hold circular coordinates;
+            for (var i = 0; i < modulo; i++) {
+                var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
+                var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
+                myCoords.push([x, y]);
+            }
+            //cumulativeCoordsRPC += 1;
+            return JSON.stringify(myCoords);            // return as a JSON object string
+        }
+        function createMatrix(multiple, modulo) {
+            var myMatrix = [];                         // array to hold multiplication results matrix;
+            for (var i = 0; i < modulo; i++) {
+                var result = (i * multiple) % modulo;
+                myMatrix.push([i, result])
+            }
+            //cumulativeMatrixRPC += 1;
+            return JSON.stringify(myMatrix);           // return as a JSON object string
         }
 
     </script>

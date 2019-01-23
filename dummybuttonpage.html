@@ -1,78 +1,120 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>HTML5 canvas fade out demo</title>
-
-
+    <title>testing</title>
 </head>
+<body>
+    <form method="post" action="#">
+        <!--the parent of a form element can't be a form. The POST action is sent on port 8081. -->
+        <!--<input name="fave" />-->                             <!--basic input is a textbox (the default type when none specified). input is a phrasing element (so can occur within a sentence)-->
+        <!--<button>Submit Vote</button>-->                      <!--also a phrasing element. If there are no other attributes, this becomes a submit form button by default!-->
+        <!--// Input values will be grabbed by ID-->
+        <input id="name" type="text">
+        <input id="prop2" type="text">
 
-<body onload="init();">
-    <canvas id="myCanvas" width="350" height="250"></canvas>
-    <div>
-        <button onclick="Start()">start</button>
-    </div>
-    <p>
-        <span id="statusmsg"></span>
-        <span id="statusmsg2"></span>
-    </p>
-    <script>
-        var alpha = 1.0;
-        var ctx;
-        var canvas;
-        var img;
-        var counter = 0;
-        var counter2 = 0;
+        <!--// return stops normal action and runs login()-->
+        <button onclick="runf()">Submit</button>
 
-        var statusmsg = document.getElementById("statusmsg");
-        var statusmsg2 = document.getElementById("statusmsg2");
-        //var strstatusmsg = "Methods not yet called.";
+        <p>
+            Result:
+        </p>
+        <textarea id="result" cols="50" rows="8"></textarea>
+
+        <script>
+            //function runf() {
+            //    // Form fields, see IDs above
+            //    const params = {
+            //        value: "hi"
+            //    }
+
+            //    const jsstring = "{value:2}";
+
+            //    var oReq = new XMLHttpRequest();
+            //    oReq.addEventListener("load", reqListener);
+            //    oReq.addEventListener("error", transferFailed);
 
 
-        //function Start() { statusmsg.innerHTML = strstatusmsg; }
+            //    oReq.open("POST", "http://localhost:7071/api/simpleCall");
 
-        function Start() {
-            canvas = document.getElementById('myCanvas');
-            ctx = canvas.getContext('2d');
+            //    //oReq.open("POST", "https://testmnbvc.azurewebsites.net/api/simpleCall");
+            //    oReq.setRequestHeader('Content-Type', 'application/json');
+            //    //oReq.send(JSON.stringify(params));
 
-            img = new Image();
-            img.src = 'logo.png';
+            //    oReq.send(jsstring);
 
-            img.onload = function () {
+            //    oReq.onload = function () {
+            //        // Do whatever with response
+            //        alert(http.responseText)
+            //    }
+            //}
 
-                counter2 += 1;
-                statusmsg2.innerHTML = counter2;
+            function runf() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("result").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://testmnbvc.azurewebsites.net/api/createMatrix?code=uXKiy8itEmpxJD0eG8RpLZyBW7dnfqTdNDc7IKKnnaNLHROEcynzRw==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{multiple:12,modulus:3}");
 
-                ctx.drawImage(img, 10, 10);
-            };
 
-            fadeOut();
-        }
+            //function runfold() {
 
-        function fadeOut() {
+            //    //var outputtxt = document.getElementById("result");
 
-            counter += 1;
+            //    //outputtxt.value = "";
 
-            //alpha = parseFloat(Math.round(alpha * 100) / 100).toFixed(2);
+            //    // Create HTTP request
+            //    var xmlHttp;
+            //    try {
+            //        xmlHttp = new XMLHttpRequest();
+            //    } catch (e) {
+            //        alert("This sample only works in browsers with AJAX support");
+            //        return false;
+            //    }
 
-            //alpha = 
+            //    //outputtxt.value += "hi";
 
-            statusmsg.innerHTML = counter.toString() + " " + alpha.toString();
+            //    // Create result handler
+            //    xmlHttp.onreadystatechange = function () {
+            //        if (xmlHttp.readyState == 4) {
+            //            document.getElementById("result").value = xmlHttp.responseText;
+            //        }
+            //    }
 
-            //statusmsg.innerHTML = counter;
+            //    // Build the operation URL
+            //    var url = "http://localhost:7071/api/simpleCall";
 
-            if (alpha <= 0) {
-                statusmsg2.innerHTML += "returning";
-                return;
-            }
+            //    //// Build the body of the JSON message
+            //    //var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><GetData xmlns="http://tempuri.org/"><value>';
+            //    //body = body + document.getElementById("input").value;
+            //    //body = body + '</value></GetData></Body></Envelope>';
 
-            requestAnimationFrame(fadeOut);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            ctx.globalAlpha = alpha;
+            //    var body = "{value: 'dd556fd'}";
 
-            ctx.drawImage(img, 10, 10);
+            //    //outputtxt.value += body;
 
-            alpha += -0.01;
-        }
-    </script>
+            //    // Send the HTTP request
+            //    xmlHttp.open("POST", url, true);
+
+            //    //xmlHttp.setRequestHeader('Access-Control-Allow-Headers','*');
+            //    //xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+
+            //    xmlHttp.setRequestHeader("Content-type", "application/json");
+            //    //xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/GetData");
+            //    //xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+
+            //    xmlHttp.send(body);
+            //}
+
+
+
+                    //function Start() {
+                    //    statusmsg.innerHTML = "hi. starting script";
+                    //}
+        </script>
+    </form>
 </body>
 </html> 

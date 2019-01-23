@@ -1,0 +1,80 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Sample HTML Projects</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!--<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">-->
+        <!--<link rel="icon" href="favicon.ico" type="image/x-icon" />-->
+        <!--<link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />-->
+
+        <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>-->
+        <!--<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>-->
+
+
+        <title>Client Page</title>
+
+        <script type="text/javascript">
+            function makeCall() {
+
+                //var outputtxt = document.getElementById("result");
+
+                //outputtxt.value = "";
+
+                // Create HTTP request
+                var xmlHttp;
+                try {
+                    xmlHttp = new XMLHttpRequest();
+                } catch (e) {
+                    alert("This sample only works in browsers with AJAX support");
+                    return false;
+                }
+
+                //outputtxt.value += "hi";
+
+                // Create result handler
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4) {
+                        document.getElementById("result").value = xmlHttp.responseText;
+                    }
+                }
+
+                // Build the operation URL
+                //var url = "https://azuremultitablewcfsvc1.azurewebsites.net/Service.svc";
+                var url = "https://azuremultitablewcfsvc1.azurewebsites.net/Service.svc";
+
+                // Build the body of the JSON message
+                var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><simpleCall xmlns="http://tempuri.org/"><value>';
+                //body = body + document.getElementById("input").value;
+                body = body + '43</value></simpleCall></Body></Envelope>';
+
+                //outputtxt.value += body;
+
+                // Send the HTTP request
+                xmlHttp.open("POST", url, true);
+
+                //xmlHttp.setRequestHeader('Access-Control-Allow-Headers','*');
+                //xmlHttp.setRequestHeader('Access-Control-Allow-Origin', '*');
+
+                xmlHttp.setRequestHeader("Content-type", "text/xml");
+                xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/simpleCall");
+                //xmlHttp.setRequestHeader("Access-Control-Allow-Origin", "*");
+                xmlHttp.send(body);
+            }
+        </script>
+    </head>
+    <body>
+        <h1>
+            Client Page
+        </h1>
+        <p>
+            Input:
+            <input type="text" id="input" />
+        </p>
+        <input id="btnCall" type="button" onclick="return makeCall();" value="Call service" />
+        <p>
+            Result:
+        </p>
+        <textarea id="result" cols="50" rows="8"></textarea>
+    </body>
+    </html>
