@@ -8,6 +8,11 @@
     <button type="button" onclick="loadDoc3()">Service</button>
     <p id="demo"></p>
 
+    <p>
+        Result:
+    </p>
+    <textarea id="result" cols="50" rows="8"></textarea>
+
     <script>
         function loadDoc1() {
             var xhttp = new XMLHttpRequest();
@@ -46,13 +51,13 @@
             // Create result handler
             xmlHttp.onreadystatechange = function () {
                 if (xmlHttp.readyState == 4 && this.status == 200) {
-                    document.getElementById("demo").value = xmlHttp.responseText;
+                    document.getElementById("result").value = xmlHttp.responseText;
                 }
             }
 
             // Build the operation URL
             var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
-            
+
             // Build the body of the JSON message
             var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><simpleCall xmlns="http://tempuri.org/"><value>';
             body = body + '3</value></simpleCall></Body></Envelope>';
