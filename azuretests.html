@@ -1,77 +1,222 @@
 <!DOCTYPE html>
+<head>
+    <style>
+        #maingrid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            /*grid-auto-rows: 10px;*/
+        }
+    </style>
+
+</head>
 <html>
 <body>
 
-    <h2>The XMLHttpRequest Object</h2>
-    <button type="button" onclick="loadDoc1()">CS func</button>
-    <button type="button" onclick="loadDoc2()">JS func</button>
-    <button type="button" onclick="loadDoc3()">Service</button>
-    <p id="demo"></p>
+    <div id="maingrid">
+        <div>
+            <h2>simple</h2>
+            <button type="button" onclick="loadDoc1()">CS func</button>
+            <button type="button" onclick="loadDoc2()">JS func</button>
+            <button type="button" onclick="loadDoc3()">Service</button>
+            <p id="demo1"></p>
+            <p>
+                service:
+            </p>
+            <textarea id="result1" cols="50" rows="8"></textarea>
+        </div>
+        <div>
+            <h2>matrix</h2>
+            <button type="button" onclick="loadDoc21()">CS func</button>
+            <button type="button" onclick="loadDoc22()">JS func</button>
+            <button type="button" onclick="loadDoc23()">Service</button>
+            <p id="demo2"></p>
+            <p>
+                service:
+            </p>
+            <textarea id="result2" cols="50" rows="8"></textarea>
+        </div>
+        <div>
+            <h2>coords</h2>
+            <button type="button" onclick="loadDoc31()">CS func</button>
+            <button type="button" onclick="loadDoc32()">JS func</button>
+            <button type="button" onclick="loadDoc33()">Service</button>
+            <p id="demo3"></p>
+            <p>
+                service:
+            </p>
+            <textarea id="result3" cols="50" rows="8"></textarea>
+        </div>
+    </div>
 
-    <p>
-        Result:
-    </p>
-    <textarea id="result" cols="50" rows="8"></textarea>
+        <script>
 
-    <script>
-        function loadDoc1() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("demo").innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallCs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send("{value:1}");
-        }
-
-        function loadDoc2() {
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    document.getElementById("demo").innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallJs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
-            xhttp.setRequestHeader("Content-type", "application/json");
-            xhttp.send("{value:2}");
-        }
-
-        function loadDoc3() {
-            // Create HTTP request
-            var xmlHttp;
-            try {
-                xmlHttp = new XMLHttpRequest();
-            } catch (e) {
-                alert("This sample only works in browsers with AJAX support");
-                return false;
+            function loadDoc1() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo1").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallCs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{value:1}");
             }
 
-            // Create result handler
-            xmlHttp.onreadystatechange = function () {
-                if (xmlHttp.readyState == 4 && this.status == 200) {
-                    document.getElementById("result").value = xmlHttp.responseText;
-                }
+            function loadDoc2() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo1").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/simpleCallJs?code=/iv4708QwZehfDnsPAkVCakyYqOe6asN7udl31mOvyn1dVVOG3Zi6g==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{value:2}");
             }
 
-            // Build the operation URL
-            var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
+            function loadDoc3() {
+                // Create HTTP request
+                var xmlHttp;
+                try {
+                    xmlHttp = new XMLHttpRequest();
+                } catch (e) {
+                    alert("This sample only works in browsers with AJAX support");
+                    return false;
+                }
 
-            // Build the body of the JSON message
-            var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><simpleCall xmlns="http://tempuri.org/"><value>';
-            body = body + '3</value></simpleCall></Body></Envelope>';
+                // Create result handler
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && this.status == 200) {
+                        document.getElementById("result1").value = xmlHttp.responseText;
+                    }
+                }
 
-            // Send the HTTP request
-            xmlHttp.open("POST", url, true);
+                // Build the operation URL
+                var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
 
-            xmlHttp.setRequestHeader("Content-type", "text/xml");
-            xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/simpleCall");
-            xmlHttp.send(body);
-        }
+                // Build the body of the JSON message
+                var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><simpleCall xmlns="http://tempuri.org/"><value>';
+                body = body + '3</value></simpleCall></Body></Envelope>';
 
+                // Send the HTTP request
+                xmlHttp.open("POST", url, true);
 
-    </script>
+                xmlHttp.setRequestHeader("Content-type", "text/xml");
+                xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/simpleCall");
+                xmlHttp.send(body);
+            }
+
+            function loadDoc21() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo2").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixCs?code=H1kM0i4KT49QaSzR7YurY5xhZGBK13glgts411JdEoaSYonvb30FoQ==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{multiple:10,modulus:5}");
+            }
+
+            function loadDoc22() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo2").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=8YDC8UkHguM1csXpMAgNhanW9tt48RYusRzIxJm1dn6uJl4fU9xLpg==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{multiple:10,modulus:7}");
+            }
+
+            function loadDoc23() {
+                // Create HTTP request
+                var xmlHttp;
+                try {
+                    xmlHttp = new XMLHttpRequest();
+                } catch (e) {
+                    alert("This sample only works in browsers with AJAX support");
+                    return false;
+                }
+
+                // Create result handler
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && this.status == 200) {
+                        document.getElementById("result2").value = xmlHttp.responseText;
+                    }
+                }
+
+                // Build the operation URL
+                var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
+
+                // Build the body of the JSON message
+                var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><createMatrix xmlns="http://tempuri.org/"><multiple>';
+                body = body + '10</multiple><modulus>8</modulus></createMatrix></Body></Envelope>';
+                // Send the HTTP request
+                xmlHttp.open("POST", url, true);
+
+                xmlHttp.setRequestHeader("Content-type", "text/xml");
+                xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/createMatrix");
+                xmlHttp.send(body);
+            }
+
+            function loadDoc31() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo3").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsCs?code=aqfFykVqx4W0mfiOqXmw3pM2aMqOQe98RRbMXvmpMu8i9SOZ74qwBQ==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{x0:275,y0:275,radius:100,modulus:4}");
+            }
+
+            function loadDoc32() {
+                var xhttp = new XMLHttpRequest();
+                xhttp.onreadystatechange = function () {
+                    if (this.readyState == 4 && this.status == 200) {
+                        document.getElementById("demo3").innerHTML = this.responseText;
+                    }
+                };
+                xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsJs?code=e343aUwM51tcl8DIfaNcIgdGe7ZMPXGp8STTYZ4YDC1bmoeBb1Hh3g==", true);
+                xhttp.setRequestHeader("Content-type", "application/json");
+                xhttp.send("{x0:275,y0:275,radius:100,modulus:7}");
+            }
+
+            function loadDoc33() {
+                // Create HTTP request
+                var xmlHttp;
+                try {
+                    xmlHttp = new XMLHttpRequest();
+                } catch (e) {
+                    alert("This sample only works in browsers with AJAX support");
+                    return false;
+                }
+
+                // Create result handler
+                xmlHttp.onreadystatechange = function () {
+                    if (xmlHttp.readyState == 4 && this.status == 200) {
+                        document.getElementById("result3").value = xmlHttp.responseText;
+                    }
+                }
+
+                // Build the operation URL
+                var url = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
+
+                // Build the body of the JSON message
+                var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body><createCoords xmlns="http://tempuri.org/"><x0>';
+                body = body + '155</x0><y0>155</y0><radius>100</radius><modulus>10</modulus></createCoords></Body></Envelope>';
+
+                // Send the HTTP request
+                xmlHttp.open("POST", url, true);
+
+                xmlHttp.setRequestHeader("Content-type", "text/xml");
+                xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/createCoords");
+                xmlHttp.send(body);
+            }
+        </script>
 
 </body>
 </html>
