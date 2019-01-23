@@ -68,6 +68,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="AzureTester0.html" />
+    <Content Include="azuretests.html" />
     <Content Include="circlejs.html" />
     <Content Include="circlejson0.html" />
     <Content Include="circlejson.html" />
@@ -75,6 +76,7 @@
     <Content Include="dummybuttonpage.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
+    <Content Include="functiontest.html" />
     <Content Include="grid_table.html" />
     <Content Include="HtmlPage1.html" />
     <Content Include="index.html" />
