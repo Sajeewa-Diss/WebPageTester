@@ -210,6 +210,7 @@
     display: block;
     }
 
+
     /* Style the indicator (dot/circle) */
     .radiocontainer .checkmark:after {
     top: 9px;
@@ -238,25 +239,9 @@
     color: purple;
     }
 
-    #responsegrid {
-        display: grid;
-        grid-template-columns: 1fr 8fr;
-        /*max-width:1600px;*/
-        min-width:600px;
-        padding-left:10px;
-        padding-top:10px;
-        /*grid-auto-rows: 10px;*/
-    }
-        #responsegrid > div {
-            padding-bottom: 5px;
-        }
-        #responsegrid * {
-            border-color:rgba(100,100,100,0.2);
-        }
-
-        #responsegrid textarea {
-            min-width:600px;
-        }
+    #errormsg{
+         color:red;
+     }
 
     </style>
 </head>
@@ -271,110 +256,95 @@
         <div class="mainsection">
 
             <!--<div>-->
-            <section id="textcontent">
-                <span>
-                    Azure sends us all necessary info to draw the multiplication circle on our website.
-                    This could be done in client-side JavaScript alone, so this is for demo only in three technologies:
-                    <ul>
-                        <li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
-                        <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
-                        <li>A WCF service built in C# hosted on an IIS App Service communicating through SOAP.</li>
-                    </ul>
-                </span>
-                <span>
-                    CORS settings have been added on Azure server-side for this Github Pages domain to allow the browser requests to succeed (see Github readme for details).
-                </span><br /><br />
-                <!--<p><span id="errormsg"></span></p>-->
-                <!--<div>-->
-                <span class="subheading">Settings:</span>
-                <!--</div>-->
-            </section>
+                <section id="textcontent">
+                    <span>
+                        A Function App and a Service App in Azure will send the necessary information to draw the modulo-multiplication circle in our website.<br />
+                        This set of calculations can be easily accomplished in client-side JavaScript instead, so this is a demo only, in three technologies:
+                        <ul><li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
+                            <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
+                            <li>A WCF service built in C# hosted on an IIS App Service communicating through SOAP.</li></ul>
+                    </span>
+                    <span>
+                        CORS settings have been added to the Azure server for this Github Pages domain to allow the browser requests to succeed.
+                    </span><br/><br />
+                    <!--<p><span id="errormsg"></span></p>-->
+                    <!--<div>-->
+                        <span class="subheading">Settings:</span>
+                    <!--</div>-->
+                </section>
 
-            <div id="controlgrid">
-                <div>
-                    <p class="sectionheading">RPC Method:</p>
-                </div>
-                <div></div>
-                <div class="radiogroupcontainer">
-                    <label class="radiocontainer">
-                        Azure JS Fn.
-                        <input type="radio" id="js" checked="checked" name="rpctype">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div class="radiogroupcontainer">
-                    <label class="radiocontainer">
-                        Azure C# Fn.
-                        <input type="radio" id="cs" name="rpctype">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div class="radiogroupcontainer">
-                    <label class="radiocontainer">
-                        WCF Svc.
-                        <input type="radio" id="ws" name="rpctype">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div>
-                    <p class="sectionheading">Function Params:</p>
-                </div>
-                <div></div>
-                <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
-                <div class="selectcontainer">Modulus: <select class="select" required id="ddlModulus"></select></div>
-                <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
-                <div>
-                    <p class="sectionheading">Function Name:</p>
-                </div>
-                <div></div>
-                <div class="radiogroupcontainer">
-                    <label class="radiocontainer">
-                        createCoords.
-                        <input type="radio" id="defaultMeth" checked="checked" name="methodname">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div class="radiogroupcontainer">
-                    <label class="radiocontainer">
-                        createMatrix.
-                        <input type="radio" name="methodname">
-                        <span class="checkmark"></span>
-                    </label>
-                </div>
-                <div></div>
+                <div id="controlgrid">
+                    <div>
+                        <p class="sectionheading">RPC Method:</p>
+                    </div>
+                    <div></div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            Azure JS Fn.
+                            <input type="radio" id="js" checked="checked" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            Azure C# Fn.
+                            <input type="radio" id="cs" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            WCF Svc.
+                            <input type="radio" id="ws" name="rpctype">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div>
+                        <p class="sectionheading">Function Params:</p>
+                    </div>
+                    <div></div>
+                    <div class="selectcontainer">Multiple: <select class="select" required id="ddlMultiple"></select></div>
+                    <div class="selectcontainer">Modulus: <select class="select" required id="ddlModulus"></select></div>
+                    <div class="selectcontainer">Radius: <select class="select" required id="ddlRadius"></select></div>
+                    <div>
+                        <p class="sectionheading">Function Name:</p>
+                    </div>
+                    <div></div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            createCoords.
+                            <input type="radio" id="defaultMeth" checked="checked" name="methodname">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div class="radiogroupcontainer">
+                        <label class="radiocontainer">
+                            createMatrix.
+                            <input type="radio" name="methodname">
+                            <span class="checkmark"></span>
+                        </label>
+                    </div>
+                    <div></div>
 
-                <div class="buttoncontainer">
-                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod1()" />
+                    <div class="buttoncontainer">
+                        <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod1()"/>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="statuscontainer"> <span class="statusdisplay">todo 200</span></div>
+                    <div class="buttoncontainer">
+                        <input type="button" id="resetBut" class="blueButton" value="Reset" />
+                    </div>
+                    <div class="buttoncontainer">
+                        <input type="button" value="Close" class="blueButton" onclick="history.back(-1)" />
+                    </div>
                 </div>
-                <div>
-                </div>
-                <div class="statuscontainer"> <span class="statusdisplay">todo 200</span></div>
-                <div class="buttoncontainer">
-                    <input type="button" id="resetBut" class="blueButton" value="Reset" />
-                </div>
-                <div class="buttoncontainer">
-                    <input type="button" value="Close" class="blueButton" onclick="history.back(-1)" />
-                </div>
-            </div>
 
             <!--</div>-->
 
-            <div id="responsegrid">
-
-                <div><label class="subheading">Request Body:</label></div><div><textarea id="sdfds" col2= 50 rows="1"></textarea></div>
-                <div><label class="subheading">Response:</label><p id="responsep"></p></div><div><textarea id="ss" rows="8"></textarea></div>
-
-
-            </div>
-            <!--<div><label>Request Body:</label></div>
-            <div><label>Response:</label><p id="responsep"></p></div>
-
-            var myStatus = this.status;
-            var myStatusText = this.statusText;
-            var myResponseUrl = this.responseURL;
-            var myResponseType = this.responseType;
-            var myResponseXML = this.responseXML;
-            var responseText = this.responseText;-->
+            <div><label>Request Body:</label></div>
+            <div><label>Response:</label><p id="responsep"></p>
+                </div>
 
 
         </div>
@@ -581,7 +551,6 @@
                     var myResponseUrl = this.responseURL;
                     var myResponseType = this.responseType;
                     var myResponseXML = this.responseXML;
-                    var responseText = this.responseText;
                     gotData(x);
                 }
             };

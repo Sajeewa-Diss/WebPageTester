@@ -1,0 +1,7 @@
+<s:Envelope xmlns:s="http://schemas.xmlsoap.org/soap/envelope/">
+    <s:Body>
+        <createCoordsResponse xmlns="http://tempuri.org/">
+            <createCoordsResult>[[55,155][74.10,96.22][124.10,59.89][185.90,59.89][235.90,96.22][255,155][235.90,213.78][185.90,250.11][124.10,250.11][74.10,213.78]]</createCoordsResult>
+        </createCoordsResponse>
+    </s:Body>
+</s:Envelope>

@@ -67,6 +67,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzureTester2.html" />
+    <Content Include="AzureTester1.html" />
     <Content Include="AzureTester0.html" />
     <Content Include="azuretests.html" />
     <Content Include="circlejs.html" />
@@ -84,6 +86,7 @@
     <Content Include="logotransp.png" />
     <Content Include="serviceTester0.html" />
     <Content Include="serviceTester.html" />
+    <Content Include="testing.xml" />
     <Content Include="testpage.html" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -92,6 +95,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="json1.json" />
     <None Include="packages.config" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
