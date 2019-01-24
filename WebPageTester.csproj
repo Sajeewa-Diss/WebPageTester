@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzureTester3.html" />
     <Content Include="AzureTester2.html" />
     <Content Include="AzureTester1.html" />
     <Content Include="AzureTester0.html" />
