@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzureTester4.html" />
     <Content Include="AzureTester3.html" />
     <Content Include="AzureTester2.html" />
     <Content Include="AzureTester1.html" />
@@ -75,6 +76,7 @@
     <Content Include="circlejs.html" />
     <Content Include="circlejson0.html" />
     <Content Include="circlejson.html" />
+    <Content Include="closepage.html" />
     <Content Include="dummybuttonpage0.html" />
     <Content Include="dummybuttonpage.html" />
     <Content Include="AzureTester.html" />
