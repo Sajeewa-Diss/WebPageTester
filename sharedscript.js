@@ -9,7 +9,7 @@ const jsCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/crea
 const csCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsCs?code=aqfFykVqx4W0mfiOqXmw3pM2aMqOQe98RRbMXvmpMu8i9SOZ74qwBQ==";
 const wcfServiceUrl = "https://azuremultitableswcfsvc01.azurewebsites.net/Service.svc";
 
-function makeApiCall(url, body, methodname) {
+function makeApiCall(url, body, methodname, callback) {
     // Create HTTP request
     var xmlHttp;
     try {
@@ -21,7 +21,8 @@ function makeApiCall(url, body, methodname) {
 
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
-            document.getElementById("txtresponse").innerHTML = this.responseText;
+            //document.getElementById("txtresponse").innerHTML = this.responseText;
+            //todo this is where to add the callback function
         }
     };
 
@@ -43,4 +44,21 @@ function makeApiCall(url, body, methodname) {
     // post the HTTP request async
     xmlHttp.open("POST", url, true);
     xmlHttp.send(body);
+
+
+    //simlDelayFunc("testing", blah);
+}
+
+
+
+
+        }
+var simlDelayFunc = function (str, callback) {
+    setTimeout(function () {
+        callback(str);
+    }, 3000);
+}
+
+function blah(str) {
+    //
 }

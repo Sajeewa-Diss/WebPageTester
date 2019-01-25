@@ -409,7 +409,7 @@
         const centreX = 275;
         const centreY = 275;
         var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
-        var startTime //global function call start time
+        //var startTime //global function call start time
 
         //call functions to populate dropdowns (only req'd on initial loading)
         populateMultiple();
@@ -605,8 +605,6 @@
             pResponse.innerText = JSON.stringify(data);
         }
 
-        //#endregion
-
         function testMethod1b() {
             //construct HTTP request body and get JSON data from serverless function calls. 
             //pResponse.innerText = createCoords(275, 275, 150, 200);
@@ -637,9 +635,17 @@
             xmlhttp.send();
         }
 
+        //#endregion
+
+
+        //#region connectCode
+
+
+
+
         function testConnection() {
 
-            //clear previous respnse info
+            //clear previous response info
             resetResponse();
 
             //construct parameters for the RPC.
@@ -675,12 +681,10 @@
                     //break;
             }
 
-            httpmethodtxt.innerText = "POST";
-            urltxt.innerText = url;
-            bodytxt.innerText = body; // + " " + methodval.toString();
-            //responsetxt.innerText = body;
+
 
             //function makeApiCall(url, body, methodname);
+
         }
 
         function createJsonBody(method, multiple, modulus, radius) {
@@ -711,16 +715,33 @@
             return body;
         }
 
-        function gotData(data) {
-
+        function handleApiCall(url, body, methodname) {
+            //note this call will be asynchronous by default! (because it uses XHR).
             summarytxt.innerText = "Working.. please wait.";
-            urltxt.innerText = "hsagdhjsgd";
-            bodytxt.innerText = "hsagdhjsgd";
-            responsetxt.innerText = "hsagdhjsgd";
-            respcontenttxt.innerText = "hsagdhjsgd";
+            var d = new Date();
+            var starttime = d.getTime();
 
-            simlDelayFunc("testing", blah);
+            try {
+                function makeApiCall(url, body, methodname, callback);
+            }
+            catch{
+                summarytxt.innerText = "An unexpected error occurred in RPC call.";
+            }
+            finally {
+                //calculate time on success or failure and populate response messages
+            }
+
+            var duration = d.getTime() - startTime;
+            summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
+
+            httpmethodtxt.innerText = "POST";
+            urltxt.innerText = url;
+            bodytxt.innerText = body; // + " " + methodval.toString();
+            //responsetxt.innerText = body;
         }
+
+
+        //#endregion
 
         //todo in main page. only delay function call return if autoplay is running!!!
 
@@ -736,32 +757,31 @@
 
 
 
+        //function gotData(data) {
 
-        var simlDelayFunc = function (str, callback) {
-            setTimeout(function () {
-                callback(str);
-            }, 3000);
+        //    summarytxt.innerText = "Working.. please wait.";
+        //    urltxt.innerText = "hsagdhjsgd";
+        //    bodytxt.innerText = "hsagdhjsgd";
+        //    responsetxt.innerText = "hsagdhjsgd";
+        //    respcontenttxt.innerText = "hsagdhjsgd";
 
-        }
+        //    simlDelayFunc("testing", blah);
+        //}
 
-        function blah(str) {
-            outstatus.innerText = "called";
-            //calculate time on success or failure
-            var d = new Date();
-            var duration = d.getTime() - startTime;
-            summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
-        }
+        //var simlDelayFunc = function (str, callback) {
+        //    setTimeout(function () {
+        //        callback(str);
+        //    }, 3000);
 
+        //}
 
-
-
-
-
-
-
-
-
-
+        //function blah(str) {
+        //    outstatus.innerText = "called";
+        //    //calculate time on success or failure
+        //    var d = new Date();
+        //    var duration = d.getTime() - startTime;
+        //    summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
+        //}
 
         //function createCoords(x0, y0, radius, modulo) {
         //    // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
