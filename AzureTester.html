@@ -262,6 +262,11 @@
                 min-width: 650px;
                 max-width: 1400px;
             }
+
+        #errormsg {
+            color: red;
+        }
+
     </style>
 </head>
 <body onLoad="JavaScript:setOnRefresh();">
@@ -273,7 +278,7 @@
     <div class="grid-container">
         <div class="leftsection"></div>
         <div class="mainsection">
-
+            <p id="errormsg"></p>
             <section id="textcontent">
                 <span>
                     Azure sends us all necessary info to draw the multiplication circle on our website.
@@ -285,7 +290,7 @@
                     </ul>
                 </span>
                 <span>
-                    CORS settings have been added on Azure server-side for this Github Pages domain name to allow the browser requests to succeed (see Github readme for details).
+                    CORS settings have been added on Azure server-side for this Github Pages domain name to allow the browser requests to succeed (see Github repository readme for details).
                 </span><br /><br />
                 <span class="subheading">Settings:</span>
             </section>
@@ -330,27 +335,27 @@
                 <div class="radiogroupcontainer">
                     <label class="radiocontainer">
                         createCoords.
-                        <input type="radio" id="defaultMeth" checked="checked" name="methodname">
+                        <input type="radio" id="createCoords" checked="checked" name="methodname">
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div class="radiogroupcontainer">
                     <label class="radiocontainer">
                         createMatrix.
-                        <input type="radio" name="methodname">
+                        <input type="radio" id="createMatrix" name="methodname">
                         <span class="checkmark"></span>
                     </label>
                 </div>
                 <div></div>
 
                 <div class="buttoncontainer">
-                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod1()" />
+                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod()" />
                 </div>
                 <div>
                 </div>
                 <div class="statuscontainer"> <output class="respDisplay" id="statusdisplay">200 todo</output></div>
                 <div class="buttoncontainer">
-                    <input type="button" id="resetBut" class="blueButton" value="Reset" onclick="resetResponse()" />
+                    <input type="button" id="resetBut" class="blueButton" value="Reset" onclick="resetPage()" />
                 </div>
                 <div class="buttoncontainer">
                     <input type="button" class="blueButton" value="Close" onclick="goBackOrClose()" />
@@ -385,7 +390,9 @@
         var radiojs = document.getElementById("js");
         var radiocs = document.getElementById("cs");
         var radiows = document.getElementById("ws");
-        var radioDefMeth = document.getElementById("defaultMeth") 
+        var radiocoords = document.getElementById("createCoords") 
+        var radiomatrix = document.getElementById("createMatrix") 
+
         var anchor = document.getElementById("linkClose");
 
         var summarytxt = document.getElementById("txtsummary");
@@ -408,6 +415,8 @@
 
         //reset controls on page refresh
         function setOnRefresh() {
+            resetControlsToStart(); // set these to default values in any case (there may be no referring query string).
+
             //obtain data from querystring
             querystringObj = parseQueryString();
 
@@ -417,7 +426,7 @@
             //if we have an error message returned, simply populate control with default values.
             if (loadingErrorMsg != "") {
                 errormsg.innerText = loadingErrorMsg;
-                resetControlsToStart();
+                errormsg.style.display = "inline";
             }
         }
 
@@ -512,7 +521,8 @@
                 radiusDDL.value = queryObj.radius;
             }
             catch (err) {
-                errormsg.innerText = "error thrown.";
+                //errormsg.innerText = "error thrown.";
+                //errormsg.style.display = "inline";
             }
             finally {
                 if (errorstring != "" ) {
@@ -522,13 +532,21 @@
             }
         }
 
+        function resetPage() {
+            //todo only if there is a query string issue simply remove query string
+
+            //reset all response controls to blank.
+            resetResponse();
+        }
+
         function resetControlsToStart() {
             multipleDDL.value = 1;
             modulusDDL.value = 200;
             radiusDDL.value = 250;
             radiojs.checked = true;
-            radioDefMeth.checked = true;
-            //errormsg.innerText = "";
+            radiocoords.checked = true;
+            errormsg.innerText = "";
+            errormsg.style.display = "none";
         }
 
         function resetResponse() {
@@ -581,10 +599,11 @@
 
         //#endregion
 
-        function testMethod1() {
+        function testMethod1b() {
             //construct HTTP request body and get JSON data from serverless function calls. 
             //pResponse.innerText = createCoords(275, 275, 150, 200);
 
+            //clear previous repnse info
             resetResponse();
 
             var d = new Date();
@@ -603,12 +622,38 @@
                     var myResponseXML = this.responseXML;
                     var responseText = this.responseText;
                     gotData("j");
-
                 }
 
             };
             xmlhttp.open("GET", url, true);
             xmlhttp.send();
+        }
+
+        function testMethod() {
+ 
+
+            //clear previous respnse info
+            resetResponse();
+
+            //construct parameters for the RPC.
+            var rpcval = document.querySelector('input[name=rpctype]:checked').id;
+            var methodval = document.querySelector('input[name=methodname]:checked').id;
+
+            var result = "";
+
+            switch (rpcval) {
+                case 'js':
+                    result += "js clicked";
+                    break;
+                case 'cs':
+                    result += "cs clicked";
+                    break;
+                case 'ws':
+                    result += "ws clicked";
+                    break;
+            }
+
+            bodytxt.innerText = rpcval.toString() + " " + methodval.toString();
         }
 
         function gotData(data) {
@@ -619,7 +664,7 @@
             responsetxt.innerText = "hsagdhjsgd";
             respcontenttxt.innerText = "hsagdhjsgd";
 
-            simlDelayFunc("testing", blah)
+            simlDelayFunc("testing", blah);
         }
 
         //todo in main page. only delay function call return if autoplay is running!!!
