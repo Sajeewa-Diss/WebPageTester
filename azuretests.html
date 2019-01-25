@@ -26,9 +26,9 @@
         </div>
         <div>
             <h2>matrix</h2>
-            <button type="button" onclick="loadDoc21()">CS func</button>
-            <button type="button" onclick="loadDoc22()">JS func</button>
-            <button type="button" onclick="loadDoc23()">Service</button>
+            <button type="button" onclick="getCsMatrix()">CS func</button>
+            <button type="button" onclick="getJsMatrix()">JS func</button>
+            <button type="button" onclick="getWsMatrix()">Service</button>
             <p id="demo2"></p>
             <p>
                 service:
@@ -37,9 +37,9 @@
         </div>
         <div>
             <h2>coords</h2>
-            <button type="button" onclick="loadDoc31()">CS func</button>
-            <button type="button" onclick="loadDoc32()">JS func</button>
-            <button type="button" onclick="loadDoc33()">Service</button>
+            <button type="button" onclick="getCsCoords()">CS func</button>
+            <button type="button" onclick="getJsCoords()">JS func</button>
+            <button type="button" onclick="getWsCoords()">Service</button>
             <p id="demo3"></p>
             <p>
                 service:
@@ -106,7 +106,7 @@
                 xmlHttp.send(body);
             }
 
-            function loadDoc21() {
+            function getCsMatrix() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -118,7 +118,7 @@
                 xhttp.send("{multiple:10,modulus:5}");
             }
 
-            function loadDoc22() {
+            function getJsMatrix() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -130,13 +130,13 @@
                 xhttp.send("{multiple:10,modulus:7}");
             }
 
-            function loadDoc23() {
+            function getWsMatrix() {
                 // Create HTTP request
                 var xmlHttp;
                 try {
                     xmlHttp = new XMLHttpRequest();
                 } catch (e) {
-                    alert("This sample only works in browsers with AJAX support");
+                    alert("This function only works in browsers with AJAX support");
                     return false;
                 }
 
@@ -161,7 +161,7 @@
                 xmlHttp.send(body);
             }
 
-            function loadDoc31() {
+            function getCsCoords() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -173,7 +173,7 @@
                 xhttp.send("{x0:275,y0:275,radius:100,modulus:4}");
             }
 
-            function loadDoc32() {
+            function getJsCoords() {
                 var xhttp = new XMLHttpRequest();
                 xhttp.onreadystatechange = function () {
                     if (this.readyState == 4 && this.status == 200) {
@@ -185,13 +185,13 @@
                 xhttp.send("{x0:275,y0:275,radius:100,modulus:7}");
             }
 
-            function loadDoc33() {
+            function getWsCoords() {
                 // Create HTTP request
                 var xmlHttp;
                 try {
                     xmlHttp = new XMLHttpRequest();
                 } catch (e) {
-                    alert("This sample only works in browsers with AJAX support");
+                    alert("This function only works in browsers with AJAX support");
                     return false;
                 }
 

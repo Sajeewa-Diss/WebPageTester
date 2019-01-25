@@ -67,6 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="AzureTester6.html" />
     <Content Include="AzureTester5.html" />
     <Content Include="AzureTester4.html" />
     <Content Include="AzureTester3.html" />
@@ -90,6 +91,7 @@
     <Content Include="logotransp.png" />
     <Content Include="serviceTester0.html" />
     <Content Include="serviceTester.html" />
+    <Content Include="sharedscript.js" />
     <Content Include="testing.xml" />
     <Content Include="testpage.html" />
     <Content Include="Web.config" />
