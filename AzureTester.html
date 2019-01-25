@@ -349,7 +349,7 @@
                 <div></div>
 
                 <div class="buttoncontainer">
-                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testMethod()" />
+                    <input type="button" id="testBut" class="blueButton" value="Test Connection" onclick="testConnection()" />
                 </div>
                 <div>
                 </div>
@@ -363,11 +363,12 @@
             </div>
 
             <div id="responsegrid">
-                <div><label class="subheading">Summary:</label></div><div><textarea class="respDisplay" id="txtsummary" rows="1"></textarea></div>
-                <div><label class="subheading">Request URL:</label></div><div><textarea class="respDisplay" id="txturl" rows="1"></textarea></div>
-                <div><label class="subheading">Request Body:</label></div><div><textarea class="respDisplay" id="txtbody" rows="3"></textarea></div>
-                <div><label class="subheading">Response:</label></div><div><textarea class="respDisplay" id="txtresponse" rows="5"></textarea></div>
-                <div><label class="subheading">Resp. Text/XML:</label></div><div><textarea class="respDisplay" id="txtrespcontent" rows="5"></textarea></div>
+                <div><label class="subheading">Summary:</label></div><div><textarea class="respDisplay" id="txtsummary" rows="1" readonly="readonly"></textarea></div>
+                <div><label class="subheading">HTTP Method:</label></div><div><textarea class="respDisplay" id="txtHttpMethod" rows="1" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request URL:</label></div><div><textarea class="respDisplay" id="txturl" rows="2" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Request Body:</label></div><div><textarea class="respDisplay" id="txtbody" rows="4" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Response:</label></div><div><textarea class="respDisplay" id="txtresponse" rows="5" readonly="readonly"></textarea></div>
+                <div><label class="subheading">Resp. Text/XML:</label></div><div><textarea class="respDisplay" id="txtrespcontent" rows="5" readonly="readonly"></textarea></div>
             </div>
 
         </div>
@@ -393,25 +394,30 @@
         var radiocoords = document.getElementById("createCoords") 
         var radiomatrix = document.getElementById("createMatrix") 
 
-        var anchor = document.getElementById("linkClose");
+        //var anchor = document.getElementById("linkClose");
 
+        var outstatus = document.getElementById("statusdisplay");
         var summarytxt = document.getElementById("txtsummary");
+        var httpmethodtxt = document.getElementById("txtHttpMethod");
         var urltxt = document.getElementById("txturl");
         var bodytxt = document.getElementById("txtbody");
         var responsetxt = document.getElementById("txtresponse");
         var respcontenttxt = document.getElementById("txtrespcontent");
-        var outstatus = document.getElementById("statusdisplay");
+
 
         //define global variables and initial values
-        var querystringObj; //a JSON object to hold query string data from referrer.
+        const centreX = 275;
+        const centreY = 275;
+        var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
         var startTime //global function call start time
 
-        //call functions to populate dropdowns
+        //call functions to populate dropdowns (only req'd on initial loading)
         populateMultiple();
         populateModulus();
         populateRadius();
 
-        //#region populatePage
+
+        //#region resetPage
 
         //reset controls on page refresh
         function setOnRefresh() {
@@ -429,6 +435,47 @@
                 errormsg.style.display = "inline";
             }
         }
+
+        function resetPage() {
+            //todo only if there is a query string issue simply remove query string
+
+            //reset all response controls to blank.
+            resetResponse();
+        }
+
+        function resetControlsToStart() {
+            multipleDDL.value = 1;
+            modulusDDL.value = 200;
+            radiusDDL.value = 250;
+            radiojs.checked = true;
+            radiocoords.checked = true;
+            errormsg.innerText = "";
+            errormsg.style.display = "none";
+        }
+
+        function resetResponse() {
+            //reset all response controls to blank. 
+            var els = document.getElementsByClassName("respDisplay");
+            [].forEach.call(els, function (el) { el.innerText = ""; });
+        }
+
+        function goBackOrClose() {
+            // if we didn't navigate to this page, we need some feedback - so show a close page instead.
+            pathArray = document.referrer.split('/');
+            protocol = pathArray[0];
+            host = pathArray[2];
+            url_before = protocol + '//' + host;
+            url_now = window.location.protocol + "//" + window.location.host;
+
+            if (url_before == url_now) {
+                window.history.back(-1);
+            } else {
+                window.location = "closepage.html";
+            };
+        }
+        //#endregion
+
+        //#region populatePage
 
         function populateMultiple() {
             for (var i = 1; i <= 100; i++) {
@@ -521,8 +568,7 @@
                 radiusDDL.value = queryObj.radius;
             }
             catch (err) {
-                //errormsg.innerText = "error thrown.";
-                //errormsg.style.display = "inline";
+                errorstring += " Error occurred.";
             }
             finally {
                 if (errorstring != "" ) {
@@ -530,44 +576,6 @@
                 }
                 return errorstring;
             }
-        }
-
-        function resetPage() {
-            //todo only if there is a query string issue simply remove query string
-
-            //reset all response controls to blank.
-            resetResponse();
-        }
-
-        function resetControlsToStart() {
-            multipleDDL.value = 1;
-            modulusDDL.value = 200;
-            radiusDDL.value = 250;
-            radiojs.checked = true;
-            radiocoords.checked = true;
-            errormsg.innerText = "";
-            errormsg.style.display = "none";
-        }
-
-        function resetResponse() {
-            //reset all response controls to blank. 
-            var els = document.getElementsByClassName("respDisplay");
-            [].forEach.call(els, function (el) { el.innerText = ""; });
-        }
-
-        function goBackOrClose() {
-            // if we didn't navigate to this page, we need some feedback - so show a close page instead.
-            pathArray = document.referrer.split('/');
-            protocol = pathArray[0];
-            host = pathArray[2];
-            url_before = protocol + '//' + host;
-            url_now = window.location.protocol + "//" + window.location.host;
-
-            if (url_before == url_now) {
-                window.history.back(-1);
-            } else {
-                window.location = "closepage.html";
-            };
         }
 
         //#endregion
@@ -629,31 +637,78 @@
             xmlhttp.send();
         }
 
-        function testMethod() {
- 
+        function testConnection() {
 
             //clear previous respnse info
             resetResponse();
 
             //construct parameters for the RPC.
-            var rpcval = document.querySelector('input[name=rpctype]:checked').id;
-            var methodval = document.querySelector('input[name=methodname]:checked').id;
+            var rpcval = document.querySelector("input[name=rpctype]:checked").id;
+            var methodval = document.querySelector("input[name=methodname]:checked").id;
+            var multiple = multipleDDL.value;
+            var modulus = modulusDDL.value;
+            var radius = radiusDDL.value;
+            var body = "";
+            var url = "";
 
-            var result = "";
-
+            //if not a Wcf service call (for which URL is static), then deduce the method call URL.
             switch (rpcval) {
-                case 'js':
-                    result += "js clicked";
+                case "js":
+                    if (methodval == "createCoords") {
+                        url = jsCoordsUrl;
+                    } else if (methodval == "createMatrix") { url = jsMatrixUrl; }
                     break;
-                case 'cs':
-                    result += "cs clicked";
-                    break;
-                case 'ws':
-                    result += "ws clicked";
-                    break;
+                case "cs":
+                    if (methodval == "createCoords") { url = csCoordsUrl;
+                    } else if (methodval == "createMatrix") { url = csMatrixUrl; }
             }
 
-            bodytxt.innerText = rpcval.toString() + " " + methodval.toString();
+            //deduce the body content to post (and also set the Wcf service call url.)
+            switch (rpcval) {
+                case "js":
+                case "cs":
+                    body += createJsonBody(methodval, multiple, modulus, radius);
+                    break;
+                case "ws":
+                    body += createXmlBody(methodval, multiple, modulus, radius);
+                    url = wcfServiceUrl;
+                    //break;
+            }
+
+            httpmethodtxt.innerText = "POST";
+            urltxt.innerText = url;
+            bodytxt.innerText = body; // + " " + methodval.toString();
+            //responsetxt.innerText = body;
+
+            //function makeApiCall(url, body, methodname);
+        }
+
+        function createJsonBody(method, multiple, modulus, radius) {
+            var body = "";
+
+            if (method == "createCoords") {
+                body += "{x0:" + centreX.toString() + ",y0:" + centreY.toString() + ",radius:" + radius + ",modulus:" + modulus + "}";
+            }
+            else if (method == "createMatrix") {
+                body += "{multiple:" + multiple + ",modulus:" + modulus + "}";
+            }
+            return body;
+        }
+
+        function createXmlBody(method, multiple, modulus, radius) {
+            //create a SOAP XML object as a pure string literal;
+            var body = '<Envelope xmlns="http://schemas.xmlsoap.org/soap/envelope/"><Body>';
+
+            if (method == "createCoords") {
+                body += '<createCoords xmlns="http://tempuri.org/"><x0>';
+                body += centreX.toString() + '</x0><y0>' + centreY.toString() + '</y0><radius>' + radius;
+                body += '</radius><modulus>' + modulus + '</modulus></createCoords></Body></Envelope>';
+            }
+            else if (method == "createMatrix") {
+                body += '<createMatrix xmlns="http://tempuri.org/"><multiple>' + multiple;
+                body += '</multiple><modulus>' + modulus + '</modulus></createMatrix></Body></Envelope>';
+            }
+            return body;
         }
 
         function gotData(data) {
@@ -670,6 +725,18 @@
         //todo in main page. only delay function call return if autoplay is running!!!
 
 
+
+
+
+
+
+
+
+
+
+
+
+
         var simlDelayFunc = function (str, callback) {
             setTimeout(function () {
                 callback(str);
@@ -684,8 +751,6 @@
             var duration = d.getTime() - startTime;
             summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
         }
-    
-        //function makeApiCall(url, body);
 
 
 
@@ -697,26 +762,27 @@
 
 
 
-        function createCoords(x0, y0, radius, modulo) {
-            // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
-            var myCoords = [];                        // array to hold circular coordinates;
-            for (var i = 0; i < modulo; i++) {
-                var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
-                var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
-                myCoords.push([x, y]);
-            }
-            //cumulativeCoordsRPC += 1;
-            return JSON.stringify(myCoords);            // return as a JSON object string
-        }
-        function createMatrix(multiple, modulo) {
-            var myMatrix = [];                         // array to hold multiplication results matrix;
-            for (var i = 0; i < modulo; i++) {
-                var result = (i * multiple) % modulo;
-                myMatrix.push([i, result])
-            }
-            //cumulativeMatrixRPC += 1;
-            return JSON.stringify(myMatrix);           // return as a JSON object string
-        }
+
+        //function createCoords(x0, y0, radius, modulo) {
+        //    // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
+        //    var myCoords = [];                        // array to hold circular coordinates;
+        //    for (var i = 0; i < modulo; i++) {
+        //        var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
+        //        var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
+        //        myCoords.push([x, y]);
+        //    }
+        //    //cumulativeCoordsRPC += 1;
+        //    return JSON.stringify(myCoords);            // return as a JSON object string
+        //}
+        //function createMatrix(multiple, modulo) {
+        //    var myMatrix = [];                         // array to hold multiplication results matrix;
+        //    for (var i = 0; i < modulo; i++) {
+        //        var result = (i * multiple) % modulo;
+        //        myMatrix.push([i, result])
+        //    }
+        //    //cumulativeMatrixRPC += 1;
+        //    return JSON.stringify(myMatrix);           // return as a JSON object string
+        //}
 
 
 
