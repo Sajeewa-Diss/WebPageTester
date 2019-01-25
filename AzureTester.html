@@ -68,6 +68,13 @@
             }
         }
 
+        /*update background for small screens*/
+        @media screen and (max-width: 800px) {
+            body {
+                background-image: url('logotransp.png');
+            }
+        }
+
         #textcontent {
             max-width: 1200px;
             min-width: 600px;
@@ -581,67 +588,64 @@
         //#endregion
 
         //#region testingSaved
-        function testMethod1a() {
-            //construct HTTP request body and get JSON data from serverless function calls. 
-            //pResponse.innerText = createCoords(275, 275, 150, 200);
+        //function testMethod1a() {
+        //    //construct HTTP request body and get JSON data from serverless function calls. 
+        //    //pResponse.innerText = createCoords(275, 275, 150, 200);
 
 
-            var xmlhttp = new XMLHttpRequest();
-            var url = "json1.json";
+        //    var xmlhttp = new XMLHttpRequest();
+        //    var url = "json1.json";
 
-            xmlhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    var myJsonObj = JSON.parse(this.responseText);
-                    gotData(myJsonObj);
-                }
-            };
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
+        //    xmlhttp.onreadystatechange = function () {
+        //        if (this.readyState == 4 && this.status == 200) {
+        //            var myJsonObj = JSON.parse(this.responseText);
+        //            gotData(myJsonObj);
+        //        }
+        //    };
+        //    xmlhttp.open("GET", url, true);
+        //    xmlhttp.send();
 
-            //pResponse.innerText = (x + y).toString();
-        }
+        //    //pResponse.innerText = (x + y).toString();
+        //}
 
-        function gotData1(data) {
-            pResponse.innerText = JSON.stringify(data);
-        }
+        //function gotData1(data) {
+        //    pResponse.innerText = JSON.stringify(data);
+        //}
 
-        function testMethod1b() {
-            //construct HTTP request body and get JSON data from serverless function calls. 
-            //pResponse.innerText = createCoords(275, 275, 150, 200);
+        //function testMethod1b() {
+        //    //construct HTTP request body and get JSON data from serverless function calls. 
+        //    //pResponse.innerText = createCoords(275, 275, 150, 200);
 
-            //clear previous repnse info
-            resetResponse();
+        //    //clear previous repnse info
+        //    resetResponse();
 
-            var d = new Date();
-            startTime = d.getTime();
+        //    var d = new Date();
+        //    startTime = d.getTime();
 
-            var xmlhttp = new XMLHttpRequest();
-            var url = "testpage.html"; //"testing.xml"; //"testpage.html"; "json1.json";
+        //    var xmlhttp = new XMLHttpRequest();
+        //    var url = "testpage.html"; //"testing.xml"; //"testpage.html"; "json1.json";
 
-            xmlhttp.onreadystatechange = function () {
-                if (this.readyState == 4 && this.status == 200) {
-                    //var myResp = this.response;
-                    var myStatus = this.status;
-                    var myStatusText = this.statusText;
-                    var myResponseUrl = this.responseURL;
-                    var myResponseType = this.responseType;
-                    var myResponseXML = this.responseXML;
-                    var responseText = this.responseText;
-                    gotData("j");
-                }
+        //    xmlhttp.onreadystatechange = function () {
+        //        if (this.readyState == 4 && this.status == 200) {
+        //            //var myResp = this.response;
+        //            var myStatus = this.status;
+        //            var myStatusText = this.statusText;
+        //            var myResponseUrl = this.responseURL;
+        //            var myResponseType = this.responseType;
+        //            var myResponseXML = this.responseXML;
+        //            var responseText = this.responseText;
+        //            gotData("j");
+        //        }
 
-            };
-            xmlhttp.open("GET", url, true);
-            xmlhttp.send();
-        }
+        //    };
+        //    xmlhttp.open("GET", url, true);
+        //    xmlhttp.send();
+        //}
 
         //#endregion
 
 
         //#region connectCode
-
-
-
 
         function testConnection() {
 
@@ -715,30 +719,30 @@
             return body;
         }
 
-        function handleApiCall(url, body, methodname) {
-            //note this call will be asynchronous by default! (because it uses XHR).
-            summarytxt.innerText = "Working.. please wait.";
-            var d = new Date();
-            var starttime = d.getTime();
+        //function handleApiCall(url, body, methodname) {
+        //    //note this call will be asynchronous by default! (because it uses XHR).
+        //    summarytxt.innerText = "Working.. please wait.";
+        //    var d = new Date();
+        //    var starttime = d.getTime();
 
-            try {
-                function makeApiCall(url, body, methodname, callback);
-            }
-            catch{
-                summarytxt.innerText = "An unexpected error occurred in RPC call.";
-            }
-            finally {
-                //calculate time on success or failure and populate response messages
-            }
+        //    try {
+        //        makeApiCall(url, body, methodname, callback);
+        //    }
+        //    catch{
+        //        summarytxt.innerText = "An unexpected error occurred in RPC call.";
+        //    }
+        //    finally {
+        //        //calculate time on success or failure and populate response messages
+        //    }
 
-            var duration = d.getTime() - startTime;
-            summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
+        //    var duration = d.getTime() - startTime;
+        //    summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
 
-            httpmethodtxt.innerText = "POST";
-            urltxt.innerText = url;
-            bodytxt.innerText = body; // + " " + methodval.toString();
-            //responsetxt.innerText = body;
-        }
+        //    httpmethodtxt.innerText = "POST";
+        //    urltxt.innerText = url;
+        //    bodytxt.innerText = body; // + " " + methodval.toString();
+        //    //responsetxt.innerText = body;
+        //}
 
 
         //#endregion

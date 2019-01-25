@@ -50,9 +50,6 @@ function makeApiCall(url, body, methodname, callback) {
 }
 
 
-
-
-        }
 var simlDelayFunc = function (str, callback) {
     setTimeout(function () {
         callback(str);
