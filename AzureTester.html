@@ -678,12 +678,12 @@
                 case "js":
                     if (methodval == "createCoords") { globalurl = jsCoordsUrl;
                     } else if (methodval == "createMatrix") { globalurl = jsMatrixUrl; }
-                    methodval = methodval + "Js"
+                    //methodval = methodval + "Js"
                     break;
                 case "cs":
                     if (methodval == "createCoords") { globalurl = csCoordsUrl;
                     } else if (methodval == "createMatrix") { globalurl = csMatrixUrl; }
-                    methodval = methodval + "Cs"
+                    //methodval = methodval + "Cs"
             }
 
             //construct the body content to post (and also set the Wcf service call url.)
@@ -740,7 +740,7 @@
             var starttime = d.getTime();
 
             //try {
-             makeApiCall(url, body, methodname, populateTestResponse);
+             //makeApiCall(url, body, methodname, populateTestResponse);
             //}
             //catch{
             //    //summarytxt.innerText = "An unexpected error occurred in RPC call.";
@@ -758,15 +758,15 @@
             //responsetxt.innerText = body;
         }
 
-        function populateTestResponse(xmlHttp) {
-            console.log("reached final point"); //httpmethodtxt.innerText += "completed";
-            summarytxt.innerText = xmlHttp.status;
-            httpmethodtxt.innerText = "POST";
-            //responsetxt.innerText = "Hi";
-            urltxt.innerText = globalurl;
-            bodytxt.innerText = globalbody;
-            //responsetxt.innerText = body;
-        }
+        //function populateTestResponse(xmlHttp) {
+        //    console.log("reached final point"); //httpmethodtxt.innerText += "completed";
+        //    summarytxt.innerText = xmlHttp.status;
+        //    httpmethodtxt.innerText = "POST";
+        //    //responsetxt.innerText = "Hi";
+        //    urltxt.innerText = globalurl;
+        //    bodytxt.innerText = globalbody;
+        //    //responsetxt.innerText = body;
+        //}
 
 
         //#endregion

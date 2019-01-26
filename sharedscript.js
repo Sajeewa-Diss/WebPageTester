@@ -81,10 +81,11 @@ function getJsMatrix() {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             //document.getElementById("demo2").innerHTML = this.responseText;
+            document.getElementById("txtbody").innerHTML = "did it work?";
             console.log("callback reached");
         }
     };
-    xhttp.open("POST", "http://localhost:7071/api/createMatrixJs", true);
+    xhttp.open("POST", "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=8YDC8UkHguM1csXpMAgNhanW9tt48RYusRzIxJm1dn6uJl4fU9xLpg==", true);
     xhttp.setRequestHeader("Content-type", "application/json");
     xhttp.send("{multiple:10,modulus:7}");
 }
