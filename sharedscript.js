@@ -22,7 +22,8 @@ function makeApiCall(url, body, methodname, callback) {
     xhttp.onreadystatechange = function () {
         if (this.readyState == 4 && this.status == 200) {
             //document.getElementById("txtresponse").innerHTML = this.responseText;
-            //todo this is where to add the callback function
+            //call the callback function to display output
+            callback(this);
         }
     };
 
