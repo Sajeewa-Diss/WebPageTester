@@ -286,7 +286,7 @@
             <section id="textcontent">
                 <span>
                     Azure sends all necessary info to draw the multiplication circle on this website.
-                    This could be done in client-side JavaScript alone, so it is simply for demo only in three technologies:
+                    This could be done in client-side JavaScript alone, so it is simply for demo only, in three technologies:
                     <ul>
                         <li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
                         <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
@@ -425,18 +425,22 @@
 
         //reset controls on page refresh
         function setOnRefresh() {
+
             resetControlsToStart(); // set these to default values in any case (there may be no referring query string).
 
             //obtain data from querystring
             querystringObj = parseQueryString();
 
-            //populate controls using query string params 
-            var loadingErrorMsg = populateControls(querystringObj);
+            //if no query string exists then don't do anything more.
+            if (querystringObj != "") {
+                 //populate controls using query string params
+                var loadingErrorMsg = populateControls(querystringObj);
 
-            //if we have an error message returned, simply populate control with default values.
-            if (loadingErrorMsg != "") {
-                errormsg.innerText = loadingErrorMsg;
-                errormsg.style.display = "inline";
+                //if we have an error message returned when loading from query string, display it.
+                if (loadingErrorMsg != "") {
+                    errormsg.innerText = loadingErrorMsg;
+                    errormsg.style.display = "inline";
+                }
             }
         }
 
@@ -512,6 +516,12 @@
 
             //obtain data from querystring
             var urlParams = window.location.search
+
+            if (urlParams == "") {
+                //we have no query string so no referrer, so return empty string.
+                return "";
+            }
+
             var strGetQuery = urlParams.split('?')[1]
             
             var params = {}, queries, temp, i, l;
@@ -644,6 +654,9 @@
 
         //#region connectCode
 
+        var globalbody;
+        var globalurl;
+
         function testConnection() {
 
             //clear previous response info
@@ -655,34 +668,38 @@
             var multiple = multipleDDL.value;
             var modulus = modulusDDL.value;
             var radius = radiusDDL.value;
-            var body = "";
-            var url = "";
+            //var body = "";
+            //var url = "";
+            globalbody = "";
+            globalurl = "";
 
             //if not a Wcf service call (for which URL is static), then deduce the method call URL.
             switch (rpcval) {
                 case "js":
-                    if (methodval == "createCoords") {
-                        url = jsCoordsUrl;
-                    } else if (methodval == "createMatrix") { url = jsMatrixUrl; }
+                    if (methodval == "createCoords") { globalurl = jsCoordsUrl;
+                    } else if (methodval == "createMatrix") { globalurl = jsMatrixUrl; }
+                    methodval = methodval + "Js"
                     break;
                 case "cs":
-                    if (methodval == "createCoords") { url = csCoordsUrl;
-                    } else if (methodval == "createMatrix") { url = csMatrixUrl; }
+                    if (methodval == "createCoords") { globalurl = csCoordsUrl;
+                    } else if (methodval == "createMatrix") { globalurl = csMatrixUrl; }
+                    methodval = methodval + "Cs"
             }
 
-            //deduce the body content to post (and also set the Wcf service call url.)
+            //construct the body content to post (and also set the Wcf service call url.)
             switch (rpcval) {
                 case "js":
                 case "cs":
-                    body += createJsonBody(methodval, multiple, modulus, radius);
+                    globalbody += createJsonBody(methodval, multiple, modulus, radius);
                     break;
                 case "ws":
-                    body += createXmlBody(methodval, multiple, modulus, radius);
-                    url = wcfServiceUrl;
-                    //break;
-            }
+                    globalbody += createXmlBody(methodval, multiple, modulus, radius);
+                    globalurl = wcfServiceUrl;
+             }
 
-
+            //bodytxt.innerText = methodval;
+            getJsMatrix();
+            //handleApiCall(globalurl, globalbody, methodval);
 
             //function makeApiCall(url, body, methodname);
 
@@ -716,30 +733,40 @@
             return body;
         }
 
-        //function handleApiCall(url, body, methodname) {
-        //    //note this call will be asynchronous by default! (because it uses XHR).
-        //    summarytxt.innerText = "Working.. please wait.";
-        //    var d = new Date();
-        //    var starttime = d.getTime();
+        function handleApiCall(url, body, methodname) {
+            //note the actual call will be asynchronous by default! (because it uses XHR).
+            summarytxt.innerText = "Working.. please wait.";
+            var d = new Date();
+            var starttime = d.getTime();
 
-        //    try {
-        //        makeApiCall(url, body, methodname, callback);
-        //    }
-        //    catch{
-        //        summarytxt.innerText = "An unexpected error occurred in RPC call.";
-        //    }
-        //    finally {
-        //        //calculate time on success or failure and populate response messages
-        //    }
+            //try {
+             makeApiCall(url, body, methodname, populateTestResponse);
+            //}
+            //catch{
+            //    //summarytxt.innerText = "An unexpected error occurred in RPC call.";
+            //}
+            //finally {
+            //    //calculate time on success or failure and populate response messages
+            //}
 
-        //    var duration = d.getTime() - startTime;
-        //    summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
+            //var duration = d.getTime() - startTime;
+            //summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
 
-        //    httpmethodtxt.innerText = "POST";
-        //    urltxt.innerText = url;
-        //    bodytxt.innerText = body; // + " " + methodval.toString();
-        //    //responsetxt.innerText = body;
-        //}
+            //httpmethodtxt.innerText = "POST";
+            //urltxt.innerText = url;
+            //bodytxt.innerText = body;
+            //responsetxt.innerText = body;
+        }
+
+        function populateTestResponse(xmlHttp) {
+            console.log("reached final point"); //httpmethodtxt.innerText += "completed";
+            summarytxt.innerText = xmlHttp.status;
+            httpmethodtxt.innerText = "POST";
+            //responsetxt.innerText = "Hi";
+            urltxt.innerText = globalurl;
+            bodytxt.innerText = globalbody;
+            //responsetxt.innerText = body;
+        }
 
 
         //#endregion
