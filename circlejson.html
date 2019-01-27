@@ -536,6 +536,7 @@
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
                 var radiusVal = slider3.value;
+
                 var d = new Date();
                 var startTime = d.getTime();
                 //check which methods don't have to be called (assume they should by default).
@@ -660,6 +661,14 @@
                 qstring += "rpc=" + document.querySelector('input[name="rpctype"]:checked').id;
                 return qstring;
             }
+
+            //parse the xml response and return its JSON array (including outer square brackets).
+            function getJsonArrayFromXml(xml) {
+                var str = xml.substring(xml.indexOf("[") - 1);
+                str = str.substring(1, str.lastIndexOf("]") + 1);
+                return str;
+            }
+
         </script>
 
     </form>
