@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="favicon.ico" type="image/x-icon" />
     <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
-    <!--<script type="text/javascript" src="sharedscript.js"></script>-->
+    <script type="text/javascript" src="sharedscript.js"></script>
 
     <style>
         * {
@@ -454,8 +454,8 @@
             var radiows = document.getElementById("ws");
             var anchor = document.getElementById("linktester");
             //define circle centre, radius and other initial values
-            const centreX = 275;
-            const centreY = 275;
+            //const centreX = 275;
+            //const centreY = 275;
             var coords = [];
             var matrix = [];
             var multiple = 1;
@@ -529,43 +529,80 @@
 
             //#endregion
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
             var mustCallCreateCoords; // boolean to decide on RPC call
             var mustCallCreateMatrix; // boolean to decide on RPC call
 
             function drawResults() {
+                //form the params for the RPC call.
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
                 var radiusVal = slider3.value;
+                var rpcval = document.querySelector("input[name=rpctype]:checked").id;
 
-                var d = new Date();
-                var startTime = d.getTime();
-                //check which methods don't have to be called (assume they should by default).
+                //statusmsg.innerHTML = rpcval;
+
+                //check which of the two methods have to be called (assume both by default).
                 mustCallCreateCoords = true;
                 mustCallCreateMatrix = true;
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
-                    mustCallCreateCoords = false;
+                    mustCallCreateCoords == false;
                 }
                 if (multiplierVal == prevMultiplier && moduloVal == prevModulo) {  // if these values are unchanged, the multiplication matrix is unchanged.
-                    mustCallCreateMatrix = false;
+                    mustCallCreateMatrix == false;
                 }
 
-                //Call any required methods to prepare for drawing of patterns
+                ////Call any required methods to prepare for drawing of patterns
+                //if (mustCallCreateCoords) {
+                //    coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
+                //}
+                //if (mustCallCreateMatrix) {
+                //    matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
+                //}
+
+                //Call any required methods to refresh the arrays used by drawing methods
                 if (mustCallCreateCoords) {
-                    coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
+                    //coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
+                    mustCallCreateCoords == false;
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", resetCoordsArray);
                 }
                 if (mustCallCreateMatrix) {
-                    matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
+                    //matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
+                    mustCallCreateMatrix == false;
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", resetMatrixArray);
                 }
+
+                //place a function call to draw the circle pattern in the queue
+
                 //do drawing on canvas
                 doDrawOnCanvas(radiusVal);
                 //store current slider values as previous values ready for next time.
                 prevRadius = radiusVal;
                 prevModulo = moduloVal;
                 prevMultiplier = multiplierVal;
-                //Update communication info on screen
-                var duration = d.getTime() - startTime;
-                showStatusInfo(duration, returnStatus);
             }
+
+
+
+                ////Update communication info on screen
+                //var duration = d.getTime() - startTime;
+                //showStatusInfo(duration, returnStatus);
+
 
 
 
@@ -574,6 +611,7 @@
                 drawCircle(centreX, centreY, radius);
                 drawPattern();
             }
+
             function createCoords(x0, y0, radius, modulo) {
                 // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
                 var myCoords = [];                        // array to hold circular coordinates;
@@ -594,6 +632,24 @@
                 cumulativeMatrixRPC += 1;
                 return JSON.stringify(myMatrix);           // return as a JSON object string
             }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
             function drawPattern() {
                 ctx.lineWidth = "1";
@@ -619,6 +675,7 @@
                 strstatusmsg += ". Total RPCs:" + (cumulativeCoordsRPC + cumulativeMatrixRPC).toString();
                 statusmsg.innerHTML = strstatusmsg;
             }
+
             function playMultiplierSlider() {
                 //if at end of autoplay range, reset slider and stop.
                 if (multiple >= 100) {

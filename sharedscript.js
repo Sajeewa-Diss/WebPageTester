@@ -1,7 +1,7 @@
 ﻿
 //set references for global objects
-//const centreX = 275;
-//const centreY = 275;
+const centreX = 275;
+const centreY = 275;
 
 //const jsMatrixUrl = "http://localhost:7071/api/createMatrixJs";
 //const jsCoordsUrl = "http://localhost:7071/api/createCoordsJs";
@@ -99,7 +99,7 @@ function makeApiCall(url, body, methodname, callback, starttime) {
         if (this.readyState == 4)
             //&& this.status == 200)
         {
-            callback(this, starttime);
+            callback(null, this, starttime);
         }
     };
 
@@ -109,6 +109,10 @@ function makeApiCall(url, body, methodname, callback, starttime) {
     //xmlhttp.onerror = function () {
     //    console.log("** An error occurred during the transaction");
     //};
+
+    xmlHttp.onerror = function () {
+        callback(xhr.response);
+    };
 
     //Add response headers (assume JSON is default)
     switch (url) {

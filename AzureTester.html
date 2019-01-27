@@ -410,8 +410,8 @@
 
 
         //define global variables and initial values
-        const centreX = 275;
-        const centreY = 275;
+        //const centreX = 275;
+        //const centreY = 275;
         //var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
         //var startTime //global function call start time
 
@@ -617,7 +617,14 @@
             prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
         }
 
-        function populateTestResponse(xmlHttp, starttime) {
+        function populateTestResponse(err, xmlHttp, starttime) {
+
+            //if error is returned, add it to the response
+            var strerr = "";
+
+            if (err) {
+                strerr += err.toString();
+            }
 
             var d = new Date();
             var duration = d.getTime() - starttime;
@@ -631,7 +638,7 @@
             httpmethodtxt.innerText = "POST";
             urltxt.innerText = testurl;
             bodytxt.innerText = testbody;
-            responsetxt.innerText = xmlHttp.response;
+            responsetxt.innerText = strerr + xmlHttp.response;
         }
         //#endregion
 
