@@ -749,27 +749,13 @@
             bodytxt.innerText = testbody;
             responsetxt.innerText = xmlHttp.response;
 
-            //TODO quick and dirty parse of numeric arrays from XML string. Replace this with a valid Xml method instead.//
+        }
 
-            var xmlDoc = xmlHttp.response;
-            var m, mstring, n, output ;
-
-            m = xmlDoc.indexOf("<createMatrixResult>");
-            if (m != -1) {
-                m = m + ("<createMatrixResult>").length - 1;
-                mstring = xmlDoc.substring(m);
-                n = mstring.indexOf("</createMatrixResult>");
-                output = mstring.substring(1, n);
-            } else {
-                m = xmlDoc.indexOf("<createCoordsResult>");
-                m = m + ("<createCoordsResult>").length - 1;
-                mstring = xmlDoc.substring(m);
-                n = mstring.indexOf("</createCoordsResult>");
-                output = mstring.substring(1, n);
-            }
-
-            //retrun = output;
-
+        //parse the xml response and return its JSON array (including outer square brackets).
+        function getJsonArrayFromXml(xml) {
+            var str = xml.substring(xml.indexOf("[") - 1);
+            str = str.substring(1, str.lastIndexOf("]") + 1);
+            return str;
         }
 
         //#endregion
