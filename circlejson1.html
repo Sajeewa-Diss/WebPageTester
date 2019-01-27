@@ -394,7 +394,7 @@
                         <div class="buttonsimcontainer">
                             <!--<input type="button" id="testBut" class="blueButton" value="Test Azure" />-->
                             <div class="blueButtonSimulator">
-                                <a id="linktester" href="AzureTester.html">Test Azure</a>
+                                <a id="linktester" href="http://localhost:55083/AzureTester.html">Test Azure</a>
                             </div>
                         </div>
                         <div>
@@ -475,9 +475,6 @@
             var intervalId;
 
             toggleBut.addEventListener("click", Start);
-
-            //#region basic functionailty copied from related project 
-
             anchor.addEventListener('click', function (event) {
                 // Stop the link from redirecting
                 event.preventDefault();
@@ -485,7 +482,6 @@
                 // Redirect instead with JavaScript
                 window.location.href = anchor.href + queryString;
             }, false);
-
             slider1.oninput = function () {
                 multiple = Number(this.value);       // save this global variable for autoplay restart.
                 output1.innerText = this.value;
@@ -514,40 +510,21 @@
             function setOnRefresh() {
                 resetControlsToStart();
             }
-
-            function resetControlsToStart() {
-                multiple = 1;
-                slider1.value = multiple;
-                output1.innerText = multiple;
-                output2.innerText = slider2.value;
-                output3.innerText = slider3.value;
-                var radius = output3.innerText;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
-                //fadeOut();
-                radiojs.checked = true; //set this by default.
-            }
-
-            //#endregion
-
-            var mustCallCreateCoords; // boolean to decide on RPC call
-            var mustCallCreateMatrix; // boolean to decide on RPC call
-
             function drawResults() {
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
                 var radiusVal = slider3.value;
                 var d = new Date();
                 var startTime = d.getTime();
-                //check which methods don't have to be called (assume they should by default).
-                mustCallCreateCoords = true;
-                mustCallCreateMatrix = true;
+                //check which methods don't have to be called.
+                var mustCallCreateCoords = true;
+                var mustCallCreateMatrix = true;
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
                     mustCallCreateCoords = false;
                 }
                 if (multiplierVal == prevMultiplier && moduloVal == prevModulo) {  // if these values are unchanged, the multiplication matrix is unchanged.
                     mustCallCreateMatrix = false;
                 }
-
                 //Call any required methods to prepare for drawing of patterns
                 if (mustCallCreateCoords) {
                     coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
@@ -565,10 +542,6 @@
                 var duration = d.getTime() - startTime;
                 showStatusInfo(duration, returnStatus);
             }
-
-
-
-
             function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
                 drawCircle(centreX, centreY, radius);
                 drawPattern();
@@ -593,7 +566,6 @@
                 cumulativeMatrixRPC += 1;
                 return JSON.stringify(myMatrix);           // return as a JSON object string
             }
-
             function drawPattern() {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "wheat";
@@ -612,7 +584,6 @@
                 }
                 ctx.closePath();
             }
-
             function showStatusInfo(duration, status) {
                 strstatusmsg = "Methods returned in " + duration + " ms. Status " + status;
                 strstatusmsg += ". Total RPCs:" + (cumulativeCoordsRPC + cumulativeMatrixRPC).toString();
@@ -632,14 +603,23 @@
                     Stop();
                 }
             }
-
+            function resetControlsToStart() {
+                multiple = 1;
+                slider1.value = multiple;
+                output1.innerText = multiple;
+                output2.innerText = slider2.value;
+                output3.innerText = slider3.value;
+                var radius = output3.innerText;
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
+                //fadeOut();
+                radiojs.checked = true; //set this by default.
+            }
             function Start() {
                 intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
                 toggleBut.value = "Stop";
             }
-
             function Stop() {
                 if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
                     resetControlsToStart();
@@ -649,7 +629,6 @@
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
             }
-
             function modifyQueryString() {
                 // get all querys tring params
                 const amp = "&"; //"&amp;"
