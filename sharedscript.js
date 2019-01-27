@@ -25,7 +25,9 @@ function makeApiCall(url, body, methodname, callback, starttime) {
     xmlHttp.onreadystatechange = function () {
         console.log("reached function");
 
-        if (this.readyState == 4 && this.status == 200) {                                                  // && this.status == 200)
+        if (this.readyState == 4)
+            //&& this.status == 200)
+        {
             callback(this, starttime);
         }
     };
