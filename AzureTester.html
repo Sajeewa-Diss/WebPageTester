@@ -152,7 +152,7 @@
 
         #statusdisplay {
             font-weight: bold;
-            color: lime;
+            /*color: blue;*/
         }
 
         .radiogroupcontainer {
@@ -412,8 +412,11 @@
         //define global variables and initial values
         const centreX = 275;
         const centreY = 275;
-        var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
+        //var querystringObj; //a JSON object to hold query string data from referrer. TODO maybe make this local.
         //var startTime //global function call start time
+
+        var testbody;
+        var testurl;
 
         //call functions to populate dropdowns (only req'd on initial loading)
         populateMultiple();
@@ -429,7 +432,7 @@
             resetControlsToStart(); // set these to default values in any case (there may be no referring query string).
 
             //obtain data from querystring
-            querystringObj = parseQueryString();
+            var querystringObj = parseQueryString();
 
             //if no query string exists then don't do anything more.
             if (querystringObj != "") {
@@ -654,9 +657,6 @@
 
         //#region connectCode
 
-        var globalbody;
-        var globalurl;
-
         function testConnection() {
 
             //clear previous response info
@@ -668,41 +668,32 @@
             var multiple = multipleDDL.value;
             var modulus = modulusDDL.value;
             var radius = radiusDDL.value;
-            //var body = "";
-            //var url = "";
-            globalbody = "";
-            globalurl = "";
+
+            testbody = "";
+            testurl = "";
 
             //if not a Wcf service call (for which URL is static), then deduce the method call URL.
             switch (rpcval) {
                 case "js":
-                    if (methodval == "createCoords") { globalurl = jsCoordsUrl;
-                    } else if (methodval == "createMatrix") { globalurl = jsMatrixUrl; }
-                    //methodval = methodval + "Js"
+                    if (methodval == "createCoords") { testurl = jsCoordsUrl;
+                    } else if (methodval == "createMatrix") { testurl = jsMatrixUrl; }
                     break;
                 case "cs":
-                    if (methodval == "createCoords") { globalurl = csCoordsUrl;
-                    } else if (methodval == "createMatrix") { globalurl = csMatrixUrl; }
-                    //methodval = methodval + "Cs"
+                    if (methodval == "createCoords") { testurl = csCoordsUrl;
+                    } else if (methodval == "createMatrix") { testurl = csMatrixUrl; }
             }
 
             //construct the body content to post (and also set the Wcf service call url.)
             switch (rpcval) {
                 case "js":
                 case "cs":
-                    globalbody += createJsonBody(methodval, multiple, modulus, radius);
+                    testbody += createJsonBody(methodval, multiple, modulus, radius);
                     break;
                 case "ws":
-                    globalbody += createXmlBody(methodval, multiple, modulus, radius);
-                    globalurl = wcfServiceUrl;
+                    testbody += createXmlBody(methodval, multiple, modulus, radius);
+                    testurl = wcfServiceUrl;
              }
-
-            //bodytxt.innerText = methodval;
-            getJsMatrix();
-            //handleApiCall(globalurl, globalbody, methodval);
-
-            //function makeApiCall(url, body, methodname);
-
+            prepareApiCall(testurl, testbody, methodval);
         }
 
         function createJsonBody(method, multiple, modulus, radius) {
@@ -733,105 +724,36 @@
             return body;
         }
 
-        function handleApiCall(url, body, methodname) {
+        function prepareApiCall(url, body, methodname) {
             //note the actual call will be asynchronous by default! (because it uses XHR).
             summarytxt.innerText = "Working.. please wait.";
             var d = new Date();
             var starttime = d.getTime();
 
-            //try {
-             //makeApiCall(url, body, methodname, populateTestResponse);
-            //}
-            //catch{
-            //    //summarytxt.innerText = "An unexpected error occurred in RPC call.";
-            //}
-            //finally {
-            //    //calculate time on success or failure and populate response messages
-            //}
-
-            //var duration = d.getTime() - startTime;
-            //summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
-
-            //httpmethodtxt.innerText = "POST";
-            //urltxt.innerText = url;
-            //bodytxt.innerText = body;
-            //responsetxt.innerText = body;
+            makeApiCall(url, body, methodname, populateTestResponse, starttime);
         }
 
-        //function populateTestResponse(xmlHttp) {
-        //    console.log("reached final point"); //httpmethodtxt.innerText += "completed";
-        //    summarytxt.innerText = xmlHttp.status;
-        //    httpmethodtxt.innerText = "POST";
-        //    //responsetxt.innerText = "Hi";
-        //    urltxt.innerText = globalurl;
-        //    bodytxt.innerText = globalbody;
-        //    //responsetxt.innerText = body;
-        //}
+        function populateTestResponse(xmlHttp, starttime) {
 
+            var d = new Date();
+            var duration = d.getTime() - starttime;
+
+            // show the HTTP status in color code (green for success, red for anything else).
+            if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
+            else { outstatus.style.color = "red";}
+            outstatus.innerText = xmlHttp.status + " " + xmlHttp.statusText;
+
+            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms."; //xmlHttp.status;
+            httpmethodtxt.innerText = "POST";
+            urltxt.innerText = testurl;
+            bodytxt.innerText = testbody;
+            responsetxt.innerText = xmlHttp.response; //Text;
+            respcontenttxt.innerText = xmlHttp.responseText;
+        }
 
         //#endregion
 
         //todo in main page. only delay function call return if autoplay is running!!!
-
-
-
-
-
-
-
-
-
-
-
-
-
-        //function gotData(data) {
-
-        //    summarytxt.innerText = "Working.. please wait.";
-        //    urltxt.innerText = "hsagdhjsgd";
-        //    bodytxt.innerText = "hsagdhjsgd";
-        //    responsetxt.innerText = "hsagdhjsgd";
-        //    respcontenttxt.innerText = "hsagdhjsgd";
-
-        //    simlDelayFunc("testing", blah);
-        //}
-
-        //var simlDelayFunc = function (str, callback) {
-        //    setTimeout(function () {
-        //        callback(str);
-        //    }, 3000);
-
-        //}
-
-        //function blah(str) {
-        //    outstatus.innerText = "called";
-        //    //calculate time on success or failure
-        //    var d = new Date();
-        //    var duration = d.getTime() - startTime;
-        //    summarytxt.innerText = "Method returned in " + duration.toString() + "ms.";
-        //}
-
-        //function createCoords(x0, y0, radius, modulo) {
-        //    // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
-        //    var myCoords = [];                        // array to hold circular coordinates;
-        //    for (var i = 0; i < modulo; i++) {
-        //        var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
-        //        var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
-        //        myCoords.push([x, y]);
-        //    }
-        //    //cumulativeCoordsRPC += 1;
-        //    return JSON.stringify(myCoords);            // return as a JSON object string
-        //}
-        //function createMatrix(multiple, modulo) {
-        //    var myMatrix = [];                         // array to hold multiplication results matrix;
-        //    for (var i = 0; i < modulo; i++) {
-        //        var result = (i * multiple) % modulo;
-        //        myMatrix.push([i, result])
-        //    }
-        //    //cumulativeMatrixRPC += 1;
-        //    return JSON.stringify(myMatrix);           // return as a JSON object string
-        //}
-
 
     </script>
 
