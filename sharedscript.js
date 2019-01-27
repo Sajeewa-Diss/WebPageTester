@@ -6,6 +6,8 @@
 //const jsMatrixUrl = "http://localhost:7071/api/createMatrixJs";
 //const jsCoordsUrl = "http://localhost:7071/api/createCoordsJs";
 
+//const wcfServiceUrl = "http://localhost:57566/Service.svc";
+
 const jsMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=8YDC8UkHguM1csXpMAgNhanW9tt48RYusRzIxJm1dn6uJl4fU9xLpg==";
 const csMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixCs?code=H1kM0i4KT49QaSzR7YurY5xhZGBK13glgts411JdEoaSYonvb30FoQ==";
 const jsCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsJs?code=e343aUwM51tcl8DIfaNcIgdGe7ZMPXGp8STTYZ4YDC1bmoeBb1Hh3g==";
@@ -23,7 +25,7 @@ function makeApiCall(url, body, methodname, callback, starttime) {
     }
 
     xmlHttp.onreadystatechange = function () {
-        console.log("reached function");
+        console.log(url);
 
         if (this.readyState == 4)
             //&& this.status == 200)
@@ -33,6 +35,11 @@ function makeApiCall(url, body, methodname, callback, starttime) {
     };
 
     xmlHttp.open("POST", url, true); // post the HTTP request async
+
+    //todo investigate this handler
+    //xmlhttp.onerror = function () {
+    //    console.log("** An error occurred during the transaction");
+    //};
 
     //Add response headers (assume JSON is default)
     switch (url) {
