@@ -612,10 +612,10 @@
             var rpcval = document.querySelector("input[name=rpctype]:checked").id;
             var methodval = document.querySelector("input[name=methodname]:checked").id;
 
+            summarytxt.innerText = "Working.. please wait.";
+
             prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
         }
-
-
 
         function populateTestResponse(xmlHttp, starttime) {
 

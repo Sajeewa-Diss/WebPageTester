@@ -48,7 +48,7 @@ function prepareApiCall(multiple, modulus, radius, rpcval, methodname, callback)
     }
 
     //note the actual call will be asynchronous by default! (because it uses XHR).
-    summarytxt.innerText = "Working.. please wait.";
+    //summarytxt.innerText = "Working.. please wait.";
     var d = new Date();
     var starttime = d.getTime();
 
@@ -105,7 +105,7 @@ function makeApiCall(url, body, methodname, callback, starttime) {
 
     xmlHttp.open("POST", url, true); // post the HTTP request async
 
-    //todo investigate this handler
+    //todo investigate this handler (may be able to provide more feedback when pre-flight checks fail and return status is "0" for example)
     //xmlhttp.onerror = function () {
     //    console.log("** An error occurred during the transaction");
     //};
