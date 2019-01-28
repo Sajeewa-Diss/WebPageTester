@@ -619,11 +619,10 @@
 
         function populateTestResponse(err, xmlHttp, starttime) {
 
-            //if error is returned, add it to the response
+            //if error is returned, add it to the response text.
             var strerr = "";
-
             if (err) {
-                strerr += err.toString();
+                strerr += err.toString() + " ";
             }
 
             var d = new Date();
@@ -634,7 +633,7 @@
             else { outstatus.style.color = "red";}
             outstatus.innerText = xmlHttp.status + " " + xmlHttp.statusText;
 
-            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms."; //xmlHttp.status;
+            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms.";
             httpmethodtxt.innerText = "POST";
             urltxt.innerText = testurl;
             bodytxt.innerText = testbody;

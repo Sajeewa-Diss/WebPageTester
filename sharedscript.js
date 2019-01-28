@@ -18,7 +18,7 @@ var testbody;
 var testurl;
 
 
-function prepareApiCall(multiple, modulus, radius, rpcval, methodname, callback) {
+function prepareApiCall(multiple, modulus, radius, rpcval, methodname, callback, starttime) {
 
     testbody = "";
     testurl = "";
@@ -49,8 +49,12 @@ function prepareApiCall(multiple, modulus, radius, rpcval, methodname, callback)
 
     //note the actual call will be asynchronous by default! (because it uses XHR).
     //summarytxt.innerText = "Working.. please wait.";
-    var d = new Date();
-    var starttime = d.getTime();
+    if (starttime == undefined) {
+        var d = new Date();
+        starttime = d.getTime();
+    }
+    //var d = new Date();
+    //var starttime = d.getTime();
 
     makeApiCall(testurl, testbody, methodname, callback, starttime);
 }
@@ -85,17 +89,11 @@ function createXmlBody(method, multiple, modulus, radius) {
 
 function makeApiCall(url, body, methodname, callback, starttime) {
     // Create HTTP request
-    var xmlHttp;
-    try {
-        xmlHttp = new XMLHttpRequest();
-    } catch (e) {
-        alert("This function only works in browsers with AJAX support");
-        return false;
-    }
+    var xmlHttp = new XMLHttpRequest();
+
+    console.log("makeapicall" + methodname.toString() + starttime.toString());
 
     xmlHttp.onreadystatechange = function () {
-        console.log(url);
-
         if (this.readyState == 4)
             //&& this.status == 200)
         {
@@ -105,16 +103,12 @@ function makeApiCall(url, body, methodname, callback, starttime) {
 
     xmlHttp.open("POST", url, true); // post the HTTP request async
 
-    //todo investigate this handler (may be able to provide more feedback when pre-flight checks fail and return status is "0" for example)
-    //xmlhttp.onerror = function () {
-    //    console.log("** An error occurred during the transaction");
-    //};
-
+    //promisify this call with the following event handler (may be able to provide more feedback when pre-flight checks fail and return status is "0" for example)
     xmlHttp.onerror = function () {
-        callback(xhr.response);
+        callback(xhr.response, this, starttime);
     };
 
-    //Add response headers (assume JSON is default)
+    //Add response headers (assume JSON by default)
     switch (url) {
         case wcfServiceUrl:
             xmlHttp.setRequestHeader("Content-type", "text/xml");

@@ -380,7 +380,7 @@
                             <p><output id="moduloOut" class="spanOutput"></output></p>
                         </div>
                         <div class="slidecontainer">
-                            <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
+                            <input type="range" min="1" max="200" value="4" class="slider" id="myRange2"> <!--initial value 200-->
                         </div>
                         <div>
                             <p>Radius (100 to 250):</p>
@@ -454,8 +454,6 @@
             var radiows = document.getElementById("ws");
             var anchor = document.getElementById("linktester");
             //define circle centre, radius and other initial values
-            //const centreX = 275;
-            //const centreY = 275;
             var coords = [];
             var matrix = [];
             var multiple = 1;
@@ -501,6 +499,7 @@
             }
             //draw circle (outline only) using initial values above.
             drawCircle(centreX, centreY, initialRadius);
+
             function drawCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
@@ -522,18 +521,12 @@
                 output2.innerText = slider2.value;
                 output3.innerText = slider3.value;
                 var radius = output3.innerText;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead!!
-                //fadeOut();
+                drawCircle(centreX, centreY, radius); //draw an empty circle only.
+                //fadeOut(); //??
                 radiojs.checked = true; //set this by default.
             }
 
             //#endregion
-
-
-
-
-
-
 
 
 
@@ -550,6 +543,10 @@
 
             function drawResults() {
                 //form the params for the RPC call.
+                //This method is called by all relevant change handlers and always resets the arrays used to draw the circle, 
+                //so there should be no lag causing drawing of circle with previous inputs.
+                console.log("inside draw results");
+
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
                 var radiusVal = slider3.value;
@@ -561,10 +558,10 @@
                 mustCallCreateCoords = true;
                 mustCallCreateMatrix = true;
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
-                    mustCallCreateCoords == false;
+                    mustCallCreateCoords = false;
                 }
                 if (multiplierVal == prevMultiplier && moduloVal == prevModulo) {  // if these values are unchanged, the multiplication matrix is unchanged.
-                    mustCallCreateMatrix == false;
+                    mustCallCreateMatrix = false;
                 }
 
                 ////Call any required methods to prepare for drawing of patterns
@@ -575,63 +572,92 @@
                 //    matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
                 //}
 
-                //Call any required methods to refresh the arrays used by drawing methods
+                //Call any required methods to refresh the arrays used by drawing methods.
+                // Call only one of these options as each RPC call always invokes a checks for the other RPC call or to draw the resulting circle. 
                 if (mustCallCreateCoords) {
                     //coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
-                    mustCallCreateCoords == false;
-                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", resetCoordsArray);
-                }
-                if (mustCallCreateMatrix) {
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", setCoordsArray);
+                    //prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+                } else if (mustCallCreateMatrix) {
                     //matrix = JSON.parse(createMatrix(multiplierVal, moduloVal));
-                    mustCallCreateMatrix == false;
-                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", resetMatrixArray);
+                    //mustCallCreateMatrix == false; //todo set these before or after return or in callback???????????????????
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", setMatrixArray);
+                    //prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+                } else {
+                    doDrawOnCanvas(radiusVal);}
+            }
+
+            function setCoordsArray(err, xmlHttp, starttime) {
+
+                cumulativeCoordsRPC += 1;
+                //if error is returned, add it to the response text.
+                var strerr = "";
+                if (err) {
+                    //strerr += err.toString() + " ";
+                    throw "Callback setCoordsArray received an error."
                 }
+                coords = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
+                var respstatus = Number(xmlHttp.status);
 
-                //place a function call to draw the circle pattern in the queue
+                var multiplierVal = slider1.value;
+                var moduloVal = slider2.value;
+                var radiusVal = slider3.value;
+                var rpcval = document.querySelector("input[name=rpctype]:checked").id;
 
-                //do drawing on canvas
-                doDrawOnCanvas(radiusVal);
-                //store current slider values as previous values ready for next time.
+                mustCallCreateCoords = false; //we have just called this so remove this flag.
+                // save values that affect this array only (multiplier is not relevant) 
                 prevRadius = radiusVal;
                 prevModulo = moduloVal;
-                prevMultiplier = multiplierVal;
-            }
 
-
-
-                ////Update communication info on screen
-                //var duration = d.getTime() - startTime;
-                //showStatusInfo(duration, returnStatus);
-
-
-
-
-
-            function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
-                drawCircle(centreX, centreY, radius);
-                drawPattern();
-            }
-
-            function createCoords(x0, y0, radius, modulo) {
-                // coordinates will be calculated from the 9 0'clock position as being the start (so we move 180 degrees around the circle by reflecting each point about the centre)
-                var myCoords = [];                        // array to hold circular coordinates;
-                for (var i = 0; i < modulo; i++) {
-                    var x = Math.abs((x0 + radius * Math.cos(2 * Math.PI * i / modulo) - 2 * x0).toFixed(2));  //returns string x coord
-                    var y = Math.abs((y0 + radius * Math.sin(2 * Math.PI * i / modulo) - 2 * y0).toFixed(2));  //returns string y coord
-                    myCoords.push([x, y]);
+                //check to see if the other array needs to change - may have be triggered by a new event. If so send the previous start time.
+                if ((mustCallCreateMatrix) && (respstatus == 200)) {
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", setMatrixArray, starttime);
+                } else {
+                    doDrawOnCanvas(radiusVal, respstatus, starttime);
                 }
-                cumulativeCoordsRPC += 1;
-                return JSON.stringify(myCoords);            // return as a JSON object string
             }
-            function createMatrix(multiplier, modulo) {
-                var myMatrix = [];                         // array to hold multiplication results matrix;
-                for (var i = 0; i < modulo; i++) {
-                    var result = (i * multiplier) % modulo;
-                    myMatrix.push([i, result])
-                }
+
+            function setMatrixArray(err, xmlHttp, starttime) {
+
                 cumulativeMatrixRPC += 1;
-                return JSON.stringify(myMatrix);           // return as a JSON object string
+                //if error is returned, add it to the response text.
+                var strerr = "";
+                if (err) {
+                    //strerr += err.toString() + " ";
+                    throw "Callback setMatrixArray received an error."
+                }
+                matrix = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
+                var respstatus = Number(xmlHttp.status);
+
+                var multiplierVal = slider1.value;
+                var moduloVal = slider2.value;
+                var radiusVal = slider3.value;
+                var rpcval = document.querySelector("input[name=rpctype]:checked").id;
+
+                mustCallCreateMatrix = false; //we have just called this so remove this flag.
+                // save values that affect this array only (radius is not relevant) 
+                prevMultiplier = multiplierVal;
+                prevModulo = moduloVal;
+
+                //check to see if the other array needs to change - may have be triggered by a new event. If so send the previous start time.
+                if ((mustCallCreateCoords) && (respstatus == 200)) {
+                    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", setCoordsArray, starttime);
+                } else {
+                    doDrawOnCanvas(radiusVal, respstatus, starttime);
+                }
             }
+
+
+            function doDrawOnCanvas(radius, status, starttime) {           //we can call this function to draw circle with current global array settings etc.
+                drawCircle(centreX, centreY, radius);
+
+                if (status == 200) {
+                    drawPattern();
+                }
+                //Update communication info on screen
+                showStatusInfo(status, starttime);
+            }
+
 
 
 
@@ -668,11 +694,14 @@
                     }
                 }
                 ctx.closePath();
+                console.log("pattern drawn");
             }
 
-            function showStatusInfo(duration, status) {
-                strstatusmsg = "Methods returned in " + duration + " ms. Status " + status;
-                strstatusmsg += ". Total RPCs:" + (cumulativeCoordsRPC + cumulativeMatrixRPC).toString();
+            function showStatusInfo(status, starttime) {
+                var d = new Date();
+                var duration = d.getTime() - starttime;
+                strstatusmsg = "Returned in " + duration + " ms. Status " + status;
+                strstatusmsg += ". Total RPCs:" + (cumulativeCoordsRPC).toString() + " + " + (cumulativeMatrixRPC).toString();
                 statusmsg.innerHTML = strstatusmsg;
             }
 
@@ -719,11 +748,12 @@
                 return qstring;
             }
 
-            //parse the xml response and return its JSON array (including outer square brackets).
-            function getJsonArrayFromXml(xml) {
-                var str = xml.substring(xml.indexOf("[") - 1);
-                str = str.substring(1, str.lastIndexOf("]") + 1);
-                return str;
+            //parse the xml or JSON string response and return it as a pure JSON array.
+            function getJsonArrayFromXmlOrString(xml) {
+                var str = xml.substring(xml.indexOf("[["));
+                str = str.substring(1, str.lastIndexOf("]]") + 1);
+                var array = eval('[' + str + ']');
+                return array;
             }
 
         </script>

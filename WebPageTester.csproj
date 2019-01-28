@@ -96,7 +96,7 @@
     <Content Include="logo.png" />
     <Content Include="logotransp.png" />
     <Content Include="serviceTester0.html" />
-    <Content Include="serviceTester.html" />
+    <Content Include="buttontest.html" />
     <None Include="sharedscript1.js.bck" />
     <Content Include="sharedscript.js" />
     <Content Include="testing.xml" />

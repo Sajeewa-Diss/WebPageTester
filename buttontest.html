@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+        <title>Sample HTML Projects</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <title>Test Page</title>
+
+ 
+    </head>
+<body>
+    <h1>
+        Test Page
+    </h1>
+    <p>
+        Input:
+        <input type="text" id="input" />
+    </p>
+    <input id="btnCall" type="button" onclick="callF();" value="Test" />
+    <p>
+        Result:
+    </p>
+    <textarea id="result" cols="50" rows="8"></textarea>
+    <script type="text/javascript">
+        var outputtxt = document.getElementById("result");
+
+        function callF() {
+            var string = "[-5, 5, 5], [-6, 15, 15], [7, 13, 12]";
+
+            var arrays = eval('[' + string + ']');         
+
+            outputtxt.innerHTML = JSON.stringify(arrays[1]);
+
+
+
+        }
+    </script>
+</body>
+    </html>
