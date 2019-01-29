@@ -26,11 +26,11 @@
         var outputtxt = document.getElementById("result");
 
         function callF() {
-            var string = "[-5, 5, 5], [-6, 15, 15], [7, 13, 12]";
+            var string = {[5,5][6,15][7,13]};
 
-            var arrays = eval('[' + string + ']');         
+            var arrays = JSON.stringify(string);         
 
-            outputtxt.innerHTML = JSON.stringify(arrays[1]);
+            outputtxt.innerHTML = arrays; //.length;
 
 
 
