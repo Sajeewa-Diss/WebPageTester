@@ -26,13 +26,14 @@
         var outputtxt = document.getElementById("result");
 
         function callF() {
-            var string = {[5,5][6,15][7,13]};
 
-            var arrays = JSON.stringify(string);         
+            for (var i = 0; i < 3; i++) {                      //an iterator - notice that we usually omit the let keyword!! 
+                setTimeout(
+                    () => { outputtxt.innerHTML = outputtxt.innerHTML + i.toString() + '\n'; }, 1000);  
+                //f();                                               //no need to call f as it will be triggered after setTimeout
+            } 
 
-            outputtxt.innerHTML = arrays; //.length;
-
-
+            outputtxt.innerHTML = "this will run before setTimeout" + '\n';
 
         }
     </script>

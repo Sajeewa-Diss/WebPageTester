@@ -86,7 +86,7 @@
     <Content Include="circlejson3.html" />
     <Content Include="closepage.html" />
     <Content Include="dummybuttonpage0.html" />
-    <Content Include="dummybuttonpage.html" />
+    <Content Include="dummybuttonform.html" />
     <Content Include="AzureTester.html" />
     <Content Include="favicon.ico" />
     <Content Include="functiontest.html" />
