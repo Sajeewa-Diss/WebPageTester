@@ -19,6 +19,44 @@ const wcfServiceUrl = "https://azuremultitableswcfsvc01.azurewebsites.net/Servic
 var connbody;
 var connurl;
 
+function prepareApiCallWithCallback(multiple, modulus, radius, rpcval, methodname, callback, starttime) {
+
+    connbody = "";
+    connurl = "";
+
+    //if not a Wcf service call (for which URL is static), then deduce the method call URL.
+    switch (rpcval) {
+        case "js":
+            if (methodname == "createCoords") {
+                connurl = jsCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = jsMatrixUrl; }
+            break;
+        case "cs":
+            if (methodname == "createCoords") {
+                connurl = csCoordsUrl;
+            } else if (methodname == "createMatrix") { connurl = csMatrixUrl; }
+    }
+
+    //construct the body content to post (and also set the Wcf service call url.)
+    switch (rpcval) {
+        case "js":
+        case "cs":
+            connbody += createJsonBody(methodname, multiple, modulus, radius);
+            break;
+        case "ws":
+            connbody += createXmlBody(methodname, multiple, modulus, radius);
+            connurl = wcfServiceUrl;
+    }
+
+    //note the actual call will be asynchronous by default! (because it uses XHR).
+    if (starttime == undefined) {
+        var d = new Date();
+        starttime = d.getTime();
+    }
+    makeApiCallWithCallback(connurl, connbody, methodname, callback, starttime);
+}
+
+//same function as above but return an explicit promise object containing our data.
 function prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodname, starttime) {
 
     connbody = "";
@@ -58,43 +96,6 @@ function prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodname,
     return makeApiCallRtnPromise(connurl, connbody, methodname, starttime);
 }
 
-function prepareApiCallWithCallback(multiple, modulus, radius, rpcval, methodname, callback, starttime) {
-
-    connbody = "";
-    connurl = "";
-
-    //if not a Wcf service call (for which URL is static), then deduce the method call URL.
-    switch (rpcval) {
-        case "js":
-            if (methodname == "createCoords") {
-                connurl = jsCoordsUrl;
-            } else if (methodname == "createMatrix") { connurl = jsMatrixUrl; }
-            break;
-        case "cs":
-            if (methodname == "createCoords") {
-                connurl = csCoordsUrl;
-            } else if (methodname == "createMatrix") { connurl = csMatrixUrl; }
-    }
-
-    //construct the body content to post (and also set the Wcf service call url.)
-    switch (rpcval) {
-        case "js":
-        case "cs":
-            connbody += createJsonBody(methodname, multiple, modulus, radius);
-            break;
-        case "ws":
-            connbody += createXmlBody(methodname, multiple, modulus, radius);
-            connurl = wcfServiceUrl;
-    }
-
-    //note the actual call will be asynchronous by default! (because it uses XHR).
-    if (starttime == undefined) {
-        var d = new Date();
-        starttime = d.getTime();
-    }
-    makeApiCallWithCallback(connurl, connbody, methodname, callback, starttime);
-}
-
 function createJsonBody(method, multiple, modulus, radius) {
     var body = "";
 
@@ -131,7 +132,7 @@ function makeApiCallWithCallback(url, body, methodname, callback, starttime) {
 
     xmlHttp.onreadystatechange = function () {
         if (this.readyState == 4)
-            //&& this.status == 200)
+        //&& this.status == 200)
         {
             callback(null, this, starttime);
         }
@@ -204,32 +205,3 @@ function makeApiCallRtnPromise(url, body, methodname, starttime) {
         xmlHttp.send(body);
     });
 }
-
-//function makeApiCall(url, body, methodname, callback, starttime) {
-//    // Create HTTP request
-//    var xmlHttp = new XMLHttpRequest();
-
-//    xmlHttp.onload = function () {
-//        callback(null, this, starttime);
-//    };
-
-//    xmlHttp.open("POST", url, true); // post the HTTP request async
-
-//    //promisify this call with the following event handler (may be able to provide more feedback when pre-flight checks fail and return status is "0" for example)
-//    xmlHttp.onerror = function () {
-//        callback(xhr.response, this, starttime);
-//    };
-
-//    //Add response headers (assume JSON by default)
-//    switch (url) {
-//        case wcfServiceUrl:
-//            xmlHttp.setRequestHeader("Content-type", "text/xml");
-//            //set the SOAP action from the body content main element name
-//            xmlHttp.setRequestHeader("SOAPAction", "http://tempuri.org/IService/" + methodname);
-//            break;
-//        default:
-//            xmlHttp.setRequestHeader("Content-type", "application/json");
-//    }
-//    xmlHttp.send(body);
-//}
-

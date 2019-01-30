@@ -615,7 +615,7 @@
             summarytxt.innerText = "Working.. please wait.";
 
             var promise = prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodval, null);
-            //prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+            //prepareApiCallWithCallback(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
             promise.then(obj1 => parseResolve(obj1));
             promise.catch(obj1 => parseReject(obj1));
         }
@@ -626,7 +626,7 @@
 
         function parseReject(obj1) {
             //pass the error object to be displayed
-            populateTestResponse(obj1);
+            populateTestResponse(obj1, obj1.rsp);
         }
 
         function populateTestResponse(err, xmlHttp, starttime) {
@@ -635,15 +635,12 @@
             var statustext;
             var maintext;
             var timeatstart;
-
             var strerr = "";
-            var statusmsg = "";
-            var responsemsg = "";
 
-            // show the HTTP status in color code (green for success, red for anything else).
+            // show the HTTP status in red by default.
             outstatus.style.color = "red";
 
-            //error info may be returned in a valid HTTP reponse, or we may only have returned an error.
+            //error info may be returned in an HTTP reponse, or we may only have returned an error.
             if (xmlHttp) {
                 if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
                 status = xmlHttp.status;

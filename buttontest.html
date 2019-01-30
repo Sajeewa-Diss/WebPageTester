@@ -27,13 +27,21 @@
 
         function callF() {
 
-            const promise5 = new Promise((resolve, reject) =>
-                setTimeout(resolve, 2000, { msg: 'Hello World', str: 'testing', num: 10 }));  
+            const promise1 = Promise.resolve('Hello World');    // same as const promise1 = 'Hello World';
+            const promise2 = 10;                                // same as const promise2 = Promise.resolve(10); as the success/resolve result of the promise.
+            const promise3 = new Promise((resolve, reject) =>
+                setTimeout(resolve, 2000, { msg: 'Hello World', str: 'testing', num: 10 }));            // three promise variables, the last of which is async
 
-            promise5.then(values =>
+            promise3.then(values =>
                 outputtxt.innerText = values.str);
 
+            //Promise.all([promise1, promise2, promise3]).then(callback);                              // this will return all three items to console, but take 2 seconds, the time it took for last promise to return!
         }
+
+        function callback() {
+            outputtxt.innerText += ".callback called."
+        }
+
     </script>
 </body>
     </html>
