@@ -614,30 +614,59 @@
 
             summarytxt.innerText = "Working.. please wait.";
 
-            prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+            var promise = prepareApiCallRtnPromise(multiple, modulus, radius, rpcval, methodval, null);
+            //prepareApiCall(multiple, modulus, radius, rpcval, methodval, populateTestResponse);
+            promise.then(obj1 => parseResolve(obj1));
+            promise.catch(obj1 => parseReject(obj1));
+        }
+
+        function parseResolve(obj1) {
+            populateTestResponse(null, obj1.rsp, obj1.stime)
+        }
+
+        function parseReject(obj1) {
+            //pass the error object to be displayed
+            populateTestResponse(obj1);
         }
 
         function populateTestResponse(err, xmlHttp, starttime) {
 
-            //if error is returned, add it to the response text.
+            var status;
+            var statustext;
+            var maintext;
+            var timeatstart;
+
             var strerr = "";
-            if (err) {
-                strerr += err.toString() + " ";
+            var statusmsg = "";
+            var responsemsg = "";
+
+            // show the HTTP status in color code (green for success, red for anything else).
+            outstatus.style.color = "red";
+
+            //error info may be returned in a valid HTTP reponse, or we may only have returned an error.
+            if (xmlHttp) {
+                if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
+                status = xmlHttp.status;
+                statustext = xmlHttp.statusText;
+                maintext = xmlHttp.response;
+                timeatstart = starttime;
+            } else if (err) {
+                status = err.status;
+                statustext = err.statusText;
+                maintext = err.moreinfo;
+                timeatstart = err.stime;
+                strerr = "Error occurred. ";
             }
 
             var d = new Date();
-            var duration = d.getTime() - starttime;
+            var duration = d.getTime() - timeatstart;
 
-            // show the HTTP status in color code (green for success, red for anything else).
-            if (xmlHttp.status == 200) { outstatus.style.color = "lime"; }
-            else { outstatus.style.color = "red";}
-            outstatus.innerText = xmlHttp.status + " " + xmlHttp.statusText;
-
-            summarytxt.innerText = xmlHttp.status + " " + xmlHttp.statusText + ". Method returned in " + duration.toString() + "ms.";
+            outstatus.innerText = status + " " + statustext;
+            summarytxt.innerText = status + " " + statustext + ". Method returned in " + duration.toString() + "ms.";
             httpmethodtxt.innerText = "POST";
-            urltxt.innerText = testurl;
-            bodytxt.innerText = testbody;
-            responsetxt.innerText = strerr + xmlHttp.response;
+            urltxt.innerText = connurl;
+            bodytxt.innerText = connbody;
+            responsetxt.innerText = strerr + maintext;
         }
         //#endregion
 

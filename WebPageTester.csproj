@@ -71,11 +71,6 @@
     <Content Include="AzureTester8.html" />
     <Content Include="AzureTester7.html" />
     <Content Include="AzureTester6.html" />
-    <Content Include="AzureTester5.html" />
-    <Content Include="AzureTester4.html" />
-    <Content Include="AzureTester3.html" />
-    <Content Include="AzureTester2.html" />
-    <Content Include="AzureTester1.html" />
     <Content Include="AzureTester0.html" />
     <Content Include="azuretests.html" />
     <Content Include="circlejs.html" />
@@ -97,7 +92,8 @@
     <Content Include="logotransp.png" />
     <Content Include="serviceTester0.html" />
     <Content Include="buttontest.html" />
-    <None Include="sharedscript1.js.bck" />
+    <Content Include="sharedscript2.js" />
+    <Content Include="sharedscript1.js" />
     <Content Include="sharedscript.js" />
     <Content Include="testing.xml" />
     <Content Include="testpage.html" />

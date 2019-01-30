@@ -27,13 +27,11 @@
 
         function callF() {
 
-            for (var i = 0; i < 3; i++) {                      //an iterator - notice that we usually omit the let keyword!! 
-                setTimeout(
-                    () => { outputtxt.innerHTML = outputtxt.innerHTML + i.toString() + '\n'; }, 1000);  
-                //f();                                               //no need to call f as it will be triggered after setTimeout
-            } 
+            const promise5 = new Promise((resolve, reject) =>
+                setTimeout(resolve, 2000, { msg: 'Hello World', str: 'testing', num: 10 }));  
 
-            outputtxt.innerHTML = "this will run before setTimeout" + '\n';
+            promise5.then(values =>
+                outputtxt.innerText = values.str);
 
         }
     </script>
