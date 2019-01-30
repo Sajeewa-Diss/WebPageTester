@@ -473,7 +473,7 @@
             var initialRadius = slider3.value;
             var toggleBut = document.getElementById("toggleBut");
             var intervalId;
-            var lasttimedrawcalled;
+            var lasttimedrawcalled= 0;
 
             toggleBut.addEventListener("click", Start);
 
@@ -538,16 +538,13 @@
 
             //a wrapper function to limit the number of RPC calls per second.
             function drawResults() {
-                //draw result immediately, but if previous call was less than 250ms, then wait to call it.
+                //draw result immediately, but if previous call was less than 200ms, then do nothing.
                 var d = new Date();
                 var timesinceprevcall = d.getTime() - lasttimedrawcalled;
 
-                if (timesinceprevcall < 250) {
-                    console.log("kicked draw results");
-                    return;
-                } else {
+                if (timesinceprevcall > 200) {
                     drawResultsNow();
-                }
+                } 
             }
 
 
@@ -620,7 +617,6 @@
                 }
 
                 if (httpstatuscheck == 200 && mustCallCreateCoords) {
-                    console.log("");
                     starttime = resultsarray[0].stime;
                     httpstatuscheck = updateCoordsArray(resultsarray[0].rsp);
                 }
