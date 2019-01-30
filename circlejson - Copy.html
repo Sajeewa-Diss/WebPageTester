@@ -457,6 +457,8 @@
             var coords = [];
             var matrix = [];
             var multiple = 1;
+            var mustCallCreateCoords; // boolean to decide on RPC call
+            var mustCallCreateMatrix;
             var cumulativeCoordsRPC = 0
             var cumulativeMatrixRPC = 0
             var prevModulo = 0;
@@ -464,7 +466,7 @@
             var prevMultiplier = 0;
             var strstatusmsg = "Methods not yet called.";
             statusmsg.innerHTML = strstatusmsg;
-            var returnStatus = 0;
+            //var returnStatus = 0;
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
             output3.innerText = slider3.value;
@@ -498,9 +500,9 @@
                 drawResults(this.value);
             }
             //draw circle (outline only) using initial values above.
-            drawCircle(centreX, centreY, initialRadius);
+            drawHollowCircle(centreX, centreY, initialRadius);
 
-            function drawCircle(x0, y0, radius) {
+            function drawHollowCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -521,7 +523,7 @@
                 output2.innerText = slider2.value;
                 output3.innerText = slider3.value;
                 var radius = output3.innerText;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.
+                drawHollowCircle(centreX, centreY, radius); //draw an empty circle only.
                 //fadeOut(); //??
                 radiojs.checked = true; //set this by default.
             }
@@ -551,15 +553,11 @@
 
                 var coordspromise;
                 var matrixpromise;
-                let httpstatuscheck = 200;
-
-                var mustCallCreateCoords; // boolean to decide on RPC call todo: combine with code below possibly.
-                var mustCallCreateMatrix; // boolean to decide on RPC call
-
+                
+                mustCallCreateCoords = true; // boolean to decide on RPC call
+                mustCallCreateMatrix = true; // ditto
 
                 //check which of the two methods have to be called (assume both by default).
-                mustCallCreateCoords = true;
-                mustCallCreateMatrix = true;
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
                     mustCallCreateCoords = false;
                 }
@@ -572,13 +570,8 @@
                 //catch (err) {
                 //}
 
-
-
-                ////Call any required methods to prepare for drawing of patterns and do so using promises.
-
-
+                //Call any required methods to prepare for drawing of patterns and do so using promises.
                 if (mustCallCreateCoords) {
-                    //coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
                     coordspromise = prepareApiCallRtnPromise(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", starttime);
                     //promise.catch(obj1 => parseReject(obj1)); todo
                 } else {
@@ -586,7 +579,6 @@
                 }
                     
                 if (mustCallCreateMatrix) {
-                    //coords = JSON.parse(createCoords(centreX, centreY, radiusVal, moduloVal));
                     matrixpromise = prepareApiCallRtnPromise(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", starttime);
                 } else {
                     matrixpromise = Promise.resolve(""); // a dummy promise resolved successfully.
@@ -596,86 +588,62 @@
                 Promise.all([coordspromise, matrixpromise]).then(values =>
                     prepDrawPattern(values, multiplierVal, moduloVal, radiusVal));
 
-                //if (err) {
-                //    //strerr += err.toString() + " ";
-                //    throw "Callback setCoordsArray received an error."
-                //}
-
-                    //doDrawOnCanvas(radiusVal);
             }
 
             function prepDrawPattern(resultsarray, thismultiplier, thismodulo, thisradius) {
                 statusmsg.innerHTML = "all promises worked";
                 var starttime;
-                var mustUpdateDrawing = true;
+                var httpstatuscheck = 200;
+                var mustUpdateDrawing;
 
-                ////maybe there is no change to anything - so check.
-                //try {
-                //    mustUpdateDrawing = mustCallCreateCoords && mustCallCreateMatrix;
-                //}
-                //catch{
-                //    mustUpdateDrawing = true;
-                //}
-                
+                //maybe there is no change to anything - so check if anything has changed.
+                mustUpdateDrawing = mustCallCreateCoords || mustCallCreateMatrix;
 
-                //if (mustCallCreateCoords && (httpstatuscheck == 200)) {
+                if (!mustUpdateDrawing) {
+                    statusmsg.innerHTML = "todo no need to update drawing";
+                    return;  //nothing to draw.
+                }
+
+                if (httpstatuscheck == 200 && mustCallCreateCoords) {
+                    console.log("");
                     starttime = resultsarray[0].stime;
-                httpstatuscheck = updateCoordsArray(resultsarray[0].rsp, thismultiplier, thismodulo, thisradius);
-                //}
+                    httpstatuscheck = updateCoordsArray(resultsarray[0].rsp);
+                }
 
-                //if (mustCallCreateMatrix && (httpstatuscheck == 200)) {
+                if (httpstatuscheck == 200 && mustCallCreateMatrix) {
                     starttime = resultsarray[1].stime;
-                httpstatuscheck = updateMatrixArray(resultsarray[1].rsp, thismultiplier, thismodulo, thisradius);
-                //}
+                    httpstatuscheck = updateMatrixArray(resultsarray[1].rsp);
+                }
 
-                //if (mustUpdateDrawing && (httpstatuscheck == 200)) {
-                doDrawOnCanvas(thisradius, httpstatuscheck, starttime);
-                //}
+                if (httpstatuscheck == 200) {
+                    doDrawOnCanvas(thisradius, httpstatuscheck, starttime);
+                    prevMultiplier = thismultiplier;
+                    prevRadius = thisradius;
+                    prevModulo = thismodulo;
+                } else {
+                    statusmsg.innerHTML = "todo some error message";
+                }
+
+
+
             }
 
-            function updateCoordsArray(xmlHttp, thismultiplier, thismodulo, thisradius) {
+            function updateCoordsArray(xmlHttp) {
 
                 cumulativeCoordsRPC += 1;
-
                 coords = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
-                var respstatus = Number(xmlHttp.status);
-                //var multiplierVal = slider1.value;
-                //var moduloVal = slider2.value;
-                //var radiusVal = slider3.value;
-                //var rpcval = document.querySelector("input[name=rpctype]:checked").id;
-
-                mustCallCreateCoords = false; //we have just called this so remove this flag.
-                // save values that affect this array only (multiplier is not relevant) 
-                prevRadius = thisradius;
-                prevModulo = thismodulo;
-
-                return respstatus;
-
-                //check to see if the other array needs to change - may have be triggered by a new event. If so send the previous start time.
-                //if ((mustCallCreateMatrix) && (respstatus == 200)) {
-                //    prepareApiCall(multiplierVal, moduloVal, radiusVal, rpcval, "createMatrix", setMatrixArray, starttime);
-                //} else {
-                //    doDrawOnCanvas(radiusVal, respstatus, starttime);
-                //}
+                return Number(xmlHttp.status);
             }
 
-            function updateMatrixArray(xmlHttp, thismultiplier, thismodulo, thisradius) {
+            function updateMatrixArray(xmlHttp) {
 
                 cumulativeMatrixRPC += 1;
-  
                 matrix = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
-                var respstatus = Number(xmlHttp.status);
-
-                mustCallCreateMatrix = false; //we have just called this so remove this flag.
-                // save values that affect this array only (radius is not relevant) 
-                prevMultiplier = thismultiplier;
-                prevModulo = thismodulo;
-
-                return respstatus;
+                return Number(xmlHttp.status);
             }
             
             function doDrawOnCanvas(radius, status, starttime) {           //we can call this function to draw circle with current global array settings etc.
-                drawCircle(centreX, centreY, radius);
+                drawHollowCircle(centreX, centreY, radius);
 
                 if (status == 200) {
                     drawPattern();
@@ -689,6 +657,11 @@
             function drawPattern() {
 
                 //todo some test before calling invalid drawing pattern
+
+                if (coords.length != matrix.length) {
+                    statusmsg.innerHTML = "todo array mismatch";
+                    return;
+                }
 
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "wheat";

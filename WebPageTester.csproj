@@ -75,6 +75,7 @@
     <Content Include="AzureTester0.html" />
     <Content Include="azuretests.html" />
     <Content Include="circlejs.html" />
+    <Content Include="circlejson4.html" />
     <Content Include="circlejson2.html" />
     <Content Include="circlejson1.html" />
     <Content Include="circlejson0.html" />
