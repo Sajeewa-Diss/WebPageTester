@@ -289,7 +289,7 @@
                     It could be done in client-side JavaScript alone, so this is simply for demo only, of three alternative technologies:
                     <ul>
                         <li>Azure functions built in JavaScript running on a serverless architecture in Node.js</li>
-                        <li>Azure functions built in C# running on a serverless architecture in the .NET framework.</li>
+                        <li>Azure functions built in C# running in a DLL on a serverless architecture in the .NET framework.</li>
                         <li>A WCF service built in C# hosted on an IIS App Service communicating through SOAP.</li>
                     </ul>
                 </span>
@@ -572,7 +572,7 @@
                         break;
                     default:
                         radiojs.checked = true;
-                        errorstring += "RPC method is not valid.";
+                        errorstring += "RPC method is not valid (using default).";
                 }
 
                 //populate controls
@@ -585,7 +585,7 @@
             }
             finally {
                 if (errorstring != "" ) {
-                    errorstring = "Errors detected in query string. Using defaults to populate screen instead. " + errorstring;
+                    errorstring = "Errors detected in query string. " + errorstring;
                 }
                 return errorstring;
             }

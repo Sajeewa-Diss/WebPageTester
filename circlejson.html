@@ -353,7 +353,7 @@
                         </p>
                         <p>
                             <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-json" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
-                            <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html">JavaScript</a> the same functionality found here, but uses client-side JavaScript only.</span><br />
+                            <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html">JavaScript</a> the same functionality found here, but uses (more responsive) client-side JavaScript only.</span><br />
                             <span><a href="https://www.youtube.com/watch?v=qhbuKbxJsk8" target="_blank">YouTube Mathologer</a> the linked YouTube video was the inspiration for this webpage.</span><br />
                         </p>
                         <div>
@@ -380,7 +380,7 @@
                             <p><output id="moduloOut" class="spanOutput"></output></p>
                         </div>
                         <div class="slidecontainer">
-                            <input type="range" min="1" max="200" value="4" class="slider" id="myRange2"> <!--initial value 200-->
+                            <input type="range" min="1" max="200" value="200" class="slider" id="myRange2"> <!--initial value 200-->
                         </div>
                         <div>
                             <p>Radius (100 to 250):</p>
@@ -464,7 +464,7 @@
             var prevModulo = 0;
             var prevRadius = 0;
             var prevMultiplier = 0;
-            var strstatusmsg = "Methods not yet called.";
+            var strstatusmsg = "Please note that remote calls have been limited to five groups per sec.";
             statusmsg.innerHTML = strstatusmsg;
             //var returnStatus = 0;
             output1.innerText = slider1.value;
@@ -473,7 +473,9 @@
             var initialRadius = slider3.value;
             var toggleBut = document.getElementById("toggleBut");
             var intervalId;
-            var lasttimedrawcalled= 0;
+            var lasttimedrawcalled = 0;
+            var playingslide = false;
+            var timeoutId;
 
             toggleBut.addEventListener("click", Start);
 
@@ -538,7 +540,7 @@
 
             //a wrapper function to limit the number of RPC calls per second.
             function drawResults() {
-                //draw result immediately, but if previous call was less than 200ms, then do nothing.
+                //draw result immediately, but if previous call was less than 200ms ago, then do nothing.
                 var d = new Date();
                 var timesinceprevcall = d.getTime() - lasttimedrawcalled;
 
@@ -546,7 +548,6 @@
                     drawResultsNow();
                 } 
             }
-
 
             function drawResultsNow() {
                 //This method is called by all relevant change handlers and always resets the arrays used to draw the circle, 
@@ -566,10 +567,9 @@
                 var coordspromise;
                 var matrixpromise;
                 
+                //check which of the two methods have to be called (assume both by default).
                 mustCallCreateCoords = true; // boolean to decide on RPC call
                 mustCallCreateMatrix = true; // ditto
-
-                //check which of the two methods have to be called (assume both by default).
                 if (radiusVal == prevRadius && moduloVal == prevModulo) {          // if these values are unchanged, the pattern circular coords are unchanged.
                     mustCallCreateCoords = false;
                 }
@@ -632,12 +632,10 @@
                     prevMultiplier = thismultiplier;
                     prevRadius = thisradius;
                     prevModulo = thismodulo;
+                    //checkForAutoplay();
                 } else {
                     statusmsg.innerHTML = "todo some error message integrate it to the info display function";
                 }
-
-
-
             }
 
             function updateCoordsArray(xmlHttp) {
@@ -652,7 +650,7 @@
                 return Number(xmlHttp.status);
             }
             
-            function doDrawOnCanvas(radius, status, starttime) {           //we can call this function to draw circle with current global array settings etc.
+            function doDrawOnCanvas(radius, status, starttime) {   //we call this function to draw circle with current global array settings etc.
                 drawHollowCircle(centreX, centreY, radius);
 
                 if (status == 200) {
@@ -696,23 +694,96 @@
                 statusmsg.innerHTML = strstatusmsg;
             }
 
+            //wrapper function to repeat the circle drawing periodically (called after the promises are resolved).
+            function playMultiplierSliderWrapper() {
+
+                if (playingslide) {
+                    playMultiplierSlider();
+                } else {
+                    clearTimeout(timerId);
+                    console.log("clearTimeout called");
+                    return;
+                }
+
+                //let timerId = setTimeout(function tick() {
+                    
+                // call the playMultiplierSlider method when we reach 500 ms since last call to draw circle (less the time since last call).
+                let nextcall;
+
+                let d = new Date();
+                let  timesinceprevdraw = d.getTime() - lasttimedrawcalled;
+
+                if (timesinceprevdraw > 1000) {
+                    nextcall = 0; //next call immediate.
+                } else {
+                    nextcall = Math.max(201, (Math.min(1000, 1000 - timesinceprevdraw)));
+                }
+
+                console.log("checkforautoplay timesinceprevdraw " + timesinceprevdraw.toString() + " next call " + nextcall.toString());
+                //let timerId = setTimeout({drawResultsNow();}, nextcall);
+                let timerId = setTimeout(function () { playMultiplierSliderWrapper() }, nextcall);
+                //    //if at any stage the button is stopped we should cancel
+                //    if (playingslide) {
+                //        playMultiplierSlider();
+                //    } else {
+                //        clearTimeout(timerId);
+                //        console.log("clearTimeout called");
+                //    }
+
+                //    timerId = setTimeout(tick, 1000); // (*)
+                //}, 0); //call the first invocation immediately
+            }
+
             function playMultiplierSlider() {
+
+                console.log("entered playing slider");
+
+                if (!playingslide) {
+                    console.log("returned from not playing slider");
+                    return;
+                }
+
                 //if at end of autoplay range, reset slider and stop.
                 if (multiple >= 100) {
                     multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
                     Stop();
                 }
+
                 multiple += 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
-                drawResults();
+
+                drawResults(); //do this periodically without any timer checks??.
+
                 if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
                     Stop();
                 }
             }
 
             function Start() {
-                intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
+                //// call this method every 500 ms, less the time since last call (but not less than 201 ms).
+                //// note 201 ms ensures it will trigger an immediate drawing of circle (because under 200 ms nothing is triggered).
+                //var nextcall;
+
+                //var d = new Date();
+                //var timesinceprevdraw = d.getTime() - lasttimedrawcalled;
+
+                //if (timesinceprevdraw > 500) {
+                //    nextcall = 0; //next call immediate.
+                //} else {
+                //    nextcall = Math.max(201, (Math.min(500, 500 - timesinceprevdraw)));
+                //}
+
+                console.log("start called ");
+
+                playingslide = true;
+                drawResultsNow();
+
+                //
+                playMultiplierSliderWrapper();
+                //intervalId = setInterval(playMultiplierSliderWrapper, 100); //poll the wrapper function every 100 ms, say.
+
+
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
                 toggleBut.value = "Stop";
@@ -722,11 +793,32 @@
                 if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
                     resetControlsToStart();
                 }
-                clearInterval(intervalId);
+
+                //clearInterval(intervalId);
+                playingslide = false;
+                //todo clearTimeout(timeoutId);
+
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
             }
+
+            //function Start() {
+            //    intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
+            //    toggleBut.removeEventListener("click", Start);
+            //    toggleBut.addEventListener("click", Stop);
+            //    toggleBut.value = "Stop";
+            //}
+
+            //function Stop() {
+            //    if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
+            //        resetControlsToStart();
+            //    }
+            //    clearInterval(intervalId);
+            //    toggleBut.removeEventListener("click", Stop);
+            //    toggleBut.addEventListener("click", Start);
+            //    toggleBut.value = "Autoplay";
+            //}
 
             function modifyQueryString() {
                 // get all querys tring params

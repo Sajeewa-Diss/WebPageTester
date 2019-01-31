@@ -451,9 +451,9 @@
             }
 
             //draw circle with initial values
-            drawCircle(centreX, centreY, initialRadius);
+            drawHollowCircle(centreX, centreY, initialRadius);
 
-            function drawCircle(x0, y0, radius) {
+            function drawHollowCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
 
@@ -467,6 +467,17 @@
             //reset slider and circle on page refresh
             function setOnRefresh() {
                 resetControlsToStart();
+            }
+
+            function resetControlsToStart() {
+                multiple = 1;
+                slider1.value = multiple;
+                output1.innerText = multiple;
+                output2.innerText = slider2.value;
+                output3.innerText = slider3.value;
+                var radius = output3.innerText;
+                drawHollowCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead (or display 100 for a while)!!
+                //fadeOut();
             }
 
             function drawResults() {
@@ -504,7 +515,7 @@
             }
 
             function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
-                drawCircle(centreX, centreY, radius);
+                drawHollowCircle(centreX, centreY, radius);
                 drawPattern();
             }
 
@@ -575,7 +586,6 @@
                 }
 
                 multiple += 1;
-
                 slider1.value = multiple;
                 output1.innerText = multiple;
                 drawResults();
@@ -583,17 +593,6 @@
                 if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
                     Stop();
                 }
-            }
-
-            function resetControlsToStart() {
-                multiple = 1;
-                slider1.value = multiple;
-                output1.innerText = multiple;
-                output2.innerText = slider2.value;
-                output3.innerText = slider3.value;
-                var radius = output3.innerText;
-                drawCircle(centreX, centreY, radius); //draw an empty circle only.  //todo fade out circle drawing instead (or display 100 for a while)!!
-                //fadeOut();
             }
 
             function Start() {
