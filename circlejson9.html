@@ -464,8 +464,7 @@
             var prevModulo = 0;
             var prevRadius = 0;
             var prevMultiplier = 0;
-            var strstatusmsg = "";
-            var initialstatusmsg = "Please note that remote calls have been limited to five sets per sec.";
+            var strstatusmsg = "Please note that remote calls have been limited to five sets per sec.";
             var initialRadius = slider3.value;
             var toggleBut = document.getElementById("toggleBut");
             //var intervalId;
@@ -473,7 +472,7 @@
             var playingslider = false;
             //var timeoutId;
 
-            statusmsg.innerHTML = initialstatusmsg;
+            statusmsg.innerHTML = strstatusmsg;
             //var returnStatus = 0;
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
@@ -530,15 +529,7 @@
                 if (document.querySelector('input[name="rpctype"]:checked') == null) { //make sure a default RPC method is selected.
                     radiojs.checked = true; //set this by default.
                 }
-                //if there
-
-                //show an initial display message or an inof message that circle was reset.
-                if (document.querySelector("span#statusmsg").firstChild.nodeValue != initialstatusmsg) {
-                    statusmsg.innerHTML = "Circle reset.";
-                }
-
-                //statusmsg.innerHTML = "";
-                playingslider = false;
+                //playingslider = false;
             }
 
             function handleSlider1Update(slider) {
@@ -769,7 +760,7 @@
 
                 if (!playingslider || (multiple >= 100)) { //check we are still in autoplay or have reached the end
                     Stop();
-                    return;
+                    //return;
                 }
 
                 ////if at end of autoplay range, reset slider and stop.
@@ -784,7 +775,7 @@
                 output1.innerText = multiple;
                 drawResultsNow();
 
-                if (multiple > 99) {  /*check again if we have reached the end of autoplay.*/
+                if (multiple == 100) {  /*check again if we have reached the end of autoplay.*/
                     //playingslider = false;
                     //
                     Stop();
@@ -806,7 +797,8 @@
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
 
-                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
+                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.;
+                    //setTimeout(resetControlsToStart();
                     setTimeout(function () { resetControlsToStart(); }, 2000)
                 }
             }
