@@ -503,7 +503,7 @@
             drawHollowCircle(centreX, centreY, initialRadius);
 
             function drawHollowCircle(x0, y0, radius) {
-                console.log("drawing hollow circle");
+                console.log("drawing hollow circle ");
                 ctx.lineWidth = "1";
                 ctx.strokeStyle = "lightgrey";
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -544,6 +544,7 @@
             function handleSlider1Update(slider) {
                 multiple = Number(slider.value);       // save this global variable for autoplay restart.
                 output1.innerText = slider.value;
+                //control.innerText = slider.value;
                 drawResults();
             }
 
@@ -731,7 +732,7 @@
                     }
                 }
                 ctx.closePath();
-                console.log("pattern drawn");
+                console.log("pattern drawn ");
             }
 
             function showStatusInfo(status, starttime) { //todo error feedback
@@ -761,7 +762,7 @@
                 } else {
                     nextcall = Math.max(700, (Math.min(750, 750 - timesinceprevdraw)));
                 }
-                console.log("next call " + nextcall.toString());
+                console.log("next call " + nextcall.toString() + " " + d.toTimeString());
                 setTimeout(function () { playMultiplierSlider() }, nextcall);
             }
 
