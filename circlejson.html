@@ -491,13 +491,13 @@
                 window.location.href = anchor.href + queryString;
             }, false);
 
-            slider1.oninput = function () { handleSlider1Update(this); }
-            slider2.oninput = function () { handleSlider2Update(this); }
-            slider3.oninput = function () { handleSlider3Update(this); }
+            slider1.oninput = function () { handleSliderUpdate(this, output1); }
+            slider2.oninput = function () { handleSliderUpdate(this, output2); }
+            slider3.oninput = function () { handleSliderUpdate(this, output3); }
 
-            slider1.onchange = function () { handleSlider1UpdateNow(this); }
-            slider2.onchange = function () { handleSlider2UpdateNow(this); }
-            slider3.onchange = function () { handleSlider3UpdateNow(this); }
+            slider1.onchange = function () { handleSliderUpdateNow(this, output1); }
+            slider2.onchange = function () { handleSliderUpdateNow(this, output2); }
+            slider3.onchange = function () { handleSliderUpdateNow(this, output3); }
 
             //draw circle (outline only) using initial values above.
             drawHollowCircle(centreX, centreY, initialRadius);
@@ -518,6 +518,7 @@
             }
 
             function resetControlsToStart() {
+                playingslider = false;
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
@@ -538,43 +539,33 @@
                 }
 
                 //statusmsg.innerHTML = "";
-                playingslider = false;
+
             }
 
-            function handleSlider1Update(slider) {
-                multiple = Number(slider.value);       // save this global variable for autoplay restart.
-                output1.innerText = slider.value;
-                //control.innerText = slider.value;
-                drawResults();
-            }
+            function handleSliderUpdate(slider, control) {
+                //console.log("handleSliderUpdate");
+                //console.log(slider.id);
 
-            function handleSlider2Update(slider) {
-                output2.innerText = slider.value;
-                drawResults();
-            }
-
-            function handleSlider3Update(slider) {
-                output3.innerText = slider.value;
+                if (slider.id == "myRange1") {             //if multiplier being changed, save this value globally
+                    multiple = Number(slider.value);       // save this global variable for autoplay restart.
+                }
+                control.innerText = slider.value;
                 drawResults();
             }
 
             //#endregion
 
-            // Always call drawing of circle on slider change events.
-            function handleSlider1UpdateNow(slider) {
-                multiple = Number(slider.value);       // save this global variable for autoplay restart.
-                output1.innerText = slider.value;
-                drawResultsNow();
-            }
-
-            function handleSlider2UpdateNow(slider) {
-                output2.innerText = slider.value;
-                drawResultsNow();
-            }
-
-            function handleSlider3UpdateNow(slider) {
-                output3.innerText = slider.value;
-                drawResultsNow();
+            // Always call drawing of circle on slider change events (unless in autoplay).
+            function handleSliderUpdateNow(slider, control) {
+                if (slider.id == "myRange1") {             //if multiplier being changed, save this value globally
+                    multiple = Number(slider.value);       // save this global variable for autoplay restart.
+                }
+                control.innerText = slider.value;
+                if (playingslider) {
+                    drawResults();
+                } else {
+                    drawResultsNow();
+                }
             }
 
             //a wrapper function to limit the number of RPC calls per second.

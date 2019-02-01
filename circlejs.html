@@ -449,13 +449,22 @@
             //    output3.innerText = this.value;
             //    drawResults();
             //}
-            slider1.oninput = function () { handleSlider1Update(this); }
-            slider2.oninput = function () { handleSlider2Update(this); }
-            slider3.oninput = function () { handleSlider3Update(this); }
+            //slider1.oninput = function () { handleSlider1Update(this); }
+            //slider2.oninput = function () { handleSlider2Update(this); }
+            //slider3.oninput = function () { handleSlider3Update(this); }
 
-            slider1.onchange = function () { handleSlider1Update(this); }
-            slider2.onchange = function () { handleSlider2Update(this); }
-            slider3.onchange = function () { handleSlider3Update(this); }
+            //slider1.onchange = function () { handleSlider1Update(this); }
+            //slider2.onchange = function () { handleSlider2Update(this); }
+            //slider3.onchange = function () { handleSlider3Update(this); }
+
+            slider1.oninput = function () { handleSliderUpdate(this, output1); }
+            slider2.oninput = function () { handleSliderUpdate(this, output2); }
+            slider3.oninput = function () { handleSliderUpdate(this, output3); }
+
+            slider1.onchange = function () { handleSliderUpdate(this, output1); }
+            slider2.onchange = function () { handleSliderUpdate(this, output2); }
+            slider3.onchange = function () { handleSliderUpdate(this, output3); }
+
             //handleSlider1Update
 
             //draw circle with initial values
@@ -488,21 +497,33 @@
                 //fadeOut();
             }
 
-            function handleSlider1Update(slider) {
-                multiple = Number(slider.value);       // save this global variable for autoplay restart.
-                output1.innerText = slider.value;
+            function handleSliderUpdate(slider, control) {
+                //console.log("handleSliderUpdate");
+                //console.log(slider.id);
+
+                if (slider.id == "myRange1") { //if multiplier being changed, save this value globally
+                    multiple = Number(slider.value);       // save this global variable for autoplay restart.
+                }
+                //output1.innerText = slider.value;
+                control.innerText = slider.value;
                 drawResults();
             }
 
-            function handleSlider2Update(slider) {
-                output2.innerText = slider.value;
-                drawResults();
-            }
+            //function handleSlider1Update(slider) {
+            //    multiple = Number(slider.value);       // save this global variable for autoplay restart.
+            //    output1.innerText = slider.value;
+            //    drawResults();
+            //}
 
-            function handleSlider3Update(slider) {
-                output3.innerText = slider.value;
-                drawResults();
-            }
+            //function handleSlider2Update(slider) {
+            //    output2.innerText = slider.value;
+            //    drawResults();
+            //}
+
+            //function handleSlider3Update(slider) {
+            //    output3.innerText = slider.value;
+            //    drawResults();
+            //}
 
             function drawResults() {
                 var multiplierVal = slider1.value;
@@ -629,13 +650,18 @@
             }
 
             function Stop() {
-                if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
-                    resetControlsToStart(); 
-                }
+                //if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
+                //    resetControlsToStart(); 
+                //}
                 clearInterval(intervalId);
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
+
+                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
+                    setTimeout(function () { resetControlsToStart(); }, 1000)
+                }
+
             }
 
         </script>
