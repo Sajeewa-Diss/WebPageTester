@@ -453,6 +453,7 @@
             var radiocs = document.getElementById("cs");
             var radiows = document.getElementById("ws");
             var anchor = document.getElementById("linktester");
+
             //define circle centre, radius and other initial values
             var coords = [];
             var matrix = [];
@@ -468,13 +469,10 @@
             var initialstatusmsg = "Please note that remote calls have been limited to five sets per sec.";
             var initialRadius = slider3.value;
             var toggleBut = document.getElementById("toggleBut");
-            //var intervalId;
             var lasttimedrawcalled = 0;
             var playingslider = false;
-            //var timeoutId;
 
             statusmsg.innerHTML = initialstatusmsg;
-            //var returnStatus = 0;
             output1.innerText = slider1.value;
             output2.innerText = slider2.value;
             output3.innerText = slider3.value;
@@ -535,33 +533,31 @@
                 if (document.querySelector('input[name="rpctype"]:checked') == null) { //make sure a default RPC method is selected.
                     radiojs.checked = true; //set this by default.
                 }
-                //if there
 
-                //show an initial display message or an inof message that circle was reset.
+                //show an initial display message or otherwise an info message that circle was reset.
                 if (document.querySelector("span#statusmsg").firstChild.nodeValue != initialstatusmsg) {
-                    statusmsg.innerHTML = "Circle reset.";
+                    statusmsg.innerHTML = "";
                 }
             }
 
             function handleSliderUpdate(slider, control) {
-                //console.log("handleSliderUpdate");
-                //console.log(slider.id);
-
-                if (slider.id == "myRange1") {             //if multiplier being changed, save this value globally
+                if (slider.id == "myRange1") {             // if multiplier being changed
                     multiple = Number(slider.value);       // save this global variable for autoplay restart.
                 }
                 control.innerText = slider.value;
+                // Call for drawing of circle but not immediately (input event is less important to handle than change event).
                 drawResults();
             }
 
             //#endregion
 
-            // Always call drawing of circle on slider change events (unless in autoplay).
+
             function handleSliderUpdateNow(slider, control) {
-                if (slider.id == "myRange1") {             //if multiplier being changed, save this value globally
+                if (slider.id == "myRange1") {             // if multiplier being changed
                     multiple = Number(slider.value);       // save this global variable for autoplay restart.
                 }
                 control.innerText = slider.value;
+                // Always call for immediate drawing of circle on slider change events (unless in autoplay mode).
                 if (playingslider) {
                     drawResults();
                 } else {
@@ -573,7 +569,7 @@
             function drawResults() {
                 //draw result immediately, but if previous call was less than 200ms ago, then do nothing.
 
-                //if autoplay is on, let it handle drawing cricles alone.
+                //if autoplay is on, let it handle drawing of circles instead.
                 if (playingslider) {
                     return;
                 }
@@ -582,7 +578,7 @@
                 var timesinceprevcall = d.getTime() - lasttimedrawcalled;
 
                 if (timesinceprevcall > 200) {
-                    drawResultsNow();
+                    drawResultsNow();           //but we won't add events to queue otherwise (other events handlers will be triggered instead).
                 } 
             }
 
@@ -617,7 +613,7 @@
 
                 mustUpdateDrawing = mustCallCreateCoords || mustCallCreateMatrix;
 
-                if (!mustUpdateDrawing) { //we don't need to do anything
+                if (!mustUpdateDrawing) { //we don't need to do anything more
                     return;
                 }
                 //try { //todo test error handling
@@ -681,13 +677,13 @@
             function updateCoordsArray(xmlHttp) {
                 cumulativeCoordsRPC += 1;
                 coords = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
-                return Number(xmlHttp.status);
+                return Number(xmlHttp.status);                         // check for status 200
             }
 
             function updateMatrixArray(xmlHttp) {
                 cumulativeMatrixRPC += 1;
                 matrix = getJsonArrayFromXmlOrString(xmlHttp.response);//set the array
-                return Number(xmlHttp.status);
+                return Number(xmlHttp.status);                         // check for status 200
             }
             
             function doDrawOnCanvas(radius, status, starttime) {   //we call this function to draw circle with current global array settings etc.
@@ -734,22 +730,22 @@
                 statusmsg.innerHTML = strstatusmsg;
             }
 
-            //wrapper function to repeat the circle drawing periodically (only called when the response returned and promises are resolved).
+            //wrapper function to repeat the circle drawing method periodically (only called when the response returned and promises are resolved).
             function cycleForAutoplay() {
 
                 if (!playingslider) {  //check we are in autoplay mode
                     return;
                 }
 
-                // call the playMultiplierSlider method when we reach between 700 ms and 750 ms since last request to draw circle.
-                // however, if previous remote call response was delayed between 2000 ms and 750 ms from the request (usually happens on initial requests),
-                // then display the current (delayed) circle pattern and info message for the exact amount of delay!
+                // Call the playMultiplierSlider method when we reach between 700 ms and 750 ms since last request to draw circle.
+                // However, if previous remote call response was delayed more than 750 ms from the request (usually happens on initial requests),
+                // then display the current (delayed) circle pattern and info message for the exact amount of delay up to a max 2000 ms!
                 var nextcall;
                 var d = new Date();
                 var timesinceprevdraw = d.getTime() - lasttimedrawcalled;
 
                 if (timesinceprevdraw > 750) {
-                    nextcall = Math.min(2000, timesinceprevdraw); //mext call between 2000 and 750 ms.
+                    nextcall = Math.min(2000, timesinceprevdraw); //next call between 2000 and 750 ms.
                 } else {
                     nextcall = Math.max(700, (Math.min(750, 750 - timesinceprevdraw)));
                 }
@@ -759,17 +755,10 @@
 
             function playMultiplierSlider() {
 
-                if (!playingslider || (multiple >= 100)) { //check we are still in autoplay or have reached the end
+                if (!playingslider || (multiple > 99)) { //check we are still in autoplay or have reached the end
                     Stop();
                     return;
                 }
-
-                ////if at end of autoplay range, reset slider and stop.
-                //if (multiple >= 100) {
-                //    //multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
-                //    Stop();
-                //    //return;
-                //}
 
                 multiple += 1;
                 slider1.value = multiple;
@@ -777,8 +766,6 @@
                 drawResultsNow();
 
                 if (multiple > 99) {  /*check again if we have reached the end of autoplay.*/
-                    //playingslider = false;
-                    //
                     Stop();
                 }
             }

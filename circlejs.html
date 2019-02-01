@@ -401,7 +401,6 @@
 
         <script>
             //set DOM references for HTML elements
-            //var counter = 0;
             //var statusmsg = document.getElementById("msg");
             var ctx = document.getElementById("canvas").getContext("2d");
             //var alpha = 1.0;                                              //transparency variable for canvas
@@ -434,41 +433,16 @@
             var intervalId;
             toggleBut.addEventListener("click", Start);
 
-            //slider1.oninput = function () {
-            //    multiple = Number(this.value);       // save this global variable for autoplay restart.
-            //    output1.innerText = this.value;
-            //    drawResults();
-            //}
-
-            //slider2.oninput = function () {
-            //    output2.innerText = this.value;
-            //    drawResults();
-            //}
-
-            //slider3.oninput = function () {
-            //    output3.innerText = this.value;
-            //    drawResults();
-            //}
-            //slider1.oninput = function () { handleSlider1Update(this); }
-            //slider2.oninput = function () { handleSlider2Update(this); }
-            //slider3.oninput = function () { handleSlider3Update(this); }
-
-            //slider1.onchange = function () { handleSlider1Update(this); }
-            //slider2.onchange = function () { handleSlider2Update(this); }
-            //slider3.onchange = function () { handleSlider3Update(this); }
-
+            // event handlers for sliders.
             slider1.oninput = function () { handleSliderUpdate(this, output1); }
             slider2.oninput = function () { handleSliderUpdate(this, output2); }
             slider3.oninput = function () { handleSliderUpdate(this, output3); }
-
             slider1.onchange = function () { handleSliderUpdate(this, output1); }
             slider2.onchange = function () { handleSliderUpdate(this, output2); }
             slider3.onchange = function () { handleSliderUpdate(this, output3); }
 
-            //handleSlider1Update
-
             //draw circle with initial values
-            drawHollowCircle(centreX, centreY, initialRadius);
+            drawHollowCircle(centreX, centreY, initialRadius);  // this is the entry point for our code. All other code is triggered by user event handlers.
 
             function drawHollowCircle(x0, y0, radius) {
                 ctx.lineWidth = "1";
@@ -501,32 +475,12 @@
             }
 
             function handleSliderUpdate(slider, control) {
-                //console.log("handleSliderUpdate");
-                //console.log(slider.id);
-
-                if (slider.id == "myRange1") { //if multiplier being changed, save this value globally
+                if (slider.id == "myRange1") {             // if multiplier is being changed
                     multiple = Number(slider.value);       // save this global variable for autoplay restart.
                 }
-                //output1.innerText = slider.value;
                 control.innerText = slider.value;
                 drawResults();
             }
-
-            //function handleSlider1Update(slider) {
-            //    multiple = Number(slider.value);       // save this global variable for autoplay restart.
-            //    output1.innerText = slider.value;
-            //    drawResults();
-            //}
-
-            //function handleSlider2Update(slider) {
-            //    output2.innerText = slider.value;
-            //    drawResults();
-            //}
-
-            //function handleSlider3Update(slider) {
-            //    output3.innerText = slider.value;
-            //    drawResults();
-            //}
 
             function drawResults() {
                 var multiplierVal = slider1.value;
@@ -629,10 +583,10 @@
             //}
 
             function playMultiplierSlider() {
-                //if at end of autoplay range, reset slider and stop.
+                //if at end of autoplay range, stop (will reset slider).
                 if (multiple >= 100) {
-                    multiple = 0; // we need to set this to zero rather than one as it will be incremented within this method anyway.
                     Stop();
+                    return;
                 }
 
                 multiple += 1;
@@ -653,13 +607,9 @@
             }
 
             function Stop() {
-                //if (multiple > 99) {                         //if end of range has been reached, reset slider etc.;
-                //    resetControlsToStart(); 
-                //}
                 clearInterval(intervalId);
 
-
-                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
+                if (multiple > 99) {        //if end of range has been reached, reset slider etc.
                     setTimeout(function () { resetControlsToStart(); }, 1000)
                     return;
                 }
@@ -667,7 +617,6 @@
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
-
             }
 
         </script>
