@@ -519,6 +519,10 @@
 
             function resetControlsToStart() {
                 playingslider = false;
+                toggleBut.removeEventListener("click", Stop);
+                toggleBut.addEventListener("click", Start);
+                toggleBut.value = "Autoplay";
+
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
@@ -537,9 +541,6 @@
                 if (document.querySelector("span#statusmsg").firstChild.nodeValue != initialstatusmsg) {
                     statusmsg.innerHTML = "Circle reset.";
                 }
-
-                //statusmsg.innerHTML = "";
-
             }
 
             function handleSliderUpdate(slider, control) {
@@ -645,7 +646,6 @@
 
             //we have retuned with resolved promises. Now update the arrays amd draw the pattern.
             function prepDrawPattern(resultsarray, thismultiplier, thismodulo, thisradius) {
-                statusmsg.innerHTML = "all promises worked";
                 var starttime;
                 var httpstatuscheck = 200;
                 var mustUpdateDrawing;
@@ -794,13 +794,14 @@
 
             function Stop() {
                 playingslider = false;
+                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
+                    setTimeout(function () { resetControlsToStart(); }, 2000) //wait until async calls have returned
+                    return;
+                }
+
                 toggleBut.removeEventListener("click", Stop);
                 toggleBut.addEventListener("click", Start);
                 toggleBut.value = "Autoplay";
-
-                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
-                    setTimeout(function () { resetControlsToStart(); }, 2000)
-                }
             }
 
             function modifyQueryString() {

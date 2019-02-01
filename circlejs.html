@@ -487,6 +487,9 @@
             }
 
             function resetControlsToStart() {
+                toggleBut.removeEventListener("click", Stop);
+                toggleBut.addEventListener("click", Start);
+                toggleBut.value = "Autoplay";
                 multiple = 1;
                 slider1.value = multiple;
                 output1.innerText = multiple;
@@ -654,13 +657,16 @@
                 //    resetControlsToStart(); 
                 //}
                 clearInterval(intervalId);
-                toggleBut.removeEventListener("click", Stop);
-                toggleBut.addEventListener("click", Start);
-                toggleBut.value = "Autoplay";
+
 
                 if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
                     setTimeout(function () { resetControlsToStart(); }, 1000)
+                    return;
                 }
+
+                toggleBut.removeEventListener("click", Stop);
+                toggleBut.addEventListener("click", Start);
+                toggleBut.value = "Autoplay";
 
             }
 
