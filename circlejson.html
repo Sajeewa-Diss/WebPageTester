@@ -720,7 +720,7 @@
                 }
 
                 console.log("checkforautoplay timesinceprevdraw " + timesinceprevdraw.toString() + " next call " + nextcall.toString());
-                //let timerId = setTimeout({drawResultsNow();}, nextcall);
+                //let timerId = setTimeout(drawResultsNow, nextcall);
                 let timerId = setTimeout(function () { playMultiplierSliderWrapper() }, nextcall);
                 //    //if at any stage the button is stopped we should cancel
                 //    if (playingslide) {

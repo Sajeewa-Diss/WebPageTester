@@ -434,21 +434,29 @@
             var intervalId;
             toggleBut.addEventListener("click", Start);
 
-            slider1.oninput = function () {
-                multiple = Number(this.value);       // save this global variable for autoplay restart.
-                output1.innerText = this.value;
-                drawResults();
-            }
+            //slider1.oninput = function () {
+            //    multiple = Number(this.value);       // save this global variable for autoplay restart.
+            //    output1.innerText = this.value;
+            //    drawResults();
+            //}
 
-            slider2.oninput = function () {
-                output2.innerText = this.value;
-                drawResults();
-            }
+            //slider2.oninput = function () {
+            //    output2.innerText = this.value;
+            //    drawResults();
+            //}
 
-            slider3.oninput = function () {
-                output3.innerText = this.value;
-                drawResults();
-            }
+            //slider3.oninput = function () {
+            //    output3.innerText = this.value;
+            //    drawResults();
+            //}
+            slider1.oninput = function () { handleSlider1Update(this); }
+            slider2.oninput = function () { handleSlider2Update(this); }
+            slider3.oninput = function () { handleSlider3Update(this); }
+
+            slider1.onchange = function () { handleSlider1Update(this); }
+            slider2.onchange = function () { handleSlider2Update(this); }
+            slider3.onchange = function () { handleSlider3Update(this); }
+            //handleSlider1Update
 
             //draw circle with initial values
             drawHollowCircle(centreX, centreY, initialRadius);
@@ -480,6 +488,22 @@
                 //fadeOut();
             }
 
+            function handleSlider1Update(slider) {
+                multiple = Number(slider.value);       // save this global variable for autoplay restart.
+                output1.innerText = slider.value;
+                drawResults();
+            }
+
+            function handleSlider2Update(slider) {
+                output2.innerText = slider.value;
+                drawResults();
+            }
+
+            function handleSlider3Update(slider) {
+                output3.innerText = slider.value;
+                drawResults();
+            }
+
             function drawResults() {
                 var multiplierVal = slider1.value;
                 var moduloVal = slider2.value;
@@ -505,13 +529,15 @@
                     createMatrix(multiplierVal, moduloVal);
                 }
 
-                //do drawing on canvas
-                doDrawOnCanvas(radiusVal);
+                if (mustCallCreateCoords || mustCallCreateMatrix) {
+                    //do drawing on canvas
+                    doDrawOnCanvas(radiusVal);
 
-                //store current slider values as previous values ready for next time.
-                prevRadius = radiusVal;
-                prevModulo = moduloVal;
-                prevMultiplier = multiplierVal;
+                    //store current slider values as previous values ready for next time.
+                    prevRadius = radiusVal;
+                    prevModulo = moduloVal;
+                    prevMultiplier = multiplierVal;
+                }
             }
 
             function doDrawOnCanvas(radius) {           //we can call this function to draw circle with current global array settings etc.
@@ -596,7 +622,7 @@
             }
 
             function Start() {
-                intervalId = setInterval(playMultiplierSlider, 500); //call this method every 500 ms.
+                intervalId = setInterval(playMultiplierSlider, 750); //call this method every 750 ms.
                 toggleBut.removeEventListener("click", Start);
                 toggleBut.addEventListener("click", Stop);
                 toggleBut.value = "Stop";

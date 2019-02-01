@@ -700,7 +700,7 @@
                 if (playingslide) {
                     playMultiplierSlider();
                 } else {
-                    clearTimeout(timerId);
+                    clearTimeout(timerId); //todo this causes error!!
                     console.log("clearTimeout called");
                     return;
                 }
