@@ -464,7 +464,7 @@
             var prevModulo = 0;
             var prevRadius = 0;
             var prevMultiplier = 0;
-            var strstatusmsg = "Please note that remote calls have been limited to five groups per sec.";
+            var strstatusmsg = "Please note that remote calls have been limited to five sets per sec.";
             statusmsg.innerHTML = strstatusmsg;
             //var returnStatus = 0;
             output1.innerText = slider1.value;
@@ -489,19 +489,28 @@
                 window.location.href = anchor.href + queryString;
             }, false);
 
-            slider1.oninput = function () {
-                multiple = Number(this.value);       // save this global variable for autoplay restart.
-                output1.innerText = this.value;
-                drawResults(this.value);
-            }
-            slider2.oninput = function () {
-                output2.innerText = this.value;
-                drawResults(this.value);
-            }
-            slider3.oninput = function () {
-                output3.innerText = this.value;
-                drawResults(this.value);
-            }
+            //slider1.oninput = function () {
+            //    multiple = Number(this.value);       // save this global variable for autoplay restart.
+            //    output1.innerText = this.value;
+            //    drawResults(this.value);
+            //}
+            //slider2.oninput = function () {
+            //    output2.innerText = this.value;
+            //    drawResults(this.value);
+            //}
+            //slider3.oninput = function () {
+            //    output3.innerText = this.value;
+            //    drawResults(this.value);
+            //}
+
+            slider1.oninput = function () { handleSlider1Update(this); }
+            slider2.oninput = function () { handleSlider2Update(this); }
+            slider3.oninput = function () { handleSlider3Update(this); }
+
+            slider1.onchange = function () { handleSlider1Update(this); }
+            slider2.onchange = function () { handleSlider2Update(this); }
+            slider3.onchange = function () { handleSlider3Update(this); }
+
             //draw circle (outline only) using initial values above.
             drawHollowCircle(centreX, centreY, initialRadius);
 
@@ -529,6 +538,22 @@
                 drawHollowCircle(centreX, centreY, radius); //draw an empty circle only.
                 //fadeOut(); //??
                 radiojs.checked = true; //set this by default.
+            }
+
+            function handleSlider1Update(slider) {
+                multiple = Number(slider.value);       // save this global variable for autoplay restart.
+                output1.innerText = slider.value;
+                drawResults();
+            }
+
+            function handleSlider2Update(slider) {
+                output2.innerText = slider.value;
+                drawResults();
+            }
+
+            function handleSlider3Update(slider) {
+                output3.innerText = slider.value;
+                drawResults();
             }
 
             //#endregion
@@ -700,7 +725,7 @@
                 if (playingslide) {
                     playMultiplierSlider();
                 } else {
-                    clearTimeout(timerId);
+                    //clearTimeout(timerId);
                     console.log("clearTimeout called");
                     return;
                 }
