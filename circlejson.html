@@ -352,7 +352,7 @@
                             a simple grid display.
                         </p>
                         <p>
-                            <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-json" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
+                            <span><a href="https://github.com/Sajeewa-Dissa/multiplication-tables-azure" target="_blank">GitHub</a> the source code for this project is available here.</span><br />
                             <span><a href="https://sajeewa-dissa.github.io/multiplication-tables-js/index.html">JavaScript</a> the same functionality found here, but uses (more responsive) client-side JavaScript only.</span><br />
                             <span><a href="https://www.youtube.com/watch?v=qhbuKbxJsk8" target="_blank">YouTube Mathologer</a> the linked YouTube video was the inspiration for this webpage.</span><br />
                         </p>
@@ -466,6 +466,7 @@
             var prevRadius = 0;
             var prevMultiplier = 0;
             var strstatusmsg = "";
+            var strerrormsg = "";
             var initialstatusmsg = "Please note that remote calls have been limited to five sets per sec.";
             var initialRadius = slider3.value;
             var toggleBut = document.getElementById("toggleBut");
@@ -510,6 +511,7 @@
                 ctx.stroke();
                 ctx.closePath();
             }
+
             //reset slider and circle on page refresh
             function setOnRefresh() {
                 resetControlsToStart();
@@ -534,10 +536,12 @@
                     radiojs.checked = true; //set this by default.
                 }
 
-                //show an initial display message or otherwise an info message that circle was reset.
+                //show the initial info screen display message only on page refresh. Otherwise nothing.
                 if (document.querySelector("span#statusmsg").firstChild.nodeValue != initialstatusmsg) {
                     statusmsg.innerHTML = "";
                 }
+                //remove any global error messages
+                strerrormsg = "";
             }
 
             function handleSliderUpdate(slider, control) {
@@ -545,12 +549,11 @@
                     multiple = Number(slider.value);       // save this global variable for autoplay restart.
                 }
                 control.innerText = slider.value;
-                // Call for drawing of circle but not immediately (input event is less important to handle than change event).
+                // Call for drawing of circle but not immediately (higher priority event handlers exist).
                 drawResults();
             }
 
             //#endregion
-
 
             function handleSliderUpdateNow(slider, control) {
                 if (slider.id == "myRange1") {             // if multiplier being changed
@@ -566,9 +569,8 @@
             }
 
             //a wrapper function to limit the number of RPC calls per second.
+            //draw result immediately, but if previous call was less than 200ms ago, then do nothing.
             function drawResults() {
-                //draw result immediately, but if previous call was less than 200ms ago, then do nothing.
-
                 //if autoplay is on, let it handle drawing of circles instead.
                 if (playingslider) {
                     return;
@@ -578,7 +580,7 @@
                 var timesinceprevcall = d.getTime() - lasttimedrawcalled;
 
                 if (timesinceprevcall > 200) {
-                    drawResultsNow();           //but we won't add events to queue otherwise (other events handlers will be triggered instead).
+                    drawResultsNow();     
                 } 
             }
 
@@ -594,7 +596,6 @@
 
                 var d = new Date();
                 var starttime = d.getTime();
-                var strerr = "";
 
                 lasttimedrawcalled = d.getTime(); // set this value to govern too many remote calls per second.
                 var coordspromise;
@@ -616,15 +617,10 @@
                 if (!mustUpdateDrawing) { //we don't need to do anything more
                     return;
                 }
-                //try { //todo test error handling
-                //}
-                //catch (err) {
-                //}
 
                 //Call any required methods to prepare for drawing of patterns and do so using promises.
                 if (mustCallCreateCoords) {
                     coordspromise = prepareApiCallRtnPromise(multiplierVal, moduloVal, radiusVal, rpcval, "createCoords", starttime);
-                    //promise.catch(obj1 => parseReject(obj1)); todo
                 } else {
                     coordspromise = Promise.resolve(""); // a dummy promise resolved successfully.
                 }
@@ -635,9 +631,13 @@
                     matrixpromise = Promise.resolve(""); // a dummy promise resolved successfully.
                 }
 
-                //Handle when both promises resolved successfully.
-                Promise.all([coordspromise, matrixpromise]).then(values =>
-                    prepDrawPattern(values, multiplierVal, moduloVal, radiusVal));
+                //Handle when both promises resolved successfully or when they fail.
+                Promise.all([coordspromise, matrixpromise])
+                    .then(values =>
+                        prepDrawPattern(values, multiplierVal, moduloVal, radiusVal))
+                    .catch(error => {
+                        handleError(error)
+                    });
             }
 
             //we have retuned with resolved promises. Now update the arrays amd draw the pattern.
@@ -669,8 +669,6 @@
                     prevRadius = thisradius;
                     prevModulo = thismodulo;
                     cycleForAutoplay();
-                } else {
-                    statusmsg.innerHTML = "todo some error message integrate it to the info display function";
                 }
             }
 
@@ -691,9 +689,9 @@
 
                 if (status == 200) {
                     drawPattern();
+                    //Update communication info on screen
+                    showStatusInfo(status, starttime);
                 }
-                //Update communication info on screen
-                showStatusInfo(status, starttime);
             }
 
             function drawPattern() {
@@ -722,7 +720,17 @@
                 console.log("pattern drawn ");
             }
 
-            function showStatusInfo(status, starttime) { //todo error feedback
+            function handleError(err) {
+                strerrormsg = "Error.  Status:" + err.status + " " + err.statusText + " " + err.moreinfo;
+                strerrormsg += ". Please try an alternative cloud service instead."
+                statusmsg.innerHTML = strerrormsg;
+
+                var radius = output3.innerText;
+                drawHollowCircle(centreX, centreY, radius);
+                Stop(); // stop if in autoplay mode
+            }
+
+            function showStatusInfo(status, starttime) {
                 var d = new Date();
                 var duration = d.getTime() - starttime;
                 strstatusmsg = "Returned in " + duration + " ms. Status " + status;
@@ -781,8 +789,8 @@
 
             function Stop() {
                 playingslider = false;
-                if (multiple >= 100) {        //if end of range has been reached, reset slider etc.
-                    setTimeout(function () { resetControlsToStart(); }, 2000) //wait until async calls have returned
+                if (multiple > 99) {        //if end of range has been reached, reset slider etc.
+                    setTimeout(function () { resetControlsToStart(); }, 2000) //wait until async calls have returned and drawn circle.
                     return;
                 }
 
@@ -793,7 +801,7 @@
 
             function modifyQueryString() {
                 // get all querys tring params
-                const amp = "&"; //"&amp;"
+                const amp = "&";
                 var qstring = "?";
                 qstring += "multiple=" + output1.value.toString() + amp;
                 qstring += "modulus=" + output2.value.toString() + amp;

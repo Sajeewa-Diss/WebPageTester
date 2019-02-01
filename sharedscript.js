@@ -3,13 +3,6 @@
 const centreX = 275;
 const centreY = 275;
 
-//const jsMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=tuVpcvNQCb49MyVLndykbaLa/BJNImIEdwFjPrEJSB7OW6FwB3Qfqg==";
-//const csMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixCs?code=t1kM0i4KT49QaSzR7YurY5xhZGBK13glgts411JdEoaSYonvb30FoQ==";
-//const jsCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsJs?code=y6AS/7EmQlrpi4HTfkOvd4I6FqlaKUS60s1/ZVWQn7aOpk3oyMFcgw==";
-//const csCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsCs?code=aqfFykVqx4W0mfiOqXmw3pM2aMqOQe98RRbMXvmpMu8i9SOZ74qwBQ==";
-//const wcfServiceUrl = "https://azuremultitableswcfsvc001.azurewebsites.net/Service.svc";
-
-
 const jsMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixJs?code=FuVpcvNQCb49MyVLndykbaLa/BJNImIEdwFjPrEJSB7OW6FwB3Qfqg==";
 const csMatrixUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createMatrixCs?code=H1kM0i4KT49QaSzR7YurY5xhZGBK13glgts411JdEoaSYonvb30FoQ==";
 const jsCoordsUrl = "https://azuremultitablesfuncsapp.azurewebsites.net/api/createCoordsJs?code=y6AS/7EmQlrpi4HTfkOvd4I6FqlaKUS60s1/ZVWQn7aOpk3oyMFcgw==";
@@ -188,7 +181,7 @@ function makeApiCallRtnPromise(url, body, methodname, starttime) {
                     reject({
                         status: this.status,
                         statusText: xmlHttp.statusText,
-                        moreinfo: xmlHttp.response,
+                        moreinfo: " Request to " + methodname + " failed." + xmlHttp.response,
                         stime: starttime
                     });
                 }
@@ -198,7 +191,7 @@ function makeApiCallRtnPromise(url, body, methodname, starttime) {
             reject({
                 status: this.status,
                 statusText: xmlHttp.statusText,
-                moreinfo:"",
+                moreinfo: " Request to " + methodname + " failed.",
                 stime: starttime
             });
         };
